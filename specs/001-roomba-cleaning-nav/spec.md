@@ -11,6 +11,11 @@
 - Q: How is the "cleaning area" or "cleaning path" defined for autonomous mode? → A: Zig-zag pattern (systematic coverage)
 - Q: How should the robot handle cable detection if Lidar misses them? → A: Motor Current Sensing (Reactive detection)
 - Q: What is the behavior when the battery is low? → A: Return to Start (and stop there)
+- Q: How should the system recover from safety stops (cliff/entanglement)? → A: Manual button press on Joy-Con to resume.
+- Q: How should the operator toggle between Manual and Autonomous modes? → A: Single dedicated Joy-Con button.
+- Q: How should the system communicate its current operating status? → A: Audio cues (beeps, tones) from the robot.
+- Q: What are the primary sensor inputs for general obstacle detection and avoidance? → A: Lidar (2D) and 2D Camera with object detection.
+- Q: How should the static map of the cleaning area be provided? → A: Manual upload of a static map file.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -74,18 +79,21 @@ As a user, I want the robot to avoid falling down stairs or getting tangled in c
 - **FR-004**: System MUST implement a safety layer that treats cliff sensor triggers as lethal obstacles.
 - **FR-005**: System MUST differentiate between "walls" (contact allowed) and "prohibited obstacles" (steps/cables) in its local path planning.
 - **FR-006**: System MUST provide a cleaning control mechanism to toggle suction and main brushes.
-- **FR-007**: System MUST allow switching between Manual and Autonomous modes via a Joy-Con toggle.
+- **FR-007**: System MUST allow switching between Manual and Autonomous modes via a single dedicated Joy-Con button.
 - **FR-008**: System MUST implement a zig-zag pattern for systematic autonomous floor coverage.
 - **FR-009**: System MUST monitor brush motor current to detect and stop upon entanglement with small obstacles like cables.
 - **FR-010**: System MUST return the robot to its starting position and power down when the battery level drops below a 15% threshold.
+- **FR-011**: System MUST require a specific Joy-Con button press to resume operation after a safety-triggered stop (e.g., cliff detection or entanglement).
+- **FR-012**: System MUST provide distinct audio cues (beeps/tones) to communicate changes in operating status (e.g., mode switch, error state, low battery).
+- **FR-013**: System MUST utilize a 2D Lidar for mapping and general obstacle detection, and a 2D camera for object detection (e.g., specific hazards like cables).
 
 ## Assumptions & Constraints
 
 - **A-001**: The environment has sufficient features for the localization algorithm (`amcl`) to work accurately.
-- **A-002**: A pre-existing static map of the cleaning area is available.
+- **A-002**: A pre-existing static map of the cleaning area is manually uploaded to the robot.
 - **A-003**: The Joy-Con is connected to the host system via Bluetooth and is recognized by the operating system.
 - **A-004**: Walls are physically sturdy enough to withstand light bumps from the robot's bumper.
-- **A-005**: Cables and steps are detectable by the robot's sensors (bumpers, cliff sensors, or lidar).
+- **A-005**: Obstacles (cables, steps, general clutter) are detectable by the robot's Lidar, camera, bumpers, and cliff sensors.
 
 ### Key Entities *(include if feature involves data)*
 
