@@ -52,9 +52,11 @@ ROS2の複数のパッケージを実装。Roomba577を活用して、部屋の�
 ```bash
 /speckit.analyze
 ```
-
 ```bash
 /speckit.checklist
+```
+```bash
+ /speckit.clarify
 ```
 ```bash
 /speckit.implement
