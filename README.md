@@ -30,10 +30,32 @@ joyconでのマニュアル操作も受け付ける想定。
 amclなどで自己位置推定をしながら、部屋の掃除状況・ものが落ちている状況を記録する想定。
 壁以外の物体との接触はできるだけ避けて、走行・清掃を実施する。
 
-
 ## 対話の履歴
 ```bash
 /speckit.constitution
-   ROS2・pythonのコード規約に準拠して実装。ロボット
-   の制御であるため、常に自身の状態を把握できて、低遅延な形で機能が実現できるかが重要。基本的にGemniniが実装を担当、極稀に人間が手を加えることがあるため、実装はSOLIDの法則に従って可読性・拡張性を確保。
+ROS2・pythonのコード規約に準拠して実装。ロボットの制御であるため、常に自身の状態を把握できて、低遅延な形で機能が実現できるかが重要。基本的にGemniniが実装を担当、極稀に人間が手を加えることがあるため、実装はSOLIDの法則に従って可読性・拡張性を確保。
+```
+```bash
+/speckit.specify
+ROS2の複数のパッケージを実装。Roomba577を活用して、部屋の掃除を実施。Joy-Conによるマニュアル走行から、amclなどに基づく自動走行、掃除を実施。壁には衝突しても構わないが、段差やケーブルなどの障害物は回避。
+```
+```bash
+/speckit.clarify
+```
+```bash
+/speckit.plan
+メインのプログラムはROS2とpython3.13+で実装。ロボットのナビゲーションには、ROS2のNav2を活用。pythonもnumpyやOpenCVに代表される高速な動作が可能な標準的なライブラリを使用。roombaの操作にはcreate_robotを使用。
+```
+```bash
+/speckit.tasks
+```
+```bash
+/speckit.analyze
+```
+
+```bash
+/speckit.checklist
+```
+```bash
+/speckit.implement
 ```
