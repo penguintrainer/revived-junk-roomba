@@ -16,6 +16,11 @@
 - Q: How should the system communicate its current operating status? → A: Audio cues (beeps, tones) from the robot.
 - Q: What are the primary sensor inputs for general obstacle detection and avoidance? → A: Lidar (2D) and 2D Camera with object detection.
 - Q: How should the static map of the cleaning area be provided? → A: Manual upload of a static map file.
+- Q: What is the exact ROS2 message type and coordinate frame for standard robot movement commands? → A: `geometry_msgs/msg/Twist` in `base_link` frame.
+- Q: Please define the parameters for the zig-zag cleaning pattern? → A: Zig-zag with 75% overlap, maintaining 10cm distance from boundaries.
+- Q: Please specify the criteria for recognizing cables via the 2D camera and the expected avoidance behavior. → A: Detection: Recognize objects matching "cable" visual patterns. Avoidance: Reroute around object.
+- Q: Please describe the distinct audio cues for each specified status change. → A: Mode Switch: Short, single beep. Error: Repeating alarm. Low Battery: Slow, intermittent beep.
+- Q: How should the 15% low battery threshold be explicitly defined? → A: Manufacturer's Spec: Refer to the Roomba 577 manufacturer's definition of 15% low battery.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -74,18 +79,18 @@ As a user, I want the robot to avoid falling down stairs or getting tangled in c
 ### Functional Requirements
 
 - **FR-001**: System MUST implement a communication layer to interface with Roomba 577.
-- **FR-002**: System MUST provide a teleoperation layer that maps Joy-Con inputs to standard robot movement commands.
+- **FR-002**: System MUST provide a teleoperation layer that maps Joy-Con inputs to `geometry_msgs/msg/Twist` commands in the `base_link` frame.
 - **FR-003**: System MUST support `amcl` for 2D pose estimation within a static map.
 - **FR-004**: System MUST implement a safety layer that treats cliff sensor triggers as lethal obstacles.
 - **FR-005**: System MUST differentiate between "walls" (contact allowed) and "prohibited obstacles" (steps/cables) in its local path planning.
 - **FR-006**: System MUST provide a cleaning control mechanism to toggle suction and main brushes.
 - **FR-007**: System MUST allow switching between Manual and Autonomous modes via a single dedicated Joy-Con button.
-- **FR-008**: System MUST implement a zig-zag pattern for systematic autonomous floor coverage.
+- **FR-008**: System MUST implement a zig-zag pattern for systematic autonomous floor coverage with 75% overlap, maintaining 10cm distance from boundaries.
 - **FR-009**: System MUST monitor brush motor current to detect and stop upon entanglement with small obstacles like cables.
-- **FR-010**: System MUST return the robot to its starting position and power down when the battery level drops below a 15% threshold.
+- **FR-010**: System MUST return the robot to its starting position and power down when the battery level drops below a 15% threshold, as defined by the Roomba 577 manufacturer's specification.
 - **FR-011**: System MUST require a specific Joy-Con button press to resume operation after a safety-triggered stop (e.g., cliff detection or entanglement).
-- **FR-012**: System MUST provide distinct audio cues (beeps/tones) to communicate changes in operating status (e.g., mode switch, error state, low battery).
-- **FR-013**: System MUST utilize a 2D Lidar for mapping and general obstacle detection, and a 2D camera for object detection (e.g., specific hazards like cables).
+- **FR-012**: System MUST provide distinct audio cues: a short, single beep for mode changes; a repeating alarm for error states; and a slow, intermittent beep for low battery.
+- **FR-013**: System MUST utilize a 2D Lidar for mapping and general obstacle detection, and a 2D camera to recognize objects matching "cable" visual patterns for avoidance by rerouting around them.
 
 ## Assumptions & Constraints
 
@@ -93,7 +98,7 @@ As a user, I want the robot to avoid falling down stairs or getting tangled in c
 - **A-002**: A pre-existing static map of the cleaning area is manually uploaded to the robot.
 - **A-003**: The Joy-Con is connected to the host system via Bluetooth and is recognized by the operating system.
 - **A-004**: Walls are physically sturdy enough to withstand light bumps from the robot's bumper.
-- **A-005**: Obstacles (cables, steps, general clutter) are detectable by the robot's Lidar, camera, bumpers, and cliff sensors.
+- **A-005**: Obstacles (cables, steps, general clutter) are detectable by the robot's Lidar, camera (for cable patterns), bumpers, and cliff sensors.
 
 ### Key Entities *(include if feature involves data)*
 
