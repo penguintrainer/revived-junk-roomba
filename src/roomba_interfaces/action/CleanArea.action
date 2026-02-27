@@ -1,0 +1,12 @@
+# Goal
+# (Currently empty, or could include specific cleaning parameters like `duration`, `area_id`).
+# For now, an empty goal signifies "clean the known area".
+---
+# Result
+bool success
+string message
+float32 cleaned_percentage
+---
+# Feedback
+float32 current_progress
+builtin_interfaces/msg/Duration time_elapsed

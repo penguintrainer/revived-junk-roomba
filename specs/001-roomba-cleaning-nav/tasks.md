@@ -16,24 +16,24 @@ The implementation will follow an iterative approach, delivering each user story
 
 Initial setup of the ROS2 package structure and core configuration files.
 
-- [ ] T001 Create ROS2 package `roomba_cleaning_nav` in workspace src/roomba_cleaning_nav/
-- [ ] T002 Create `package.xml` for `roomba_cleaning_nav` src/roomba_cleaning_nav/package.xml
-- [ ] T003 Create `setup.py` for `roomba_cleaning_nav` src/roomba_cleaning_nav/setup.py
-- [ ] T004 Create `launch` directory src/roomba_cleaning_nav/launch/
-- [ ] T005 Create `config` directory src/roomba_cleaning_nav/config/
-- [ ] T006 Create `maps` directory src/roomba_cleaning_nav/maps/
-- [ ] T007 Create `tests` directory src/roomba_cleaning_nav/tests/
-- [ ] T008 Create `src` directory for Python nodes src/roomba_cleaning_nav/src/
-- [ ] T009 Create initial `roomba_launch.py` src/roomba_cleaning_nav/launch/roomba_launch.py
-- [ ] T010 Create initial `nav2_params.yaml` src/roomba_cleaning_nav/config/nav2_params.yaml
-- [ ] T011 Create initial `robot_params.yaml` src/roomba_cleaning_nav/config/robot_params.yaml
-- [ ] T012 Create empty `roomba_driver_node.py` src/roomba_cleaning_nav/src/roomba_driver_node.py
-- [ ] T013 Create empty `teleop_node.py` src/roomba_cleaning_nav/src/teleop_node.py
-- [ ] T014 Create empty `navigation_node.py` src/roomba_cleaning_nav/src/navigation_node.py
-- [ ] T015 Create empty `cleaning_node.py` src/roomba_cleaning_nav/src/cleaning_node.py
-- [ ] T016 Create empty `test_teleop.py` src/roomba_cleaning_nav/tests/test_teleop.py
-- [ ] T017 Create empty `test_navigation.py` src/roomba_cleaning_nav/tests/test_navigation.py
-- [ ] T018 Create empty `test_cleaning.py` src/roomba_cleaning_nav/tests/test_cleaning.py
+- [X] T001 Create ROS2 package `roomba_cleaning_nav` in workspace src/roomba_cleaning_nav/
+- [X] T002 Create `package.xml` for `roomba_cleaning_nav` src/roomba_cleaning_nav/package.xml
+- [X] T003 Create `setup.py` for `roomba_cleaning_nav` src/roomba_cleaning_nav/setup.py
+- [X] T004 Create `launch` directory src/roomba_cleaning_nav/launch/
+- [X] T005 Create `config` directory src/roomba_cleaning_nav/config/
+- [X] T006 Create `maps` directory src/roomba_cleaning_nav/maps/
+- [X] T007 Create `tests` directory src/roomba_cleaning_nav/tests/
+- [X] T008 Create `src` directory for Python nodes src/roomba_cleaning_nav/roomba_cleaning_nav/
+- [X] T009 Create initial `roomba_launch.py` src/roomba_cleaning_nav/launch/roomba_launch.py
+- [X] T010 Create initial `nav2_params.yaml` src/roomba_cleaning_nav/config/nav2_params.yaml
+- [X] T011 Create initial `robot_params.yaml` src/roomba_cleaning_nav/config/robot_params.yaml
+- [X] T012 Create empty `roomba_driver_node.py` src/roomba_cleaning_nav/roomba_cleaning_nav/roomba_driver_node.py
+- [X] T013 Create empty `teleop_node.py` src/roomba_cleaning_nav/roomba_cleaning_nav/teleop_node.py
+- [X] T014 Create empty `navigation_node.py` src/roomba_cleaning_nav/roomba_cleaning_nav/navigation_node.py
+- [X] T015 Create empty `cleaning_node.py` src/roomba_cleaning_nav/roomba_cleaning_nav/cleaning_node.py
+- [X] T016 Create empty `test_teleop.py` src/roomba_cleaning_nav/tests/test_teleop.py
+- [X] T017 Create empty `test_navigation.py` src/roomba_cleaning_nav/tests/test_navigation.py
+- [X] T018 Create empty `test_cleaning.py` src/roomba_cleaning_nav/tests/test_cleaning.py
 
 ## Phase 2: Foundational Components
 
