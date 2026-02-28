@@ -8,11 +8,13 @@ ROSの精神に基づいて各種パッケージを開発し、パッケージ�
 ## 最低要件
 |ソフトウェア|バージョン|備考|
 |:--|:--|:--|
-|Ubuntu24 |LTS|新しいやつ|
-|ROS2||ros2で開発しておきたい|
+|Ubuntu |24.04.4 LTS (Noble Numbat)|新しいやつ|
+|ROS2|Jazzy Jalisco|ros2で開発しておきたい|
 |Python |3.13+|GIL解除されてるやつ|
 |create_robot |[URL](https://github.com/AutonomyLab/create_robot)|ルンバをシリアル通信で制御|
+|YDLidar-SDK ||[URL](https://github.com/YDLIDAR/YDLidar-SDK)|
 |Conduit |[URL](https://github.com/youtalk/conduit-support)|iPhoneをセンサとして活用|
+|realsense-ros |[URL]([realsense-ros](https://github.com/realsenseai/realsense-ros))|ROS2用|
 
 |ハードウェア|バージョン|備考|
 |:--|:--|:--|
@@ -37,7 +39,7 @@ ROS2・pythonのコード規約に準拠して実装。ロボットの制御で�
 ```
 ```bash
 /speckit.specify
-ROS2の複数のパッケージを実装。Roomba577を活用して、部屋の掃除を実施。Joy-Conによるマニュアル走行から、amclなどに基づく自動走行、掃除を実施。壁には衝突しても構わないが、段差やケーブルなどの障害物は回避。
+ROS2の複数のパッケージを実装。Roomba577を活用して、部屋の掃除を実施。既存のランダム走行での掃除、Joy-Conによるマニュアル走行での掃除、amclなどに基づく自動走行での掃除を実現。自動走行時は壁には衝突しても構わないが、段差やケーブルなどの障害物はLiDARやRGB、RGBD情報を使って回避。
 ```
 ```bash
 /speckit.clarify
