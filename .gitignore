@@ -1,2 +1,28 @@
 .gemini/
 gha-creds-*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+build/
+.Python/
+.mypy_cache/
+.pytest_cache/
+
+# ROS2
+install/
+log/
+
+# Universal
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+*.log
+.env*

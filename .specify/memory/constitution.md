@@ -1,50 +1,52 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 0.0.0 → 1.0.0
+- List of modified principles:
+  - Added I. ROS 2 & Python Compliance
+  - Added II. State Observability
+  - Added III. Low-Latency Execution
+  - Added IV. SOLID Design & AI-Human Synergy
+- Added sections: Robot Control Constraints, AI-First Implementation
+- Removed sections: Placeholder sections from template
+- Templates requiring updates (✅ updated / ⚠️ pending):
+  - .specify/templates/plan-template.md ✅
+  - .specify/templates/spec-template.md ✅
+  - .specify/templates/tasks-template.md ✅
+- Follow-up TODOs: N/A
+-->
+
+# Revived Junk Roomba Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. ROS 2 & Python Compliance
+All implementation MUST strictly follow ROS 2 coding standards and Python PEP 8 conventions. Every code change MUST pass `ament_lint` (cpplint, flake8, pep257) or equivalent Python linting tools. This ensures compatibility and professional standards across the robotics ecosystem.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. State Observability
+Robot control software MUST maintain and expose its internal state at all times. This includes hardware status, sensor readings, and control loop health. Comprehensive logging and diagnostic interfaces (topics/services) are mandatory to ensure system transparency and debugging ease.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Low-Latency Execution
+The system MUST prioritize low-latency response for control loops. Non-blocking asynchronous patterns SHOULD be preferred for I/O, while ensuring the core control logic is optimized for deterministic performance. Blocking calls in the main robot control thread are strictly prohibited.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. SOLID Design & AI-Human Synergy
+Software MUST be architected following SOLID principles (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion). While Gemini (AI) is the primary implementer, the codebase MUST remain clean, modular, and readable to support occasional human manual intervention and review.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+## Robot Control Constraints
+Security and safety are paramount. All robot motions MUST be accompanied by fail-safes and boundary checks. Software MUST handle asynchronous events gracefully (e.g., sensor disconnects or emergency stops) to prevent physical harm or damage to the robot hardware.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## AI-First Implementation
+Gemini acts as the primary developer for this project. The AI's workflow focuses on high-quality, test-driven implementation. Humans provide architectural guidance, high-level requirements, and periodic reviews. All AI-generated code MUST be verified against the core principles before merging.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This Constitution is the foundation of all development activities. Amendments require a version bump (Semantic Versioning) and explicit ratification. Any implementation that violates these principles must be flagged as a "Constitution Violation" and justified in the implementation plan.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### Amendment Procedure
+1. Any developer (AI or Human) can propose an amendment via a PR modifying this document.
+2. Amendments MUST justify why existing principles are insufficient.
+3. Ratification occurs when the PR is merged after human review.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Compliance Review
+- Every `plan.md` MUST include a "Constitution Check" against these four principles.
+- Automated linting (ROS 2/Python) serves as the first gate for compliance.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-23 | **Last Amended**: 2026-02-23

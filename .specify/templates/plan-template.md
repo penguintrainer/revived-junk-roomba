@@ -31,7 +31,10 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **ROS 2 & Python Compliance**: Does the design adhere to ROS 2/PEP 8 standards?
+- [ ] **State Observability**: Does the design provide full internal state transparency?
+- [ ] **Low-Latency Execution**: Does the implementation avoid blocking calls in control paths?
+- [ ] **SOLID Design & AI-Human Synergy**: Is the code modular and readable for both AI and humans?
 
 ## Project Structure
 
