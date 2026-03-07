@@ -10,7 +10,8 @@ ROSの精神に基づいて各種パッケージを開発し、パッケージ�
 |:--|:--|:--|
 |Ubuntu |24.04.4 LTS (Noble Numbat)|新しいやつ|
 |ROS2|Jazzy Jalisco|ros2で開発しておきたい|
-|Python |3.13+|GIL解除されてるやつ|
+|CUDA|10.2|switch|
+|Python |3.13+|GIL解除されてるやつ, pyenv, pixi|
 |create_robot |[URL](https://github.com/AutonomyLab/create_robot)|ルンバをシリアル通信で制御|
 |YDLidar-SDK ||[URL](https://github.com/YDLIDAR/YDLidar-SDK)|
 |Conduit |[URL](https://github.com/youtalk/conduit-support)|iPhoneをセンサとして活用|
@@ -18,7 +19,7 @@ ROSの精神に基づいて各種パッケージを開発し、パッケージ�
 
 |ハードウェア|バージョン|備考|
 |:--|:--|:--|
-|Nintendo Switch|[ubuntu-noble](https://download.switchroot.org/ubuntu-noble/)|ubuntu導入済み|
+|Nintendo Switch|[ubuntu-noble](https://download.switchroot.org/ubuntu-noble/)|ubuntu導入済み,ARM64/Tegra,cuda|
 |Nintendo Joy-Con||Switchについているやつ|
 |Roomba |577|シリアルインターフェース付き|
 |iPhone |XR|Conduitでセンサとして活用、IMUなどで自己位置推定、カメラでゴミ検出とか|
