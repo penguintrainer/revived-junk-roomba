@@ -258,10 +258,11 @@ class SafetyMonitorNode(LifecycleNode):
             self.get_logger().error('EMERGENCY STOP: %s', reason)
             self._emergency_active = True
 
-        # Always publish to ensure Roomba stops
-        msg = Bool()
-        msg.data = True
-        self._pub_emergency_stop.publish(msg)
+        # Always publish to ensure Roomba stops (guard against pre-configure calls)
+        if self._pub_emergency_stop is not None:
+            msg = Bool()
+            msg.data = True
+            self._pub_emergency_stop.publish(msg)
 
     # -------------------------------------------------------------------------
     # Diagnostics

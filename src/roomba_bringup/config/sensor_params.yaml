@@ -69,6 +69,10 @@ realsense2_camera_node:
     enable_sync: true
 
     # RealSense post-processing filters
+    # Note: exact parameter names may vary by realsense-ros version (2.x vs 3.x).
+    # For realsense-ros v4.x (Jazzy): use 'enable_hole_filling' and 'hole_filling.mode'
+    # For realsense-ros v3.x: use parameters as listed below.
+    # Consult: https://github.com/IntelRealSense/realsense-ros for current param names.
     # Hole filling filter: fills gaps from reflective/glossy surfaces
     enable_hole_filling_filter: true
     hole_filling_filter_filt_mode: 1  # 0=fill_from_left, 1=farthest, 2=nearest

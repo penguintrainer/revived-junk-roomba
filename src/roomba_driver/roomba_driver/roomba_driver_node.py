@@ -375,7 +375,9 @@ class RoombaDriverNode(LifecycleNode):
         # Update pose
         self._x += d_center_mm / 1000.0 * math.cos(self._theta + d_theta_rad / 2.0)
         self._y += d_center_mm / 1000.0 * math.sin(self._theta + d_theta_rad / 2.0)
-        self._theta = (self._theta + d_theta_rad) % (2.0 * math.pi)
+        # Normalize theta to [-π, π) for stable control algorithm behavior
+        raw_theta = self._theta + d_theta_rad
+        self._theta = math.atan2(math.sin(raw_theta), math.cos(raw_theta))
         self._distance_traveled_m += abs(d_center_mm / 1000.0)
 
         # Publish odometry

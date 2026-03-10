@@ -276,9 +276,8 @@ class RoombaSerialInterface:
         if abs(linear_mm_s) < 1e-6:
             # Pure rotation: use special values
             return 1.0 if angular_rad_s > 0 else -1.0
-        # Roomba wheel base is approximately 258mm
-        wheelbase_mm = 258.0
-        radius = (linear_mm_s / angular_rad_s) + (wheelbase_mm / 2.0)
+        # Turning radius: R = v / omega
+        radius = linear_mm_s / angular_rad_s
         # Clamp to valid range (-2000 to 2000, excluding 0)
         radius = max(-2000.0, min(2000.0, radius))
         if abs(radius) < 1.0:

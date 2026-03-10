@@ -259,7 +259,7 @@ class CoveragePlannerNode(LifecycleNode):
             if goal_handle.is_cancel_requested:
                 self.get_logger().info('Coverage clean cancelled')
                 goal_handle.canceled()
-                result.termination_reason = 'emergency_stop'
+                result.termination_reason = 'cancelled'
                 result.coverage_ratio = self._get_coverage_ratio()
                 result.total_time_sec = time.monotonic() - start_time
                 result.total_distance_m = self._total_distance_m
@@ -445,28 +445,51 @@ class CoveragePlannerNode(LifecycleNode):
     async def _navigate_to_pose(self, pose: Pose) -> None:
         """Navigate to a single waypoint using Nav2.
 
-        This is a simplified implementation. In production, this would
-        use nav2_msgs/NavigateToPose action client.
+        Sends navigation goal to Nav2 NavigateToPose action server and
+        awaits completion. Nav2 controller publishes to /cmd_vel_nav
+        which mode_manager forwards to /cmd_vel when in AUTONOMOUS mode.
 
         Parameters
         ----------
         pose : Pose
             Target pose to navigate to.
         """
-        # In a full implementation, this would use:
-        # from nav2_msgs.action import NavigateToPose
-        # async with ActionClient(self, NavigateToPose, 'navigate_to_pose') as client:
-        #     goal = NavigateToPose.Goal()
-        #     goal.pose.header.frame_id = 'map'
-        #     goal.pose.pose = pose
-        #     await client.send_goal_async(goal)
+        try:
+            from nav2_msgs.action import NavigateToPose  # type: ignore[import]
+            from rclpy.action import ActionClient
 
-        # For now, publish directly as nav2 goal via cmd_vel
-        # The actual Nav2 integration happens through the launch file
-        # which includes Nav2 stack and uses /cmd_vel_nav
-        self.get_logger().debug(
-            'Navigating to (%.2f, %.2f)',
-            pose.position.x, pose.position.y)
+            if not hasattr(self, '_nav_client'):
+                self._nav_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
+
+            if not self._nav_client.wait_for_server(timeout_sec=2.0):
+                self.get_logger().warning('NavigateToPose action server not available')
+                return
+
+            from geometry_msgs.msg import PoseStamped
+            goal = NavigateToPose.Goal()
+            goal.pose = PoseStamped()
+            goal.pose.header.frame_id = 'map'
+            goal.pose.header.stamp = self.get_clock().now().to_msg()
+            goal.pose.pose = pose
+
+            send_goal_future = self._nav_client.send_goal_async(goal)
+            await send_goal_future
+            goal_handle = send_goal_future.result()
+
+            if goal_handle is None or not goal_handle.accepted:
+                self.get_logger().warning('Navigation goal rejected')
+                return
+
+            result_future = goal_handle.get_result_async()
+            await result_future
+
+        except ImportError:
+            # nav2_msgs not available: fall back to direct logging
+            self.get_logger().debug(
+                'Navigating to (%.2f, %.2f) [nav2_msgs unavailable]',
+                pose.position.x, pose.position.y)
+        except Exception as exc:
+            self.get_logger().warning('Navigation to waypoint failed: %s', exc)
 
     # -------------------------------------------------------------------------
     # Topic callbacks
