@@ -50,6 +50,9 @@ ROS2の複数のパッケージを実装。Roomba577を活用して、部屋の�
 メインのプログラムはROS2とpython3.13+で実装。ロボットのナビゲーションには、ROS2のNav2を活用。pythonもnumpyやOpenCVに代表される高速な動作が可能な標準的なライブラリを使用。roombaの操作にはcreate_robotを使用。
 ```
 ```bash
+/speckit.checklist
+```
+```bash
 /speckit.tasks
 ```
 ```bash
