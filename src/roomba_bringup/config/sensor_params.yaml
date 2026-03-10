@@ -1,0 +1,150 @@
+# Sensor parameters for Roomba577 multi-mode cleaning system
+# Hardware: YDLIDAR T-mini Plus + Intel RealSense D435i
+# Platform: Ubuntu 24.04.4 LTS on Nintendo Switch (ARM64/Tegra)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# YDLIDAR T-mini Plus parameters
+# ──────────────────────────────────────────────────────────────────────────────
+ydlidar_node:
+  ros__parameters:
+    # USB serial port (auto-detected via udev symlink)
+    port: /dev/ydlidar
+    baudrate: 230400
+    lidar_type: 1           # YDLIDAR_TYPE_TRIANGLE
+    device_type: 0          # YDLIDAR_DEVICE_TYPE_SERIAL
+    sample_rate: 3          # 3K samples/sec
+    abnormal_check_count: 4
+
+    # Scan parameters
+    fixed_resolution: true
+    reversion: false
+    inverted: false
+    auto_reconnect: true
+    isSingleChannel: true
+    intensity: false
+
+    # Range filter
+    max_angle: 180.0        # degrees
+    min_angle: -180.0       # degrees
+    max_range: 12.0         # meters
+    min_range: 0.12         # meters (T-mini Plus min range)
+    frequency: 10.0         # Hz (scan frequency)
+
+    # Frame
+    frame_id: laser_frame
+    ignore_array: ""
+
+    # Mounting compensation
+    # YDLIDAR is mounted ~15° downward for floor detection
+    # Mount angle compensation is handled in lidar_detector.py
+    mount_tilt_deg: 15.0
+    mount_height_m: 0.10
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Intel RealSense D435i parameters
+# ──────────────────────────────────────────────────────────────────────────────
+realsense2_camera_node:
+  ros__parameters:
+    # Device serial number (empty = use first available)
+    serial_no: ""
+    usb_port_id: ""
+    device_type: ""
+
+    # Color stream
+    color_width: 640
+    color_height: 480
+    color_fps: 30
+
+    # Depth stream
+    depth_width: 640
+    depth_height: 480
+    depth_fps: 30
+
+    # Aligned depth to color
+    enable_color: true
+    enable_depth: true
+    enable_infra1: false
+    enable_infra2: false
+    enable_pointcloud: false    # Disabled: compute-intensive on Tegra
+    enable_sync: true
+
+    # RealSense post-processing filters
+    # Hole filling filter: fills gaps from reflective/glossy surfaces
+    enable_hole_filling_filter: true
+    hole_filling_filter_filt_mode: 1  # 0=fill_from_left, 1=farthest, 2=nearest
+
+    # Spatial filter for noise reduction
+    enable_spatial_filter: true
+    spatial_filter_magnitude: 2
+    spatial_filter_smooth_alpha: 0.5
+    spatial_filter_smooth_delta: 20
+
+    # Temporal filter
+    enable_temporal_filter: true
+    temporal_filter_smooth_alpha: 0.4
+    temporal_filter_smooth_delta: 20
+
+    # Decimation filter (reduces resolution, improves performance)
+    enable_decimation_filter: false  # Keep full 640x480 for obstacle detection
+
+    # IMU (D435i has IMU — disabled unless needed)
+    enable_gyro: false
+    enable_accel: false
+
+    # Frame IDs
+    base_frame_id: camera_link
+    depth_frame_id: camera_depth_frame
+    infra1_frame_id: camera_infra1_frame
+    infra2_frame_id: camera_infra2_frame
+    color_frame_id: camera_color_frame
+    depth_optical_frame_id: camera_depth_optical_frame
+    infra1_optical_frame_id: camera_infra1_optical_frame
+    infra2_optical_frame_id: camera_infra2_optical_frame
+    color_optical_frame_id: camera_color_optical_frame
+    aligned_depth_to_color_frame_id: camera_aligned_depth_to_color_frame
+
+    # Quality settings
+    depth_module.depth_units: 0.001  # 1mm resolution
+    initial_reset: false
+    reconnect_timeout: 6.0
+
+    # Wait for device
+    wait_for_device_timeout: 10.0
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Obstacle detector parameters
+# ──────────────────────────────────────────────────────────────────────────────
+obstacle_detector_node:
+  ros__parameters:
+    lidar_mount_tilt_deg: 15.0
+    lidar_height_m: 0.10
+    min_confidence: 0.3
+
+# ──────────────────────────────────────────────────────────────────────────────
+# TF static transforms for sensor mounting
+# ──────────────────────────────────────────────────────────────────────────────
+# base_link → laser_frame: YDLIDAR mounted at front, slightly above ground
+# Adjust these values to match actual physical mounting position
+tf_static:
+  laser_frame:
+    parent_frame: base_link
+    translation:
+      x: 0.10    # 10cm forward from robot center
+      y: 0.0
+      z: 0.10    # 10cm above ground
+    rotation:
+      # 15° downward tilt (in degrees, converted to radians: 0.2618 rad)
+      roll: 0.0
+      pitch: -0.2618  # 15° downward
+      yaw: 0.0
+
+  camera_link:
+    parent_frame: base_link
+    translation:
+      x: 0.08    # 8cm forward
+      y: 0.0
+      z: 0.12    # 12cm above ground
+    rotation:
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
