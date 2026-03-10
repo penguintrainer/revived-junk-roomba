@@ -1,0 +1,5 @@
+---
+roomba_msgs/RoombaState state
+roomba_msgs/DrivingMode mode
+float64 cleaning_time_sec
+float64 distance_traveled_m

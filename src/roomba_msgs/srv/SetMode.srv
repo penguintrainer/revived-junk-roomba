@@ -1,0 +1,9 @@
+uint8 mode
+uint8 IDLE=0
+uint8 RANDOM=1
+uint8 MANUAL=2
+uint8 AUTONOMOUS=3
+---
+bool success
+string message
+uint8 previous_mode

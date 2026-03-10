@@ -1,0 +1,56 @@
+/**:
+  ros__parameters:
+
+    # Roomba577 serial communication
+    serial_port: "/dev/ttyUSB0"
+    baud_rate: 115200
+
+    # OI mode workaround for Roomba577 firmware quirks
+    # Required for reliable SAFE/FULL mode transitions on Roomba577
+    oi_mode_workaround: true
+
+    # Speed limits (mm/s)
+    max_speed_mm_s: 500.0          # General maximum (hardware limit)
+    max_manual_speed_mm_s: 300.0   # Manual (Joy-Con) mode maximum
+
+    # Angular speed limit (rad/s)
+    max_angular_speed_rad_s: 4.25
+
+    # Topic publish rates (Hz)
+    state_publish_rate_hz: 10.0
+    odom_publish_rate_hz: 50.0
+    bumper_publish_rate_hz: 50.0
+    wheel_drop_publish_rate_hz: 50.0
+    tf_publish_rate_hz: 50.0
+    battery_publish_rate_hz: 1.0
+    diagnostics_publish_rate_hz: 1.0
+    cmd_vel_publish_rate_hz: 50.0
+
+    # Safety thresholds
+    battery_low_threshold: 0.15      # 15% → warning
+    battery_critical_threshold: 0.05 # 5% → emergency stop
+    serial_timeout_sec: 5.0          # No state received → assume disconnect
+    cmd_vel_timeout_sec: 0.5         # No cmd_vel → stop
+
+    # Roomba physical constants
+    wheel_base_m: 0.258
+    wheel_diameter_m: 0.072
+
+roomba_driver_node:
+  ros__parameters:
+    serial_port: "/dev/ttyUSB0"
+    baud_rate: 115200
+    oi_mode_workaround: true
+    max_speed_mm_s: 500.0
+
+safety_monitor_node:
+  ros__parameters:
+    battery_low_threshold: 0.15
+    battery_critical_threshold: 0.05
+    serial_timeout_sec: 5.0
+
+mode_manager_node:
+  ros__parameters:
+    max_manual_speed_mm_s: 300.0
+    mode_transition_timeout_sec: 2.0
+    cmd_vel_publish_rate_hz: 50.0

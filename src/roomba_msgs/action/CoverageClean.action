@@ -1,0 +1,13 @@
+# Goal
+nav_msgs/OccupancyGrid target_area
+---
+# Result
+float64 coverage_ratio
+float64 total_time_sec
+float64 total_distance_m
+string termination_reason
+---
+# Feedback
+float64 current_coverage_ratio
+geometry_msgs/Pose current_pose
+float64 elapsed_time_sec
