@@ -21,6 +21,8 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool, Header
 
+# Joy, LaserScan, Image are used as subscriber type hints in hardware pre-checks
+# (topic freshness detection for MANUAL/AUTONOMOUS mode validation)
 from sensor_msgs.msg import Joy, LaserScan, Image
 
 from roomba_msgs.msg import RoombaState, DrivingMode

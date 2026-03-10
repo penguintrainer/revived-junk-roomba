@@ -387,7 +387,9 @@ class CoveragePlannerNode(LifecycleNode):
         height = area.info.height
         data = np.array(area.data).reshape(height, width)
 
-        # Count free (value=0) cells as total coverage target
+        # Count free (value=0) cells as total coverage target.
+        # Coverage progress intentionally resets for each new action goal
+        # so each cleaning session is independently tracked.
         with self._lock:
             self._coverage_grid = np.zeros((height, width), dtype=np.int8)
             self._total_coverage_cells = int(np.sum(data == 0))

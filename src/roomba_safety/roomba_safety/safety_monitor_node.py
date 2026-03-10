@@ -65,7 +65,8 @@ class SafetyMonitorNode(LifecycleNode):
         self._battery_ratio = 1.0
         self._amcl_covariance = 0.0
         self._last_state_time: Optional[float] = None
-        self._state_timeout = 5.0  # seconds without state = serial disconnect
+        # SC-005: communication loss → safety stop within 500ms
+        self._state_timeout = 0.5  # seconds without state = serial disconnect
 
         # Publishers/subscribers (created in on_configure)
         self._pub_emergency_stop = None
