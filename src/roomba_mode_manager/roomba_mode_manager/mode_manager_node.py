@@ -21,7 +21,7 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool, Header
 
-from sensor_msgs.msg import Joy
+from sensor_msgs.msg import Joy, LaserScan
 
 from roomba_msgs.msg import RoombaState, DrivingMode
 from roomba_msgs.srv import SetMode, GetState
@@ -195,6 +195,17 @@ class ModeManagerNode(LifecycleNode):
                 depth=1,
             ))
 
+        # LiDAR topic freshness (for AUTONOMOUS hw check)
+        self._sub_scan_check = self.create_subscription(
+            LaserScan,
+            '/scan', self._scan_check_callback,
+            QoSProfile(
+                reliability=ReliabilityPolicy.BEST_EFFORT,
+                durability=DurabilityPolicy.VOLATILE,
+                history=HistoryPolicy.KEEP_LAST,
+                depth=1,
+            ))
+
         self.get_logger().info('mode_manager_node configured')
         return TransitionCallbackReturn.SUCCESS
 
@@ -354,6 +365,11 @@ class ModeManagerNode(LifecycleNode):
         """Track Joy topic freshness for hardware checks."""
         with self._lock:
             self._joy_last_time = time.monotonic()
+
+    def _scan_check_callback(self, msg: LaserScan) -> None:
+        """Track /scan topic freshness for AUTONOMOUS mode hardware check."""
+        with self._lock:
+            self._scan_last_time = time.monotonic()
 
     # -------------------------------------------------------------------------
     # Timer callbacks
