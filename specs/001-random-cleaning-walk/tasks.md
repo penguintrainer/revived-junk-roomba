@@ -17,9 +17,9 @@
 
 **Purpose**: Prepare package structure and project-level tooling for the random-cleaning feature.
 
-- [ ] T001 Create random cleaning package scaffolding in src/roomba_cleaning_nav/random_cleaning/__init__.py and src/roomba_cleaning_nav/random_cleaning/adapters/__init__.py
-- [ ] T002 Update runtime and developer dependencies for ROS2 random cleaning in pyproject.toml
-- [ ] T003 Create feature package usage notes in src/roomba_cleaning_nav/random_cleaning/README.md
+- [X] T001 Create random cleaning package scaffolding in src/roomba_cleaning_nav/random_cleaning/__init__.py and src/roomba_cleaning_nav/random_cleaning/adapters/__init__.py
+- [X] T002 Update runtime and developer dependencies for ROS2 random cleaning in pyproject.toml
+- [X] T003 Create feature package usage notes in src/roomba_cleaning_nav/random_cleaning/README.md
 
 ---
 
@@ -29,12 +29,12 @@
 
 **⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T004 Create shared feature configuration and thresholds in src/roomba_cleaning_nav/random_cleaning/config.py
-- [ ] T005 [P] Create domain entities and enums in src/roomba_cleaning_nav/random_cleaning/models.py
-- [ ] T006 [P] Implement Roomba577 serial control adapter with create_robot integration in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
-- [ ] T007 [P] Implement base telemetry publisher utilities in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py
-- [ ] T008 [P] Implement JSON Lines persistence helpers for sessions and events in src/roomba_cleaning_nav/random_cleaning/persistence.py
-- [ ] T009 Create common ROS2 node lifecycle skeleton and timer wiring in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T004 Create shared feature configuration and thresholds in src/roomba_cleaning_nav/random_cleaning/config.py
+- [X] T005 [P] Create domain entities and enums in src/roomba_cleaning_nav/random_cleaning/models.py
+- [X] T006 [P] Implement Roomba577 serial control adapter with create_robot integration in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
+- [X] T007 [P] Implement base telemetry publisher utilities in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py
+- [X] T008 [P] Implement JSON Lines persistence helpers for sessions and events in src/roomba_cleaning_nav/random_cleaning/persistence.py
+- [X] T009 Create common ROS2 node lifecycle skeleton and timer wiring in src/roomba_cleaning_nav/random_cleaning/node.py
 
 **Checkpoint**: Foundation ready — random cleaning behavior can now be implemented.
 
@@ -48,17 +48,17 @@
 
 ### Implementation for User Story 1
 
-- [ ] T010 [P] [US1] Implement bounded random-walk motion decision generation in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
-- [ ] T011 [P] [US1] Implement session lifecycle and idempotent start-stop transitions in src/roomba_cleaning_nav/random_cleaning/state_machine.py
-- [ ] T012 [US1] Wire `/random_cleaning/start`, `/random_cleaning/stop`, and `/random_cleaning/estop` services in src/roomba_cleaning_nav/random_cleaning/node.py
-- [ ] T013 [US1] Publish forward and turn `cmd_vel` commands from the control loop in src/roomba_cleaning_nav/random_cleaning/node.py
-- [ ] T014 [US1] Replace the placeholder executable with the random cleaning entrypoint in main.py
+- [X] T010 [P] [US1] Implement bounded random-walk motion decision generation in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
+- [X] T011 [P] [US1] Implement session lifecycle and idempotent start-stop transitions in src/roomba_cleaning_nav/random_cleaning/state_machine.py
+- [X] T012 [US1] Wire `/random_cleaning/start`, `/random_cleaning/stop`, and `/random_cleaning/estop` services in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T013 [US1] Publish forward and turn `cmd_vel` commands from the control loop in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T014 [US1] Replace the placeholder executable with the random cleaning entrypoint in main.py
 
 ### Tests for User Story 1
 
-- [ ] T027 [P] [US1] Write unit tests for motion decision generation in tests/unit/test_motion_policy.py
-- [ ] T028 [P] [US1] Write unit tests for session lifecycle and state transitions in tests/unit/test_state_machine.py
-- [ ] T029 [US1] Write integration test for node start/stop/estop services using launch_testing in tests/integration/test_random_cleaning_node.py
+- [X] T027 [P] [US1] Write unit tests for motion decision generation in tests/unit/test_motion_policy.py
+- [X] T028 [P] [US1] Write unit tests for session lifecycle and state transitions in tests/unit/test_state_machine.py
+- [X] T029 [US1] Write integration test for node start/stop/estop services using launch_testing in tests/integration/test_random_cleaning_node.py
 
 **Checkpoint**: User Story 1 delivers a usable MVP random cleaning mode.
 
@@ -72,18 +72,18 @@
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Implement sensor freshness, battery watchdog, bump/cliff/wheel-drop event response rules, and cliff-triggered reverse-then-turn avoidance action (FR-005) in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
-- [ ] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout (180s) and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py; dock-return command issuance via create_robot_adapter.py
-- [ ] T017 [P] [US2] Add no-progress detection, single 180-degree escape behavior, and bump-triggered direction-change avoidance maneuver (FR-006) in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
-- [ ] T018 [US2] Integrate safety latch handling and `/random_cleaning/resume_manual` gating in src/roomba_cleaning_nav/random_cleaning/node.py
-- [ ] T018a [US2] Implement `/random_cleaning/clear_estop` service handler with precondition checks (zero velocity, no active safety fault, sensor freshness restored) in src/roomba_cleaning_nav/random_cleaning/node.py
-- [ ] T019 [US2] Connect immediate hardware stop semantics for safety events in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
+- [X] T015 [P] [US2] Implement sensor freshness, battery watchdog, bump/cliff/wheel-drop event response rules, and cliff-triggered reverse-then-turn avoidance action (FR-005) in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
+- [X] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout (180s) and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py; dock-return command issuance via create_robot_adapter.py
+- [X] T017 [P] [US2] Add no-progress detection, single 180-degree escape behavior, and bump-triggered direction-change avoidance maneuver (FR-006) in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
+- [X] T018 [US2] Integrate safety latch handling and `/random_cleaning/resume_manual` gating in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T018a [US2] Implement `/random_cleaning/clear_estop` service handler with precondition checks (zero velocity, no active safety fault, sensor freshness restored) in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T019 [US2] Connect immediate hardware stop semantics for safety events in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
 
 ### Tests for User Story 2
 
-- [ ] T030 [P] [US2] Write unit tests for sensor watchdog and bump/cliff/wheel-drop handling in tests/unit/test_safety_watchdog.py
-- [ ] T031 [US2] Write integration test for safety latch, dock-return timeout, and manual resume in tests/integration/test_random_cleaning_node.py
-- [ ] T033 [P] [US2] Write unit tests for clear_estop precondition validation (zero velocity, no active fault, sensor freshness) in tests/unit/test_safety_watchdog.py
+- [X] T030 [P] [US2] Write unit tests for sensor watchdog and bump/cliff/wheel-drop handling in tests/unit/test_safety_watchdog.py
+- [X] T031 [US2] Write integration test for safety latch, dock-return timeout, and manual resume in tests/integration/test_random_cleaning_node.py
+- [X] T033 [P] [US2] Write unit tests for clear_estop precondition validation (zero velocity, no active fault, sensor freshness) in tests/unit/test_safety_watchdog.py
 
 **Checkpoint**: User Story 2 adds operational safety without changing MVP behavior semantics.
 
@@ -97,15 +97,15 @@
 
 ### Implementation for User Story 3
 
-- [ ] T020 [P] [US3] Publish `/random_cleaning/state` and `/random_cleaning/safety_event` payloads in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py
-- [ ] T021 [P] [US3] Persist cleaning sessions and safety events to JSON Lines logs in src/roomba_cleaning_nav/random_cleaning/persistence.py
-- [ ] T022 [US3] Publish `/diagnostics` health summaries from the runtime node in src/roomba_cleaning_nav/random_cleaning/node.py
-- [ ] T023 [US3] Record structured state-transition logs and telemetry update calls in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T020 [P] [US3] Publish `/random_cleaning/state` and `/random_cleaning/safety_event` payloads in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py
+- [X] T021 [P] [US3] Persist cleaning sessions and safety events to JSON Lines logs in src/roomba_cleaning_nav/random_cleaning/persistence.py
+- [X] T022 [US3] Publish `/diagnostics` health summaries from the runtime node in src/roomba_cleaning_nav/random_cleaning/node.py
+- [X] T023 [US3] Record structured state-transition logs and telemetry update calls in src/roomba_cleaning_nav/random_cleaning/node.py
 
 ### Tests for User Story 3
 
-- [ ] T032 [P] [US3] Write contract tests for published topic schemas in tests/contract/test_interfaces_contract.py
-- [ ] T033a [P] [US3] Write unit tests for JSON Lines persistence helpers in tests/unit/test_persistence.py
+- [X] T032 [P] [US3] Write contract tests for published topic schemas in tests/contract/test_interfaces_contract.py
+- [X] T033a [P] [US3] Write unit tests for JSON Lines persistence helpers in tests/unit/test_persistence.py
 
 **Checkpoint**: User Story 3 makes the feature observable and auditable in operation.
 
@@ -115,10 +115,10 @@
 
 **Purpose**: Final consistency, operator documentation, and end-to-end validation.
 
-- [ ] T024 [P] Document ROS2 interfaces, safety assumptions, and operating limits in src/roomba_cleaning_nav/random_cleaning/README.md
-- [ ] T025 Update operator validation steps and command examples in specs/001-random-cleaning-walk/quickstart.md
-- [ ] T025a Document SC-005 manual verification procedure with pass/fail checklist (coverage ratio >= 60% via 0.1m grid occupancy count, turn frequency 2-10 turns/min via MotionDecision phase log aggregation, 30-min session minimum) in specs/001-random-cleaning-walk/quickstart.md
-- [ ] T026 Run the documentation alignment pass for interface semantics in specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
+- [X] T024 [P] Document ROS2 interfaces, safety assumptions, and operating limits in src/roomba_cleaning_nav/random_cleaning/README.md
+- [X] T025 Update operator validation steps and command examples in specs/001-random-cleaning-walk/quickstart.md
+- [X] T025a Document SC-005 manual verification procedure with pass/fail checklist (coverage ratio >= 60% via 0.1m grid occupancy count, turn frequency 2-10 turns/min via MotionDecision phase log aggregation, 30-min session minimum) in specs/001-random-cleaning-walk/quickstart.md
+- [X] T026 Run the documentation alignment pass for interface semantics in specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
 
 **Note**: 003 Phase 8 (T062-T068) にて本機能のソースおよび契約ファイルが Cross-Feature Migration の対象となる。詳細は specs/003-autonomous-cleaning/tasks.md Phase 8 を参照。
 

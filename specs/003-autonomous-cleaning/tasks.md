@@ -17,11 +17,11 @@
 
 **Purpose**: Prepare ROS2 package skeletons and build metadata for autonomous cleaning.
 
-- [ ] T001 Create message package manifest and build config in src/roomba_cleaning_msgs/package.xml and src/roomba_cleaning_msgs/CMakeLists.txt
-- [ ] T002 [P] Create coverage package manifest and Python packaging config in src/roomba_cleaning_coverage/package.xml and src/roomba_cleaning_coverage/setup.py
-- [ ] T003 [P] Create orchestration package manifest and Python packaging config in src/roomba_autonomous_cleaning/package.xml and src/roomba_autonomous_cleaning/setup.py
-- [ ] T004 Create package-level Python module scaffolding in src/roomba_cleaning_coverage/roomba_cleaning_coverage/__init__.py and src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/__init__.py
-- [ ] T005 Update workspace dependency declarations for autonomous-cleaning packages in pyproject.toml
+- [X] T001 Create message package manifest and build config in src/roomba_cleaning_msgs/package.xml and src/roomba_cleaning_msgs/CMakeLists.txt
+- [X] T002 [P] Create coverage package manifest and Python packaging config in src/roomba_cleaning_coverage/package.xml and src/roomba_cleaning_coverage/setup.py
+- [X] T003 [P] Create orchestration package manifest and Python packaging config in src/roomba_autonomous_cleaning/package.xml and src/roomba_autonomous_cleaning/setup.py
+- [X] T004 Create package-level Python module scaffolding in src/roomba_cleaning_coverage/roomba_cleaning_coverage/__init__.py and src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/__init__.py
+- [X] T005 Update workspace dependency declarations for autonomous-cleaning packages in pyproject.toml
 
 ---
 
@@ -31,15 +31,15 @@
 
 **⚠️ CRITICAL**: No user story implementation should begin until this phase is complete.
 
-- [ ] T006 Define `RunAutonomousCleaning` action contract in src/roomba_cleaning_msgs/action/RunAutonomousCleaning.action
-- [ ] T007 [P] Define `AutonomousCleaningStatus` message in src/roomba_cleaning_msgs/msg/AutonomousCleaningStatus.msg
-- [ ] T008 [P] Define `CoverageProgress` message in src/roomba_cleaning_msgs/msg/CoverageProgress.msg
-- [ ] T009 [P] Define `CleaningEvent` message in src/roomba_cleaning_msgs/msg/CleaningEvent.msg
-- [ ] T010 [P] Define synchronous status query service in src/roomba_cleaning_msgs/srv/GetAutonomousCleaningStatus.srv
-- [ ] T011 [P] Define clear-estop Trigger service contract in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md
-- [ ] T012 Implement shared threshold constants (`start>=0.30`, `low<0.20`, `recovery=1x30s`, `estop<=50ms`, `diagnostics<=1s`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/config.py
-- [ ] T013 [P] Implement core domain enums/dataclasses for session, coverage, localization, perception fusion, dock, diagnostics, and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/models.py
-- [ ] T014 Implement ROS2 node bootstrap, publishers (`/autonomous_cleaning/*`, `/diagnostics`), and service/action server wiring in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T006 Define `RunAutonomousCleaning` action contract in src/roomba_cleaning_msgs/action/RunAutonomousCleaning.action
+- [X] T007 [P] Define `AutonomousCleaningStatus` message in src/roomba_cleaning_msgs/msg/AutonomousCleaningStatus.msg
+- [X] T008 [P] Define `CoverageProgress` message in src/roomba_cleaning_msgs/msg/CoverageProgress.msg
+- [X] T009 [P] Define `CleaningEvent` message in src/roomba_cleaning_msgs/msg/CleaningEvent.msg
+- [X] T010 [P] Define synchronous status query service in src/roomba_cleaning_msgs/srv/GetAutonomousCleaningStatus.srv
+- [X] T011 [P] Define clear-estop Trigger service contract in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md
+- [X] T012 Implement shared threshold constants (`start>=0.30`, `low<0.20`, `recovery=1x30s`, `estop<=50ms`, `diagnostics<=1s`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/config.py
+- [X] T013 [P] Implement core domain enums/dataclasses for session, coverage, localization, perception fusion, dock, diagnostics, and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/models.py
+- [X] T014 Implement ROS2 node bootstrap, publishers (`/autonomous_cleaning/*`, `/diagnostics`), and service/action server wiring in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: Foundation ready — user-story implementation can now begin.
 
@@ -53,14 +53,14 @@
 
 ### Implementation for User Story 1
 
-- [ ] T015 [P] [US1] Implement reachable-floor target-mask builder from static map and exclusion layers in src/roomba_cleaning_coverage/roomba_cleaning_coverage/target_mask.py
-- [ ] T016 [P] [US1] Implement coverage work-unit decomposition logic in src/roomba_cleaning_coverage/roomba_cleaning_coverage/work_unit_generator.py
-- [ ] T017 [P] [US1] Implement coverage progress tracker for covered/remaining/blocked area metrics in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-- [ ] T018 [P] [US1] Implement obstacle evidence fusion from LiDAR/RGB/RGBD for avoidance decisions with configurable stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s via ROS2 parameters) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
-- [ ] T019 [US1] Implement completion policy and terminal-state helper for coverage-finished sessions in src/roomba_cleaning_coverage/roomba_cleaning_coverage/completion_policy.py
-- [ ] T020 [US1] Implement Nav2 action client adapter for per-work-unit navigation execution in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
-- [ ] T021 [US1] Implement session state machine baseline transitions for `idle->preparing->cleaning->completed` in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
-- [ ] T022 [US1] Integrate coverage planning, fused obstacle gating, and Nav2 execution loop in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T015 [P] [US1] Implement reachable-floor target-mask builder from static map and exclusion layers in src/roomba_cleaning_coverage/roomba_cleaning_coverage/target_mask.py
+- [X] T016 [P] [US1] Implement coverage work-unit decomposition logic in src/roomba_cleaning_coverage/roomba_cleaning_coverage/work_unit_generator.py
+- [X] T017 [P] [US1] Implement coverage progress tracker for covered/remaining/blocked area metrics in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
+- [X] T018 [P] [US1] Implement obstacle evidence fusion from LiDAR/RGB/RGBD for avoidance decisions with configurable stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s via ROS2 parameters) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
+- [X] T019 [US1] Implement completion policy and terminal-state helper for coverage-finished sessions in src/roomba_cleaning_coverage/roomba_cleaning_coverage/completion_policy.py
+- [X] T020 [US1] Implement Nav2 action client adapter for per-work-unit navigation execution in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
+- [X] T021 [US1] Implement session state machine baseline transitions for `idle->preparing->cleaning->completed` in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [X] T022 [US1] Integrate coverage planning, fused obstacle gating, and Nav2 execution loop in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: User Story 1 provides an autonomous-cleaning MVP.
 
@@ -74,15 +74,15 @@
 
 ### Implementation for User Story 2
 
-- [ ] T023 [P] [US2] Implement interruption policies for pause/resume/stop semantics in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/interruption_policy.py
-- [ ] T024 [P] [US2] Implement e-stop latch manager with explicit clear semantics and reject reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/estop_manager.py
-- [ ] T025 [P] [US2] Implement operator status payload formatter for control phase and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
-- [ ] T026 [US2] Add `pause` service handling and motion-halt behavior in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T027 [US2] Add `resume` service handling with remaining-work queue reconstruction and e-stop-clear prerequisite in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T028 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T029 [US2] Add `/autonomous_cleaning/estop` handling with `<=50ms` actuator stop enforcement in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T030 [US2] Add `/autonomous_cleaning/clear_estop` handling with precondition checks (zero velocity + no active safety fault + PerceptionFusionHealth is not lost) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T031 [US2] Extend state machine transitions for `cleaning<->paused`, `any->safety_stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [X] T023 [P] [US2] Implement interruption policies for pause/resume/stop semantics in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/interruption_policy.py
+- [X] T024 [P] [US2] Implement e-stop latch manager with explicit clear semantics and reject reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/estop_manager.py
+- [X] T025 [P] [US2] Implement operator status payload formatter for control phase and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+- [X] T026 [US2] Add `pause` service handling and motion-halt behavior in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T027 [US2] Add `resume` service handling with remaining-work queue reconstruction and e-stop-clear prerequisite in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T028 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T029 [US2] Add `/autonomous_cleaning/estop` handling with `<=50ms` actuator stop enforcement in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T030 [US2] Add `/autonomous_cleaning/clear_estop` handling with precondition checks (zero velocity + no active safety fault + PerceptionFusionHealth is not lost) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T031 [US2] Extend state machine transitions for `cleaning<->paused`, `any->safety_stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
 
 **Checkpoint**: User Story 2 enables stable operator control and emergency-stop safety.
 
@@ -96,13 +96,13 @@
 
 ### Implementation for User Story 3
 
-- [ ] T032 [P] [US3] Implement localization-health supervisor with `healthy/degraded/lost` states in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
-- [ ] T033 [P] [US3] Implement perception-fusion health supervisor and degraded/lost transitions using configured stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
-- [ ] T034 [P] [US3] Implement work-unit retry and blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-- [ ] T035 [P] [US3] Implement per-unit retry and skip strategy in Nav2 adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
-- [ ] T036 [US3] Integrate bounded recovery policy (`1 attempt`, `30s timeout`) into runtime orchestration in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T037 [US3] Extend state machine transitions for `cleaning->incomplete` with explicit interruption reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
-- [ ] T038 [US3] Publish blocked/remaining updates and recovery events during partial completion in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+- [X] T032 [P] [US3] Implement localization-health supervisor with `healthy/degraded/lost` states in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
+- [X] T033 [P] [US3] Implement perception-fusion health supervisor and degraded/lost transitions using configured stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
+- [X] T034 [P] [US3] Implement work-unit retry and blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
+- [X] T035 [P] [US3] Implement per-unit retry and skip strategy in Nav2 adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
+- [X] T036 [US3] Integrate bounded recovery policy (`1 attempt`, `30s timeout`) into runtime orchestration in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T037 [US3] Extend state machine transitions for `cleaning->incomplete` with explicit interruption reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [X] T038 [US3] Publish blocked/remaining updates and recovery events during partial completion in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
 
 **Checkpoint**: User Story 3 delivers resilient partial-completion behavior.
 
@@ -116,11 +116,11 @@
 
 ### Implementation for User Story 4
 
-- [ ] T039 [P] [US4] Implement dock-attempt adapter using `create_robot` battery and charging evidence in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/dock_adapter.py
-- [ ] T040 [P] [US4] Add final-result aggregation helpers for action results and status snapshots in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/result_builder.py
-- [ ] T041 [US4] Integrate low-battery transition (`<0.20`) to dock attempt and dock success/failure end-state handling in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T042 [US4] Integrate `get_status` service and terminal result publication fields in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T043 [US4] Publish required `/diagnostics` keys (`session_state`, `localization_health`, `battery_charge_ratio`, `dock_attempt_state`, `estop_latched`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+- [X] T039 [P] [US4] Implement dock-attempt adapter using `create_robot` battery and charging evidence in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/dock_adapter.py
+- [X] T040 [P] [US4] Add final-result aggregation helpers for action results and status snapshots in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/result_builder.py
+- [X] T041 [US4] Integrate low-battery transition (`<0.20`) to dock attempt and dock success/failure end-state handling in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T042 [US4] Integrate `get_status` service and terminal result publication fields in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T043 [US4] Publish required `/diagnostics` keys (`session_state`, `localization_health`, `battery_charge_ratio`, `dock_attempt_state`, `estop_latched`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
 
 **Checkpoint**: User Story 4 provides operator-visible completion reporting and end-reason clarity.
 
@@ -130,12 +130,12 @@
 
 **Purpose**: Final alignment across launch flow, docs, and acceptance validation.
 
-- [ ] T044 [P] Add autonomous-cleaning launch composition for Nav2 dependencies, perception fusion, and runtime node in src/roomba_autonomous_cleaning/launch/autonomous_cleaning.launch.py
-- [ ] T045 [P] Document interfaces, thresholds, diagnostics keys, and safety constraints in src/roomba_autonomous_cleaning/README.md and src/roomba_cleaning_coverage/README.md
-- [ ] T046 Align quickstart verification steps with SC-009/SC-010 acceptance criteria in specs/003-autonomous-cleaning/quickstart.md
-- [ ] T047 Align contract and data-model terminology with final implementation states in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/003-autonomous-cleaning/data-model.md
-- [ ] T048 [P] Ensure map artifact directory exists at src/roomba_cleaning_nav/maps/ with a placeholder README
-- [ ] T048a [P] Configure pytest-cov minimum branch coverage threshold (>=80%) in pyproject.toml [tool.pytest.ini_options] and verify with pytest --cov --cov-branch
+- [X] T044 [P] Add autonomous-cleaning launch composition for Nav2 dependencies, perception fusion, and runtime node in src/roomba_autonomous_cleaning/launch/autonomous_cleaning.launch.py
+- [X] T045 [P] Document interfaces, thresholds, diagnostics keys, and safety constraints in src/roomba_autonomous_cleaning/README.md and src/roomba_cleaning_coverage/README.md
+- [X] T046 Align quickstart verification steps with SC-009/SC-010 acceptance criteria in specs/003-autonomous-cleaning/quickstart.md
+- [X] T047 Align contract and data-model terminology with final implementation states in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/003-autonomous-cleaning/data-model.md
+- [X] T048 [P] Ensure map artifact directory exists at src/roomba_cleaning_nav/maps/ with a placeholder README
+- [X] T048a [P] Configure pytest-cov minimum branch coverage threshold (>=80%) in pyproject.toml [tool.pytest.ini_options] and verify with pytest --cov --cov-branch
 
 ---
 
@@ -143,17 +143,17 @@
 
 **Purpose**: Resolve the CONDITIONAL-PASS deviation from Constitution Principle I (ROS2 Package Composition) by extracting shared modules and formalizing 001/002 as independent ROS2 packages. MUST be completed before merge to main.
 
-- [ ] T062 [P] Extract shared `roomba_driver_adapter` package from 001 `random_cleaning/adapters/create_robot_adapter.py` and 002 `manual_drive/adapters/create_robot_adapter.py` into src/roomba_driver_adapter/
-- [ ] T063 [P] Extract shared `roomba_safety` package consolidating e-stop latch and sensor freshness watchdog from 001 `random_cleaning/safety_watchdog.py` and 002 `manual_drive/safety_watchdog.py` into src/roomba_safety/
-- [ ] T064 Refactor 001 `random_cleaning/` and 002 `manual_drive/` submodules from `roomba_cleaning_nav` monolith into independent ROS2 packages `roomba_random_cleaning` and `roomba_manual_drive` in src/
-- [ ] T065 Update 001/002 import paths and pyproject.toml/package.xml to reference extracted shared packages
-- [ ] T066 [P] Define cross-feature state vocabulary mapping enum in src/roomba_cleaning_msgs/msg/RobotOperationMode.msg covering all three modes: random_cleaning states (idle/cleaning_forward/cleaning_turn/safety_stopped/fault), manual_drive states (idle/manual_active/safety_stopped/fault), and autonomous_cleaning states (idle/preparing/cleaning/paused/docking/safety_stopped/completed/incomplete)
-- [ ] T067 [P] Migrate 001 `/random_cleaning/state` and `/random_cleaning/safety_event` topics from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` types in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py and specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
-- [ ] T068 [P] Migrate 002 `/manual_drive/status` topic from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` type in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
-- [ ] T068a Define cross-feature e-stop contract rule: each mode's estop service MUST accept and succeed as NOP when that mode is not active, returning success=true with message "mode_not_active_nop" — document in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md, specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md, and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
-- [ ] T066a [P] Implement mode topic subscription and cmd_vel gating logic in 001 random_cleaning node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not random_cleaning in src/roomba_random_cleaning/roomba_random_cleaning/node.py
-- [ ] T066b [P] Implement mode topic subscription and cmd_vel gating logic in 002 manual_drive node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not manual_drive in src/roomba_manual_drive/roomba_manual_drive/node.py
-- [ ] T066c Implement mode topic subscription and cmd_vel gating logic in 003 autonomous_cleaning session node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not autonomous_cleaning in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [X] T062 [P] Extract shared `roomba_driver_adapter` package from 001 `random_cleaning/adapters/create_robot_adapter.py` and 002 `manual_drive/adapters/create_robot_adapter.py` into src/roomba_driver_adapter/
+- [X] T063 [P] Extract shared `roomba_safety` package consolidating e-stop latch and sensor freshness watchdog from 001 `random_cleaning/safety_watchdog.py` and 002 `manual_drive/safety_watchdog.py` into src/roomba_safety/
+- [X] T064 Refactor 001 `random_cleaning/` and 002 `manual_drive/` submodules from `roomba_cleaning_nav` monolith into independent ROS2 packages `roomba_random_cleaning` and `roomba_manual_drive` in src/
+- [X] T065 Update 001/002 import paths and pyproject.toml/package.xml to reference extracted shared packages
+- [X] T066 [P] Define cross-feature state vocabulary mapping enum in src/roomba_cleaning_msgs/msg/RobotOperationMode.msg covering all three modes: random_cleaning states (idle/cleaning_forward/cleaning_turn/safety_stopped/fault), manual_drive states (idle/manual_active/safety_stopped/fault), and autonomous_cleaning states (idle/preparing/cleaning/paused/docking/safety_stopped/completed/incomplete)
+- [X] T067 [P] Migrate 001 `/random_cleaning/state` and `/random_cleaning/safety_event` topics from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` types in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py and specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
+- [X] T068 [P] Migrate 002 `/manual_drive/status` topic from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` type in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [X] T068a Define cross-feature e-stop contract rule: each mode's estop service MUST accept and succeed as NOP when that mode is not active, returning success=true with message "mode_not_active_nop" — document in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md, specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md, and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [X] T066a [P] Implement mode topic subscription and cmd_vel gating logic in 001 random_cleaning node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not random_cleaning in src/roomba_random_cleaning/roomba_random_cleaning/node.py
+- [X] T066b [P] Implement mode topic subscription and cmd_vel gating logic in 002 manual_drive node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not manual_drive in src/roomba_manual_drive/roomba_manual_drive/node.py
+- [X] T066c Implement mode topic subscription and cmd_vel gating logic in 003 autonomous_cleaning session node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not autonomous_cleaning in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: Constitution Principle I fully satisfied — all features use independent ROS2 packages with shared abstractions and cross-feature mode arbitration.
 
@@ -163,21 +163,21 @@
 
 **Purpose**: Author unit, integration, and contract tests to satisfy constitution quality gates (`pytest` must pass before merge).
 
-- [ ] T049 [P] Write unit tests for session state machine transitions in tests/unit/test_session_state_machine.py
-- [ ] T050 [P] Write unit tests for coverage tracker metrics and work-unit state changes in tests/unit/test_coverage_tracker.py
-- [ ] T051 [P] Write unit tests for completion policy terminal-state decisions in tests/unit/test_completion_policy.py
-- [ ] T052 [P] Write unit tests for interruption policy pause/resume/stop semantics in tests/unit/test_interruption_policy.py
-- [ ] T053 [P] Write unit tests for threshold policy start/low-battery/recovery constants in tests/unit/test_threshold_policy.py
-- [ ] T069 [P] Write unit tests for perception fusion health transitions and stale-source degraded/lost judgments in tests/unit/test_perception_fusion.py
-- [ ] T054 [P] Write contract tests for RunAutonomousCleaning action goal/feedback/result schema in tests/contract/test_autonomous_cleaning_action_contract.py
-- [ ] T055 [P] Write contract tests for status topic and diagnostics required keys in tests/contract/test_status_contract.py
-- [ ] T056 Write integration test for full session lifecycle (start→clean→complete) in tests/integration/test_autonomous_cleaning_session.py
-- [ ] T057 Write integration test for localization supervisor degraded/lost transitions in tests/integration/test_localization_supervisor.py
-- [ ] T058 Write integration test for low-battery dock transition and outcome in tests/integration/test_low_battery_docking.py
-- [ ] T059 Write integration test for e-stop latency enforcement in tests/integration/test_estop_latency.py
-- [ ] T060 Write integration test for clear-estop precondition checks in tests/integration/test_clear_estop_preconditions.py
-- [ ] T061 Write integration test for /diagnostics publish rate and required keys in tests/integration/test_diagnostics_publish_rate.py
-- [ ] T069a Write integration test for perception fusion degraded/lost transitions with simulated stale-source scenarios in tests/integration/test_perception_fusion_integration.py
+- [X] T049 [P] Write unit tests for session state machine transitions in tests/unit/test_session_state_machine.py
+- [X] T050 [P] Write unit tests for coverage tracker metrics and work-unit state changes in tests/unit/test_coverage_tracker.py
+- [X] T051 [P] Write unit tests for completion policy terminal-state decisions in tests/unit/test_completion_policy.py
+- [X] T052 [P] Write unit tests for interruption policy pause/resume/stop semantics in tests/unit/test_interruption_policy.py
+- [X] T053 [P] Write unit tests for threshold policy start/low-battery/recovery constants in tests/unit/test_threshold_policy.py
+- [X] T069 [P] Write unit tests for perception fusion health transitions and stale-source degraded/lost judgments in tests/unit/test_perception_fusion.py
+- [X] T054 [P] Write contract tests for RunAutonomousCleaning action goal/feedback/result schema in tests/contract/test_autonomous_cleaning_action_contract.py
+- [X] T055 [P] Write contract tests for status topic and diagnostics required keys in tests/contract/test_status_contract.py
+- [X] T056 Write integration test for full session lifecycle (start→clean→complete) in tests/integration/test_autonomous_cleaning_session.py
+- [X] T057 Write integration test for localization supervisor degraded/lost transitions in tests/integration/test_localization_supervisor.py
+- [X] T058 Write integration test for low-battery dock transition and outcome in tests/integration/test_low_battery_docking.py
+- [X] T059 Write integration test for e-stop latency enforcement in tests/integration/test_estop_latency.py
+- [X] T060 Write integration test for clear-estop precondition checks in tests/integration/test_clear_estop_preconditions.py
+- [X] T061 Write integration test for /diagnostics publish rate and required keys in tests/integration/test_diagnostics_publish_rate.py
+- [X] T069a Write integration test for perception fusion degraded/lost transitions with simulated stale-source scenarios in tests/integration/test_perception_fusion_integration.py
 
 **Checkpoint**: All constitution quality gate tests authored and passing.
 
@@ -270,7 +270,7 @@ T025 [US2] Implement control/e-stop status formatter in src/roomba_autonomous_cl
 
 ## Notes
 
-- All tasks follow the required checklist format (`- [ ] Txxx ...`).
+- All tasks follow the required checklist format (`- [X] Txxx ...`).
 - `[P]` is assigned only to tasks that can run without file-level conflicts.
 - Test-authoring tasks (Phase 9) are included to satisfy the constitution's quality gate requirement that `pytest` must pass before merge.
 - Tasks are immediately executable by an LLM with the current design artifacts.
