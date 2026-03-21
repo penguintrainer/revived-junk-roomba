@@ -74,6 +74,8 @@ roombaの操作にはcreate_robotを使用。
 ```bash
 /speckit.specify
 Joy-Conによるマニュアル走行での掃除をする機能。
+前進・後退・その場旋回、清掃の有無をボタン入力で実施。
+バーチャルウォルールなどの禁止領域についても、マニュアル走行時は無視する。
 ```
 ```bash
 /speckit.clarify
@@ -83,6 +85,7 @@ Joy-Conによるマニュアル走行での掃除をする機能。
 メインのプログラムはROS2とpython3.13+を使って実装。
 ハードウェアはRoomba577でシリアル通信で制御。
 roombaの操作にはcreate_robotを使用。
+joycon-pythonを使ってジョイコンの情報を取得。
 ```
 ```bash
 /speckit.tasks
