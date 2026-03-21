@@ -160,3 +160,5 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - After a communication-loss fail-safe, reconnecting the Joy-Con does not automatically restore manual drive mode.
 - Battery management during manual drive is the operator's responsibility. The system provides a low-battery status notification when battery charge ratio falls below 15% but does not enforce automatic docking or stopping. The Roomba's built-in hardware low-battery shutdown is always active. The 15% threshold is advisory only and is configured as a ROS2 parameter (`manual_drive.low_battery_warn_ratio`, default 0.15).
 - 禁止領域（virtual wall, keep-out zone）は、Nav2 の keepout フィルターレイヤーまたは ROS2 パラメータサーバー経由で提供される前提とする。003-autonomous-cleaning で定義される同一データソースを使用する。
+- 003-autonomous-cleaning の Nav2 keepout 層が未構築の段階では、禁止領域のバイパス/復帰操作は NOP（no-operation）として安全に無視される。US4 のフル検証は 003 統合後に実施する。
+- Joy-Con 入力のポーリングレートは 20Hz 以上とする。SC-001 の 300ms 応答要件はこのポーリング間隔を前提に成立する。

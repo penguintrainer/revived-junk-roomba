@@ -76,6 +76,7 @@
 - [ ] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout (180s) and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py; dock-return command issuance via create_robot_adapter.py
 - [ ] T017 [P] [US2] Add no-progress detection, single 180-degree escape behavior, and bump-triggered direction-change avoidance maneuver (FR-006) in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
 - [ ] T018 [US2] Integrate safety latch handling and `/random_cleaning/resume_manual` gating in src/roomba_cleaning_nav/random_cleaning/node.py
+- [ ] T018a [US2] Implement `/random_cleaning/clear_estop` service handler with precondition checks (zero velocity, no active safety fault, sensor freshness restored) in src/roomba_cleaning_nav/random_cleaning/node.py
 - [ ] T019 [US2] Connect immediate hardware stop semantics for safety events in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
 
 ### Tests for User Story 2

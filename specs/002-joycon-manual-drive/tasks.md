@@ -74,6 +74,7 @@
 - [ ] T020 [US2] Integrate mode transitions, link-loss latching, reconnection hold state, and explicit re-entry rules in src/roomba_cleaning_nav/manual_drive/node.py
 - [ ] T021 [US2] Subscribe to `/cliff` topic and wire cliff-triggered safety-stop through safety_watchdog in src/roomba_cleaning_nav/manual_drive/node.py
 - [ ] T022 [US2] Implement `/manual_drive/estop` service handler (`std_srvs/srv/Trigger`) using safety_watchdog latch in src/roomba_cleaning_nav/manual_drive/node.py
+- [ ] T022a [US2] Implement `/manual_drive/clear_estop` service handler (`std_srvs/srv/Trigger`) with precondition checks (zero velocity, no active safety fault) in src/roomba_cleaning_nav/manual_drive/node.py
 - [ ] T023 [US2] Subscribe to `create_robot` `/diagnostics` topic for serial fault detection and fail-safe handling in src/roomba_cleaning_nav/manual_drive/node.py
 - [ ] T024 [US2] Wire `/diagnostics` DiagnosticArray publication with required keys (joycon_link_age_ms, manual_mode_active, cleaning_enabled, last_fault, rumble_available) in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
 

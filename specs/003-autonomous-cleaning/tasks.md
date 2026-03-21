@@ -189,6 +189,7 @@
 - **Phase 6: US4** — depends on Phases 3-5 (final reporting depends on runtime and interruption outcomes)
 - **Phase 7: Polish** — depends on all user stories
 - **Phase 8: Cross-Feature Migration** — depends on Phase 7; MUST be completed before merge to main
+  - **MERGE BLOCKER**: T062-T068 の全タスク完了は 001/002/003 すべてのフィーチャーのマージ前提条件とする。未完了の場合、いずれのフィーチャーもメインブランチへマージ不可。
 - **Phase 9: Test Authoring** — depends on Phases 3-6 and Phase 8 (tests exercise implemented modules)
 
 ### User Story Dependency Graph
