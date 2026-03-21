@@ -147,6 +147,10 @@
 
 - [ ] T042 Implement contract test verifying published topic types, field ranges, and service semantics against contracts/manual-drive-interfaces.md in tests/contract/test_manual_drive_interfaces.py
 
+### Forbidden Zone Tests
+
+- [ ] T043 [P] [US4] Implement integration test for forbidden zone bypass activation on manual mode entry and re-enforcement on exit in tests/integration/test_forbidden_zone_override.py
+
 ---
 
 ## Dependencies & Execution Order

@@ -163,6 +163,7 @@
 - [ ] T051 [P] Write unit tests for completion policy terminal-state decisions in tests/unit/test_completion_policy.py
 - [ ] T052 [P] Write unit tests for interruption policy pause/resume/stop semantics in tests/unit/test_interruption_policy.py
 - [ ] T053 [P] Write unit tests for threshold policy start/low-battery/recovery constants in tests/unit/test_threshold_policy.py
+- [ ] T069 [P] Write unit tests for perception fusion health transitions and stale-source degraded/lost judgments in tests/unit/test_perception_fusion.py
 - [ ] T054 [P] Write contract tests for RunAutonomousCleaning action goal/feedback/result schema in tests/contract/test_autonomous_cleaning_action_contract.py
 - [ ] T055 [P] Write contract tests for status topic and diagnostics required keys in tests/contract/test_status_contract.py
 - [ ] T056 Write integration test for full session lifecycle (start→clean→complete) in tests/integration/test_autonomous_cleaning_session.py

@@ -113,7 +113,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **FR-009**: The system MUST re-enforce all spatial constraints immediately upon exiting manual drive mode.
 - **FR-010**: The system MUST automatically deactivate cleaning, stop movement, and exit manual drive mode if Joy-Con communication is lost for more than 1 second (fail-safe behavior).
 - **FR-011**: The system MUST honor the Roomba's built-in hardware cliff sensors even during manual drive mode.
-- **FR-012**: The system MUST apply a deterministic priority rule when conflicting directional buttons are pressed simultaneously.
+- **FR-012**: The system MUST apply the following deterministic priority rule when conflicting directional buttons are pressed simultaneously: (1) cliff/e-stop safety override cancels all motion, (2) forward + backward pressed simultaneously → linear velocity = 0 (cancel), (3) left + right pressed simultaneously → angular velocity = 0 (cancel), (4) directional + rotation pressed simultaneously → rotation takes precedence (linear velocity = 0), (5) single directional input → normal velocity output.
 - **FR-013**: The system MUST automatically deactivate cleaning when manual drive mode is exited.
 - **FR-014**: The system MUST emit a short Joy-Con rumble pulse whenever manual drive mode changes or cleaning is toggled successfully.
 - **FR-015**: The system MUST continue operating safely if Joy-Con rumble feedback is unavailable; status publication remains authoritative.
@@ -141,7 +141,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **SC-004**: The cleaning toggle reliably activates and deactivates the Roomba's physical cleaning functions 100% of the time under normal conditions.
 - **SC-005**: All configured virtual walls and forbidden zones are fully bypassed in manual drive mode — the robot crosses defined boundaries when commanded.
 - **SC-006**: Forbidden zones are re-enforced within 500 milliseconds of exiting manual drive mode.
-- **SC-007**: An operator with no prior training can learn to control the robot's basic movement and cleaning toggle within 5 minutes and correctly identify the current mode and cleaning state after each transition.
+- **SC-007**: quickstart.md に記載の操作手順に従い、初回オペレータが5分以内に前進・後退・左旋回・右旋回・清掃トグルの全5操作を正しく実行でき、各モード遷移後にステータストピックの値とJoy-Con rumbleフィードバックを正しく認識できることを手動検証チェックリストで確認する。
 - **SC-008**: No unintended movement or cleaning activation occurs when the robot is not in manual drive mode due to stray Joy-Con input.
 - **SC-009**: On every successful mode change or cleaning toggle, the new state is published on the ROS2 status topic and Joy-Con rumble feedback is triggered within 300 milliseconds under normal operating conditions.
 - **SC-010**: After Joy-Con reconnection following a communication loss, the robot does not resume manual control until the operator explicitly re-enters manual mode.
@@ -158,5 +158,5 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - The Roomba's built-in hardware safety mechanisms (cliff sensors, bumpers) continue to function at the firmware level regardless of software-issued movement commands.
 - Communication loss is defined as no Joy-Con input message received for more than 1 second.
 - After a communication-loss fail-safe, reconnecting the Joy-Con does not automatically restore manual drive mode.
-- Battery management during manual drive is the operator's responsibility. The system provides a low-battery status notification but does not enforce automatic docking or stopping. The Roomba's built-in hardware low-battery shutdown is always active.
+- Battery management during manual drive is the operator's responsibility. The system provides a low-battery status notification when battery charge ratio falls below 15% but does not enforce automatic docking or stopping. The Roomba's built-in hardware low-battery shutdown is always active. The 15% threshold is advisory only and is configured as a ROS2 parameter (`manual_drive.low_battery_warn_ratio`, default 0.15).
 - 禁止領域（virtual wall, keep-out zone）は、Nav2 の keepout フィルターレイヤーまたは ROS2 パラメータサーバー経由で提供される前提とする。003-autonomous-cleaning で定義される同一データソースを使用する。

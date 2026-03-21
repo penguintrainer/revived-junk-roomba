@@ -82,6 +82,7 @@
 
 - [ ] T030 [P] [US2] Write unit tests for sensor watchdog and bump/cliff/wheel-drop handling in tests/unit/test_safety_watchdog.py
 - [ ] T031 [US2] Write integration test for safety latch, dock-return timeout, and manual resume in tests/integration/test_random_cleaning_node.py
+- [ ] T033 [P] [US2] Write unit tests for clear_estop precondition validation (zero velocity, no active fault, sensor freshness) in tests/unit/test_safety_watchdog.py
 
 **Checkpoint**: User Story 2 adds operational safety without changing MVP behavior semantics.
 
