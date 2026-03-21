@@ -81,7 +81,7 @@
 - [ ] T026 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 - [ ] T027 [US2] Add `/autonomous_cleaning/estop` handling with `<=50ms` actuator stop enforcement in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 - [ ] T044 [US2] Add `/autonomous_cleaning/clear_estop` handling with precondition checks (zero velocity + no active safety fault) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T028 [US2] Extend state machine transitions for `cleaning<->paused`, `any->stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [ ] T028 [US2] Extend state machine transitions for `cleaning<->paused`, `any->safety_stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
 
 **Checkpoint**: User Story 2 enables stable operator control and emergency-stop safety.
 

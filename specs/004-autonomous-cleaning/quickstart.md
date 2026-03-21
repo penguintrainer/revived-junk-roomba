@@ -99,9 +99,17 @@ Expected behavior:
 
 - Trigger `/autonomous_cleaning/estop` during `cleaning`, `paused`, and `docking` phases.
 - Verify motion and cleaning outputs transition to zero within 50 ms.
+- Call `/autonomous_cleaning/clear_estop` while velocity is non-zero or safety fault is active and verify rejection.
+- Call `/autonomous_cleaning/clear_estop` after motion zero + fault clear and verify acceptance.
 - Verify session does not resume until explicit e-stop clear and readiness checks pass.
 
-## 10) Validation Commands
+## 10) Validate Diagnostics Contract (SC-009)
+
+- Subscribe `/diagnostics` and verify required keys are present: `session_state`, `localization_health`, `battery_charge_ratio`, `dock_attempt_state`, `estop_latched`.
+- Confirm publish interval is <= 1.0 second during `preparing`, `cleaning`, and `safety_stopped`.
+- Trigger e-stop and clear-estop and verify `estop_latched` toggles accordingly.
+
+## 11) Validation Commands
 
 - `ruff check src tests`
 - `mypy --strict src`

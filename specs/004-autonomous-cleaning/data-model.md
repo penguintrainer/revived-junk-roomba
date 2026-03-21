@@ -8,7 +8,7 @@
   - map_id (string)
   - started_at (datetime)
   - ended_at (datetime, nullable)
-  - state (enum: idle, preparing, cleaning, paused, docking, completed, incomplete, stopped, failed)
+  - state (enum: idle, preparing, cleaning, paused, docking, safety_stopped, completed, incomplete)
   - target_scope (enum: full_reachable_floor)
   - end_reason (enum: none, coverage_complete, operator_stop, localization_lost, dock_success, dock_failure, startup_rejected, internal_fault)
   - covered_ratio (float)
@@ -70,6 +70,22 @@
   - `state=lost` implies cleaning motion is not allowed
   - `state=healthy` requires bounded covariance and fresh scan/tf inputs
 
+## Entity: PerceptionFusionHealth
+
+- Purpose: LiDAR / RGB / RGBD の障害物情報統合の健全性を監視する。
+- Fields:
+  - state (enum: healthy, degraded, lost)
+  - lidar_freshness_ms (int)
+  - rgb_freshness_ms (int)
+  - rgbd_freshness_ms (int)
+  - fused_obstacle_age_ms (int)
+  - last_transition_reason (enum: startup_check, lidar_stale, rgb_stale, rgbd_stale, fusion_recovered)
+  - updated_at (datetime)
+- Validation rules:
+  - freshness fields are `>= 0`
+  - `state=lost` implies obstacle-avoidance motion is disallowed
+  - `state=healthy` requires all sensor streams fresh and fusion output age within budget
+
 ## Entity: DockAttempt
 
 - Purpose: 低バッテリー時の dock return 試行を記録する。
@@ -128,10 +144,26 @@
   - trigger_source (enum: operator, system, external_service)
   - cleared_at (datetime, nullable)
   - clear_source (enum: explicit_operator_clear, maintenance_clear)
+  - clear_reject_reason (enum: none, motion_not_zero, active_safety_fault, internal_fault)
 - Validation rules:
   - `active=true` implies `triggered_at` is present
   - `active=false` with prior trigger implies `cleared_at` is present
+  - clear request is accepted only when base velocity is zero and no active safety fault exists
   - while `active=true`, cleaning motion and actuator output are disallowed
+
+## Entity: DiagnosticsSnapshot
+
+- Purpose: `/diagnostics` へ公開する必須キーのスナップショット。
+- Fields:
+  - session_state (enum: idle, preparing, cleaning, paused, docking, safety_stopped, completed, incomplete)
+  - localization_health (enum: healthy, degraded, lost)
+  - battery_charge_ratio (float)
+  - dock_attempt_state (enum: none, requested, executing, succeeded, failed)
+  - estop_latched (bool)
+  - published_at (datetime)
+- Validation rules:
+  - `0.0 <= battery_charge_ratio <= 1.0`
+  - publish interval is `<= 1.0s`
 
 ## State Transitions
 
@@ -143,9 +175,9 @@
 - cleaning -> docking: low battery detected and dock adapter takes ownership.
 - cleaning -> cleaning: work unit completion, retry, or region skip occurs while session remains active.
 - cleaning -> incomplete: localization lost, dock failure, or unrecoverable navigation failure ends the session.
-- cleaning -> stopped: operator stop accepted.
-- any active state -> stopped: e-stop accepted and actuators are stopped within 50 ms.
-- stopped -> cleaning: e-stop cleared explicitly and start/resume preconditions are re-validated.
+- cleaning -> incomplete: operator stop accepted.
+- any active state -> safety_stopped: e-stop accepted and actuators are stopped within 50 ms.
+- safety_stopped -> paused: e-stop cleared explicitly via `clear_estop` and readiness is re-validated.
 - docking -> completed: docking succeeds and session is treated as successful low-battery termination.
 - docking -> incomplete: docking fails and robot safe-stops.
 
@@ -154,6 +186,7 @@
 - Session target scope is always the full reachable floor area on the active map.
 - `cmd_vel` is used only for normal cleaning/recovery motion; dock execution is delegated to the dock adapter.
 - `LocalizationHealth.state=lost` forbids cleaning motion and forces either retry logic or terminal stop.
+- `PerceptionFusionHealth.state=lost` forbids obstacle-avoidance motion until recovery or terminal fallback.
 - Work units marked `blocked` or `skipped` remain part of final reporting and are never silently discarded.
 - Pause preserves coverage state; resume rebuilds a fresh execution queue from remaining work units.
 - E-stop active state always overrides pause/resume/stop intent and blocks motion until explicit clear.
