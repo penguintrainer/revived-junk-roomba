@@ -120,7 +120,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **FR-016**: The system MUST remain stopped after Joy-Con reconnection following a communication loss and MUST require explicit operator re-entry into manual drive mode before accepting movement or cleaning commands again.
 - **FR-017**: The system MUST ignore mode-button presses shorter than 1 second.
 - **FR-018**: The system MUST accept e-stop requests at all times and MUST stop all movement and cleaning actuators within 50 ms (one control cycle) of receiving the request.
-- **FR-019**: The system MUST provide a `/manual_drive/clear_estop` interface and MUST allow e-stop clearance only when the robot is stopped (zero velocity) and no active safety fault exists.
+- **FR-019**: The system MUST provide a `/manual_drive/clear_estop` interface and MUST allow e-stop clearance only when the robot is stopped (zero velocity) and no active safety fault exists. Note: manual drive mode uses only Roomba built-in sensors (bump, cliff, wheel-drop) per Constitution VI; external sensor freshness is not a precondition for e-stop clearance in this mode, unlike 001-random-cleaning-walk (FR-016) and 003-autonomous-cleaning (FR-024).
 
 ### Key Entities
 
