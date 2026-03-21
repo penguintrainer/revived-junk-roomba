@@ -69,7 +69,7 @@
 
 - [ ] T016 [P] [US2] Implement 1-second mode-button hold tracking in src/roomba_cleaning_nav/manual_drive/long_press_tracker.py
 - [ ] T017 [P] [US2] Extend Left Joy-Con event handling for mode-button long-press and link-health tracking in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
-- [ ] T018 [P] [US2] Implement status and diagnostics payload generation for mode, link, and fault state in src/roomba_cleaning_nav/manual_drive/status_formatter.py
+- [ ] T018 [P] [US2] Implement status and diagnostics payload generation for mode, link, fault state, and low-battery warning indication in src/roomba_cleaning_nav/manual_drive/status_formatter.py
 - [ ] T019 [P] [US2] Implement rumble-or-no-op feedback and `/manual_drive/status` publication in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
 - [ ] T020 [US2] Integrate mode transitions, link-loss latching, reconnection hold state, and explicit re-entry rules in src/roomba_cleaning_nav/manual_drive/node.py
 - [ ] T021 [US2] Subscribe to `/cliff` topic and wire cliff-triggered safety-stop through safety_watchdog in src/roomba_cleaning_nav/manual_drive/node.py

@@ -114,7 +114,7 @@
 - **FR-021**: システムは、FR-020のe-stop要求受信後、**50ms以内（1制御周期以内）**に移動および清掃アクチュエータを停止しなければならない。
 - **FR-022**: システムは、e-stop発動後、明示的な解除操作があるまで清掃再開を許可してはならない。
 - **FR-023**: システムは、自律走行中の障害物回避判定において、LiDAR・RGBカメラ・RGBDカメラ由来の障害物情報を統合して利用しなければならない。
-- **FR-024**: システムは、`/autonomous_cleaning/clear_estop` インターフェースを提供し、e-stop解除は「ロボットが停止している」「アクティブな安全故障がない」の両条件を満たす場合にのみ成功させなければならない。
+- **FR-024**: システムは、`/autonomous_cleaning/clear_estop` インターフェースを提供し、e-stop解除は「ロボットが停止している」「アクティブな安全故障がない」「センサー鮮度が回復している（PerceptionFusionHealth が lost ではない）」の3条件を満たす場合にのみ成功させなければならない。
 - **FR-025**: システムは、`/diagnostics` に自ノードの状態を公開し、少なくとも `session_state` `localization_health` `battery_charge_ratio` `dock_attempt_state` `estop_latched` を含めなければならない。
 
 ### Key Entities *(include if feature involves data)*
@@ -140,6 +140,7 @@
 - e-stop発動時は50ms以内に停止し、明示解除まで再開しない。
 - e-stop解除要求時に「停止未達」または「安全故障あり」の場合は、解除を拒否して安全停止状態を維持する。
 - 閉じたドアや家具移動などで一時的に行けない場所は、そのセッションでは未実施エリアとして扱う。
+- バッテリー開始閾値（30%）と低バッテリー閾値（20%）は、自律走行がセンサーフュージョン・Nav2・SLAM を常時稼働させるため、001-random-cleaning-walk の閾値（20%/10%）より高く設定している。
 
 ## Success Criteria *(mandatory)*
 

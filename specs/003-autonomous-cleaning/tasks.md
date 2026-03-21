@@ -138,7 +138,23 @@
 
 ---
 
-## Phase 8: Test Authoring
+## Phase 8: Cross-Feature Migration (Constitution Principle I Resolution)
+
+**Purpose**: Resolve the CONDITIONAL-PASS deviation from Constitution Principle I (ROS2 Package Composition) by extracting shared modules and formalizing 001/002 as independent ROS2 packages. MUST be completed before merge to main.
+
+- [ ] T062 [P] Extract shared `roomba_driver_adapter` package from 001 `random_cleaning/adapters/create_robot_adapter.py` and 002 `manual_drive/adapters/create_robot_adapter.py` into src/roomba_driver_adapter/
+- [ ] T063 [P] Extract shared `roomba_safety` package consolidating e-stop latch and sensor freshness watchdog from 001 `random_cleaning/safety_watchdog.py` and 002 `manual_drive/safety_watchdog.py` into src/roomba_safety/
+- [ ] T064 Refactor 001 `random_cleaning/` and 002 `manual_drive/` submodules from `roomba_cleaning_nav` monolith into independent ROS2 packages `roomba_random_cleaning` and `roomba_manual_drive` in src/
+- [ ] T065 Update 001/002 import paths and pyproject.toml/package.xml to reference extracted shared packages
+- [ ] T066 [P] Define cross-feature state vocabulary mapping enum in src/roomba_cleaning_msgs/msg/RobotOperationMode.msg covering all three modes: random_cleaning states (idle/cleaning_forward/cleaning_turn/safety_stopped/fault), manual_drive states (idle/manual_active/safety_stopped/fault), and autonomous_cleaning states (idle/preparing/cleaning/paused/docking/safety_stopped/completed/incomplete)
+- [ ] T067 [P] Migrate 001 `/random_cleaning/state` and `/random_cleaning/safety_event` topics from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` types in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py and specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
+- [ ] T068 [P] Migrate 002 `/manual_drive/status` topic from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` type in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+
+**Checkpoint**: Constitution Principle I fully satisfied — all features use independent ROS2 packages with shared abstractions.
+
+---
+
+## Phase 9: Test Authoring
 
 **Purpose**: Author unit, integration, and contract tests to satisfy constitution quality gates (`pytest` must pass before merge).
 
@@ -171,7 +187,8 @@
 - **Phase 5: US3** — depends on Phases 3-4 (recovery depends on established control and safety paths)
 - **Phase 6: US4** — depends on Phases 3-5 (final reporting depends on runtime and interruption outcomes)
 - **Phase 7: Polish** — depends on all user stories
-- **Phase 8: Test Authoring** — depends on Phases 3-6 (tests exercise implemented modules)
+- **Phase 8: Cross-Feature Migration** — depends on Phase 7; MUST be completed before merge to main
+- **Phase 9: Test Authoring** — depends on Phases 3-6 and Phase 8 (tests exercise implemented modules)
 
 ### User Story Dependency Graph
 
@@ -195,6 +212,7 @@
 - **US4**: T039 and T040 can run in parallel before T041-T043
 - **Polish**: T044, T045, and T048 can run in parallel before T046-T047
 
+- **Cross-Feature Migration**: T062, T063, T066, T067, and T068 can run in parallel before T064-T065
 - **Test Authoring**: T049-T055 can run in parallel before T056-T061
 
 ---
@@ -246,5 +264,5 @@ T025 [US2] Implement control/e-stop status formatter in src/roomba_autonomous_cl
 
 - All tasks follow the required checklist format (`- [ ] Txxx ...`).
 - `[P]` is assigned only to tasks that can run without file-level conflicts.
-- Test-authoring tasks (Phase 8) are included to satisfy the constitution’s quality gate requirement that `pytest` must pass before merge.
+- Test-authoring tasks (Phase 9) are included to satisfy the constitution's quality gate requirement that `pytest` must pass before merge.
 - Tasks are immediately executable by an LLM with the current design artifacts.

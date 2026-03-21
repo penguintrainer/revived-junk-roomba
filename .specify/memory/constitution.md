@@ -1,26 +1,26 @@
 ﻿<!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.0.1 -> 1.1.0 (MINOR)
+Version change: 1.1.0 -> 1.1.1 (PATCH)
 
 Added sections:
   - None
 
 Modified principles:
-  - VI. Safety-First Robot Operation -> scoped sensor fusion requirements
-    per motion mode. Random walk and manual drive modes now require only
-    Roomba built-in sensors (bump, cliff, wheel-drop). Active sensor fusion
-    (LiDAR, RGB, RGBD) is required only for autonomous navigation modes
-    (003-autonomous-cleaning and later).
+  - VI. Safety-First Robot Operation -> clarified that in manual drive mode,
+    software-level bump response is advisory. The operator has ultimate
+    authority over movement decisions. Built-in hardware safety (cliff
+    sensors) remains enforced. This aligns constitution with 002 spec
+    Edge Cases (bump-triggered status update without forced stop).
 
 Removed sections:
   - None
 
 Templates requiring update:
-  - .specify/templates/plan-template.md  ✅ checked; Constitution Check remains compatible
-  - .specify/templates/spec-template.md  ✅ checked; no mandatory section changes required
+  - .specify/templates/plan-template.md  ✅ checked; no mandatory section changes
+  - .specify/templates/spec-template.md  ✅ checked; no mandatory section changes
   - .specify/templates/tasks-template.md ✅ checked; task structure remains compatible
-  - README.md ✅ no references to sensor fusion scope
+  - README.md ✅ no references to bump response scope
 
 Deferred TODOs:
   - None. All placeholders resolved.
@@ -126,6 +126,14 @@ tested as part of every release. Wall contact during autonomous navigation
 is permissible; all other physical contact is a fault condition and MUST
 trigger an immediate stop and a logged alert.
 
+**Manual drive mode exception**: In manual drive mode, the operator has
+ultimate authority over movement decisions. Built-in hardware safety (cliff
+sensors) is always enforced, but software-level bump response is advisory—
+the operator receives a status notification but may continue movement at
+their discretion. This is an intentional exception: the operator is
+physically present and assumes responsibility for obstacle avoidance
+decisions.
+
 **Rationale**: Physical safety is non-negotiable. Hardware and humans co-exist
 in the operational environment. Sensor fusion requirements are scoped per mode
 because random walk and manual drive rely on the Roomba's native sensors,
@@ -221,4 +229,4 @@ All PRs that introduce new ROS2 nodes or Python modules MUST be reviewed against
 this constitution. Any decision that appears to violate a principle MUST be
 justified in the plan's Complexity Tracking section.
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
+**Version**: 1.1.1 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21

@@ -65,6 +65,18 @@ Roomba577 のランダム清掃モードで外部公開するトピック/サー
 - Purpose: 安全停止ラッチ解除後の手動再開
 - Preconditions: センサー鮮度回復、バッテリー条件回復
 
+### `/random_cleaning/clear_estop` (service)
+
+- Type: `std_srvs/srv/Trigger`
+- Purpose: e-stop ラッチの明示的解除（003-autonomous-cleaning の `clear_estop` パターンと統一）
+- Preconditions:
+  - ロボットが停止状態（駆動系速度 0）
+  - アクティブな安全故障がない
+  - センサー鮮度が回復している
+- Success semantics:
+  - `success=true`: e-stop ラッチ解除。`/random_cleaning/resume_manual` が利用可能になる
+  - `success=false`: 前提条件不成立
+
 ## Contract Rules
 
 - すべての service はタイムアウト時に `success=false` と理由文字列を返す。

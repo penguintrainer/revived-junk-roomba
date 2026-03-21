@@ -120,6 +120,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **FR-016**: The system MUST remain stopped after Joy-Con reconnection following a communication loss and MUST require explicit operator re-entry into manual drive mode before accepting movement or cleaning commands again.
 - **FR-017**: The system MUST ignore mode-button presses shorter than 1 second.
 - **FR-018**: The system MUST accept e-stop requests at all times and MUST stop all movement and cleaning actuators within 50 ms (one control cycle) of receiving the request.
+- **FR-019**: The system MUST provide a `/manual_drive/clear_estop` interface and MUST allow e-stop clearance only when the robot is stopped (zero velocity) and no active safety fault exists.
 
 ### Key Entities
 
@@ -158,3 +159,4 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - Communication loss is defined as no Joy-Con input message received for more than 1 second.
 - After a communication-loss fail-safe, reconnecting the Joy-Con does not automatically restore manual drive mode.
 - Battery management during manual drive is the operator's responsibility. The system provides a low-battery status notification but does not enforce automatic docking or stopping. The Roomba's built-in hardware low-battery shutdown is always active.
+- 禁止領域（virtual wall, keep-out zone）は、Nav2 の keepout フィルターレイヤーまたは ROS2 パラメータサーバー経由で提供される前提とする。003-autonomous-cleaning で定義される同一データソースを使用する。

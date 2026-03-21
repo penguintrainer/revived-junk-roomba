@@ -94,9 +94,10 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 - Preconditions:
   - ロボットが停止状態である（駆動系速度 0）
   - アクティブな安全故障が存在しない
+  - センサー鮮度が回復している（PerceptionFusionHealth が lost ではない）
 - Success semantics:
   - `success=true`: e-stop ラッチ解除完了
-  - `success=false`: 前提条件不成立（停止未達または安全故障継続）
+  - `success=false`: 前提条件不成立（停止未達、安全故障継続、またはセンサー鮮度未回復）
 
 ## Published Topics
 

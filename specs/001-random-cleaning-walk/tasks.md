@@ -72,9 +72,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Implement sensor freshness, battery watchdog, and bump/cliff/wheel-drop event response rules in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
-- [ ] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py
-- [ ] T017 [P] [US2] Add no-progress detection and single 180-degree escape behavior in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
+- [ ] T015 [P] [US2] Implement sensor freshness, battery watchdog, bump/cliff/wheel-drop event response rules, and cliff-triggered reverse-then-turn avoidance action (FR-005) in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
+- [ ] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout (180s) and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py; dock-return command issuance via create_robot_adapter.py
+- [ ] T017 [P] [US2] Add no-progress detection, single 180-degree escape behavior, and bump-triggered direction-change avoidance maneuver (FR-006) in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
 - [ ] T018 [US2] Integrate safety latch handling and `/random_cleaning/resume_manual` gating in src/roomba_cleaning_nav/random_cleaning/node.py
 - [ ] T019 [US2] Connect immediate hardware stop semantics for safety events in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
 

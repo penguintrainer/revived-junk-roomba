@@ -92,6 +92,17 @@ Left Joy-Con を使った手動走行・清掃制御で公開/依存する ROS2 
   - `success=true`: 50ms以内（1制御周期以内）に zero command + cleaning off + safety latch active
   - `success=false`: 内部 fault により stop request を適用できない
 
+### `/manual_drive/clear_estop` (service)
+
+- Type: `std_srvs/srv/Trigger`
+- Purpose: e-stop ラッチの明示的解除（003-autonomous-cleaning の `clear_estop` パターンと統一）
+- Preconditions:
+  - ロボットが停止状態（駆動系速度 0）
+  - アクティブな安全故障がない
+- Success semantics:
+  - `success=true`: e-stop ラッチ解除。手動モードへの再エントリが可能になる
+  - `success=false`: 前提条件不成立
+
 ## Contract Rules
 
 - Manual mode の entry/exit は Joy-Con の mode button を 1 秒長押ししたときのみ有効。

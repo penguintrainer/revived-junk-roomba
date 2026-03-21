@@ -85,6 +85,11 @@
   - freshness fields are `>= 0`
   - `state=lost` implies obstacle-avoidance motion is disallowed
   - `state=healthy` requires all sensor streams fresh and fusion output age within budget
+- Stale thresholds (defaults):
+  - `lidar_stale_threshold_ms = 500` (2D LiDAR scan age)
+  - `rgb_stale_threshold_ms = 1000` (RGB camera image age)
+  - `rgbd_stale_threshold_ms = 1000` (RGBD depth image age)
+  - `fused_obstacle_stale_threshold_ms = 800` (fused obstacle evidence age)
 
 ## Entity: DockAttempt
 
