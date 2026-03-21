@@ -17,6 +17,9 @@ build/
 install/
 log/
 
+# MkDocs
+site/
+
 # Universal
 .DS_Store
 Thumbs.db

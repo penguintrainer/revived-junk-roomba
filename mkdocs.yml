@@ -1,0 +1,53 @@
+site_name: やっすいルンバを魔改造 — Revived Junk Roomba
+site_description: Roomba577 に GPU 付きモバイル PC を接続して自律走行・手動走行・ランダム走行を実現するプロジェクトのドキュメント
+site_author: penguintrainer
+repo_url: https://github.com/penguintrainer/revived-junk-roomba
+repo_name: penguintrainer/revived-junk-roomba
+
+theme:
+  name: material
+  language: ja
+  palette:
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: ダークモードに切り替え
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: ライトモードに切り替え
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - ホーム: index.md
+  - はじめに: getting-started.md
+  - 機能:
+      - ランダム走行清掃: features/random-cleaning-walk.md
+      - Joy-Con 手動走行: features/joycon-manual-drive.md
+      - 自律走行清掃: features/autonomous-cleaning.md
+  - リファレンス:
+      - ROS2 インターフェース一覧: reference/ros2-interfaces.md
+      - 安全設計: reference/safety.md
+  - 開発者ガイド: development/contributing.md
