@@ -66,9 +66,6 @@ roombaの操作にはcreate_robotを使用。
 ```bash
 /speckit.analyze
 ```
-```bash
-/speckit.implement
-```
 
 ### JpyConによるマニュアル走行
 ```bash
@@ -93,14 +90,11 @@ joycon-pythonを使ってジョイコンの情報を取得。
 ```bash
 /speckit.analyze
 ```
-```bash
-/speckit.implement
-```
 
 ### 自律走行による掃除
 ```bash
 /speckit.specify
-amclなどに基づく自動走行での掃除をする機能。
+自動走行での掃除をする機能。
 ```
 ```bash
 /speckit.clarify
@@ -110,7 +104,7 @@ amclなどに基づく自動走行での掃除をする機能。
 メインのプログラムはROS2とpython3.13+を使って実装。
 ハードウェアはRoomba577でシリアル通信で制御。
 roombaの操作にはcreate_robotを使用。
-ナビゲーションにはROS2のNav2を使用。
+ナビゲーションにはROS2のNav2のamclなどを使用。
 自己位置推定には、Conduitを使ってiphoneのIMUのデータ・YDLIDAR SDKでT-mini Plusから2DLiDARのデータを取得して、2D SLAMを実施。
 ```
 ```bash
@@ -119,9 +113,11 @@ roombaの操作にはcreate_robotを使用。
 ```bash
 /speckit.analyze
 ```
+
 ```bash
 /speckit.implement
 ```
+---
 
 ### 安全な自律走行機能
 ```bash
