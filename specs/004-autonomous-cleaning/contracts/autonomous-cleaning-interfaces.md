@@ -21,7 +21,7 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 
 #### Feedback fields
 
-- `session_state` (`preparing|cleaning|paused|recovery|docking`)
+- `session_state` (`idle|preparing|cleaning|paused|docking|safety_stopped|completed|incomplete`)
 - `covered_ratio` (float)
 - `covered_area_m2` (float)
 - `remaining_area_m2` (float)
@@ -85,6 +85,17 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
   - 受信後 50ms 以内（1 制御周期以内）に zero `cmd_vel` と cleaning off を反映する
   - 明示的な解除 service/操作があるまで再開を受け付けない
 
+### `/autonomous_cleaning/clear_estop` (service)
+
+- Type: `std_srvs/srv/Trigger`
+- Purpose: ラッチされた e-stop を明示解除し、再開可能状態へ戻す
+- Preconditions:
+  - ロボットが停止状態である（駆動系速度 0）
+  - アクティブな安全故障が存在しない
+- Success semantics:
+  - `success=true`: e-stop ラッチ解除完了
+  - `success=false`: 前提条件不成立（停止未達または安全故障継続）
+
 ## Published Topics
 
 ### `/autonomous_cleaning/status` (publish)
@@ -133,6 +144,7 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
   - `localization_health`
   - `battery_charge_ratio`
   - `dock_attempt_state`
+  - `estop_latched`
   - `nav2_goal_active`
 
 ## Subscribed Topics / Actions
@@ -160,11 +172,13 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
   - charging state
   - driver diagnostics / fault state
 
-### LiDAR / TF / IMU topics (subscribe)
+### LiDAR / RGB / RGBD / TF / IMU topics (subscribe)
 
-- Purpose: localization readiness supervision
+- Purpose: localization readiness supervision + obstacle perception fusion
 - Required observations:
   - fresh 2D scan stream from YDLIDAR
+  - fresh RGB image stream
+  - fresh RGBD depth stream
   - `map -> odom` transform freshness
   - fused odometry / optional IMU support through `robot_localization`
 
@@ -177,4 +191,5 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 - Low-battery transition threshold is battery charge ratio < 0.20.
 - Automatic recovery for localization/navigation continuity is limited to one attempt with a 30-second timeout.
 - Dock success/failure is outcome-based and must be observed, not inferred solely from command publication.
+- Obstacle avoidance must use fused obstacle evidence derived from LiDAR, RGB camera, and RGBD camera.
 - All new topics, services, and actions must also be documented in the owning package README.
