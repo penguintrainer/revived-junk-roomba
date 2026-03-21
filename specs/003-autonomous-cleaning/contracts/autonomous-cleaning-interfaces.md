@@ -44,6 +44,19 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 
 - `terminal_state` は FR-014 の正規状態語彙のうち terminal に該当する値のみを取る。セッション終了の詳細は `end_reason` で識別する（例: dock 成功 → `terminal_state=completed`, `end_reason=dock_success`）。
 
+#### terminal_state × end_reason Matrix
+
+| terminal_state | end_reason | Condition |
+|:---------------|:-----------|:----------|
+| `completed` | `coverage_complete` | 全到達可能エリアの清掃完了 |
+| `completed` | `dock_success` | 低バッテリーによるドック復帰成功 |
+| `incomplete` | `operator_stop` | 利用者による停止 |
+| `incomplete` | `dock_failure` | ドック復帰失敗 |
+| `incomplete` | `localization_lost` | 位置把握喪失で復旧不能 |
+| `incomplete` | `startup_rejected` | 開始条件不成立 |
+| `incomplete` | `internal_fault` | シリアル断・内部異常 |
+| `safety_stopped` | `internal_fault` | e-stop 発動による安全停止 |
+
 - `target_scope` はこの feature version では常に `full_reachable_floor`。
 - runtime feedback は Nav2 内部値ではなく、cleaning domain の area/work-unit 状態を返す。
 - action cancel は `stop` と同義に扱ってよいが、operator-facing 停止理由は `operator_stop` に正規化する。

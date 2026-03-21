@@ -117,7 +117,7 @@
 
 - [ ] T024 [P] Document ROS2 interfaces, safety assumptions, and operating limits in src/roomba_cleaning_nav/random_cleaning/README.md
 - [ ] T025 Update operator validation steps and command examples in specs/001-random-cleaning-walk/quickstart.md
-- [ ] T025a Document SC-005 manual verification procedure (coverage ratio grid calculation and turn frequency log analysis) in specs/001-random-cleaning-walk/quickstart.md
+- [ ] T025a Document SC-005 manual verification procedure with pass/fail checklist (coverage ratio >= 60% via 0.1m grid occupancy count, turn frequency 2-10 turns/min via MotionDecision phase log aggregation, 30-min session minimum) in specs/001-random-cleaning-walk/quickstart.md
 - [ ] T026 Run the documentation alignment pass for interface semantics in specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
 
 **Note**: 003 Phase 8 (T062-T068) にて本機能のソースおよび契約ファイルが Cross-Feature Migration の対象となる。詳細は specs/003-autonomous-cleaning/tasks.md Phase 8 を参照。

@@ -93,4 +93,5 @@ tests/
 - **Deviation**: Constitution requires "multiple independent ROS2 packages" per feature. This feature implements all code within a single `roomba_cleaning_nav` package using module-level separation (`random_cleaning/` subpackage).
 - **Justification**: The repository uses a single Python source tree at this stage. Module boundaries and ROS2 interface contracts are defined and enforced, but physical package separation incurs high setup cost at this stage.
 - **Resolution plan**: Package decomposition (e.g., `random_cleaning_controller`, `roomba_drive_adapter`) is deferred to 003-autonomous-cleaning, where multiple motion modes will require formal package boundaries for safe arbitration.
+- **Merge constraint**: 003-autonomous-cleaning tasks.md Phase 8 (T062-T068) の Cross-Feature Migration タスクがすべて完了するまで、本機能は main ブランチへマージ不可とする。詳細は `specs/003-autonomous-cleaning/tasks.md` Phase 8 を参照。
 - **Risk**: Low — module boundaries mirror future package boundaries; interface contracts are already captured in `contracts/random-cleaning-interfaces.md`.

@@ -81,7 +81,7 @@
 - [ ] T027 [US2] Add `resume` service handling with remaining-work queue reconstruction and e-stop-clear prerequisite in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 - [ ] T028 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 - [ ] T029 [US2] Add `/autonomous_cleaning/estop` handling with `<=50ms` actuator stop enforcement in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T030 [US2] Add `/autonomous_cleaning/clear_estop` handling with precondition checks (zero velocity + no active safety fault) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T030 [US2] Add `/autonomous_cleaning/clear_estop` handling with precondition checks (zero velocity + no active safety fault + PerceptionFusionHealth is not lost) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 - [ ] T031 [US2] Extend state machine transitions for `cleaning<->paused`, `any->safety_stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
 
 **Checkpoint**: User Story 2 enables stable operator control and emergency-stop safety.
@@ -150,8 +150,12 @@
 - [ ] T066 [P] Define cross-feature state vocabulary mapping enum in src/roomba_cleaning_msgs/msg/RobotOperationMode.msg covering all three modes: random_cleaning states (idle/cleaning_forward/cleaning_turn/safety_stopped/fault), manual_drive states (idle/manual_active/safety_stopped/fault), and autonomous_cleaning states (idle/preparing/cleaning/paused/docking/safety_stopped/completed/incomplete)
 - [ ] T067 [P] Migrate 001 `/random_cleaning/state` and `/random_cleaning/safety_event` topics from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` types in src/roomba_cleaning_nav/random_cleaning/adapters/telemetry_publisher.py and specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
 - [ ] T068 [P] Migrate 002 `/manual_drive/status` topic from `std_msgs/msg/String` to structured `roomba_cleaning_msgs` type in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [ ] T068a Define cross-feature e-stop contract rule: each mode's estop service MUST accept and succeed as NOP when that mode is not active, returning success=true with message "mode_not_active_nop" — document in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md, specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md, and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [ ] T066a [P] Implement mode topic subscription and cmd_vel gating logic in 001 random_cleaning node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not random_cleaning in src/roomba_random_cleaning/roomba_random_cleaning/node.py
+- [ ] T066b [P] Implement mode topic subscription and cmd_vel gating logic in 002 manual_drive node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not manual_drive in src/roomba_manual_drive/roomba_manual_drive/node.py
+- [ ] T066c Implement mode topic subscription and cmd_vel gating logic in 003 autonomous_cleaning session node — subscribe to RobotOperationMode topic and suppress cmd_vel publication when mode is not autonomous_cleaning in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
-**Checkpoint**: Constitution Principle I fully satisfied — all features use independent ROS2 packages with shared abstractions.
+**Checkpoint**: Constitution Principle I fully satisfied — all features use independent ROS2 packages with shared abstractions and cross-feature mode arbitration.
 
 ---
 

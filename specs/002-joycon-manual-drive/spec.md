@@ -96,7 +96,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - What happens if Joy-Con rumble feedback cannot be delivered? → The ROS2 status topic remains the authoritative feedback channel and operation continues without rumble.
 - What happens if Joy-Con communication is restored after a fail-safe stop? → The robot remains stopped and outside manual drive mode until the operator explicitly re-enters manual mode.
 - What happens if the operator taps the mode button briefly? → A short press shorter than 1 second does not change operating mode.
-- What happens when the Roomba's battery reaches a critically low level during manual drive? → The system publishes a low-battery warning on the status topic. Manual drive continues at the operator's discretion. The Roomba's built-in hardware low-battery protection (automatic shutdown) is honored.
+- What happens when the Roomba's battery reaches a critically low level during manual drive? → The system publishes a low-battery warning on the status topic. Manual drive continues at the operator's discretion. The Roomba's built-in hardware low-battery protection (automatic shutdown) is honored. Roomba のハードウェア自動シャットダウンがシリアル通信断として検知された場合は、serial fault と同等に扱い、cleaning off + motion stop + fault 状態へ遷移する。
 
 ## Requirements *(mandatory)*
 
