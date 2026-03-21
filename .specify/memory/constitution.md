@@ -1,17 +1,20 @@
 ﻿<!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.1.0 -> 1.1.1 (PATCH)
+Version change: 1.1.1 -> 1.1.2 (PATCH)
 
 Added sections:
   - None
 
 Modified principles:
-  - VI. Safety-First Robot Operation -> clarified that in manual drive mode,
-    software-level bump response is advisory. The operator has ultimate
-    authority over movement decisions. Built-in hardware safety (cliff
-    sensors) remains enforced. This aligns constitution with 002 spec
-    Edge Cases (bump-triggered status update without forced stop).
+  - IV. Function Discipline -> strengthened "independently testable" to
+    "MUST have at least one corresponding unit test." This aligns the
+    constitution with the original user intent (「各関数は単体テストを
+    実装し、動作を検証」) which was under-specified in v1.1.1.
+
+Modified sections:
+  - Quality Gates -> added per-function unit-test coverage requirement
+    and minimum coverage threshold (branch coverage >=80%).
 
 Removed sections:
   - None
@@ -19,8 +22,9 @@ Removed sections:
 Templates requiring update:
   - .specify/templates/plan-template.md  ✅ checked; no mandatory section changes
   - .specify/templates/spec-template.md  ✅ checked; no mandatory section changes
-  - .specify/templates/tasks-template.md ✅ checked; task structure remains compatible
-  - README.md ✅ no references to bump response scope
+  - .specify/templates/tasks-template.md ⚠ UPDATED; removed "Tests are
+    OPTIONAL" language, replaced with mandatory test guidance
+  - README.md ✅ no constitution references affected
 
 Deferred TODOs:
   - None. All placeholders resolved.
@@ -86,9 +90,17 @@ named adapter functions at the system boundary. Business logic MUST NOT contain
 direct I/O. Each function MUST have exactly one responsibility and MUST be
 independently testable without mocking the entire ROS2 graph.
 
+Every function and method MUST have at least one corresponding unit test that
+verifies its documented behavior. Adapter functions at the system boundary
+(ROS2 publishers, hardware I/O) MUST have integration tests that validate
+correct interaction with the external system. Test-less functions MUST NOT
+be merged.
+
 **Rationale**: Short, pure functions are the atomic unit of agent change. A 50-line
 cap prevents functions from accumulating unrelated responsibilities over time.
 Pure core logic enables fast, deterministic unit tests without a live robot.
+Mandating per-function tests ensures that every behavioral contract is
+explicitly verified, not merely verifiable.
 
 ### V. ROS2 & Python Coding Standards
 
@@ -192,6 +204,10 @@ driver internals into business-logic packages.
 - `ruff check` passes with zero errors.
 - `mypy --strict` passes with zero type errors.
 - `pytest` passes with all unit and integration tests green.
+- Every function and method has at least one corresponding unit test.
+  Adapter functions MUST have integration tests. Test-less functions
+  MUST NOT be merged.
+- Branch coverage MUST be >=80% as measured by `pytest --cov`.
 - No function exceeds 50 lines.
 - All functions and methods include PEP 257-compliant docstrings.
 - All new ROS2 topics, services, and actions are documented in the owning
@@ -229,4 +245,4 @@ All PRs that introduce new ROS2 nodes or Python modules MUST be reviewed against
 this constitution. Any decision that appears to violate a principle MUST be
 justified in the plan's Complexity Tracking section.
 
-**Version**: 1.1.1 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
+**Version**: 1.1.2 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
