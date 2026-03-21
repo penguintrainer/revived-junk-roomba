@@ -1,13 +1,17 @@
 ﻿<!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.0.0 -> 1.0.1
+Version change: 1.0.1 -> 1.1.0 (MINOR)
 
 Added sections:
   - None
 
 Modified principles:
-  - V. ROS2 & Python Coding Standards -> clarified to require PEP 257-style docstrings on all functions and methods
+  - VI. Safety-First Robot Operation -> scoped sensor fusion requirements
+    per motion mode. Random walk and manual drive modes now require only
+    Roomba built-in sensors (bump, cliff, wheel-drop). Active sensor fusion
+    (LiDAR, RGB, RGBD) is required only for autonomous navigation modes
+    (003-autonomous-cleaning and later).
 
 Removed sections:
   - None
@@ -16,8 +20,7 @@ Templates requiring update:
   - .specify/templates/plan-template.md  ✅ checked; Constitution Check remains compatible
   - .specify/templates/spec-template.md  ✅ checked; no mandatory section changes required
   - .specify/templates/tasks-template.md ✅ checked; task structure remains compatible
-  - .specify/templates/agent-file-template.md ✅ checked; no agent-specific wording changes required
-  - README.md ✅ already aligned with docstring requirement
+  - README.md ✅ no references to sensor fusion scope
 
 Deferred TODOs:
   - None. All placeholders resolved.
@@ -107,17 +110,27 @@ a physical robot.
 ### VI. Safety-First Robot Operation
 
 The robot MUST NOT collide with non-wall obstacles (cables, drop-offs, humans,
-furniture) during any operation mode. Sensor data from LiDAR, RGB camera, and
-RGBD camera MUST be actively fused for obstacle detection and avoidance during
-all motion modes. An emergency stop (e-stop) command MUST be available at all
-times and MUST halt all actuators within one control cycle (<=50 ms). The e-stop
-MUST be tested as part of every release. Wall contact during autonomous navigation
-is permissible; all other physical contact is a fault condition and MUST trigger
-an immediate stop and a logged alert.
+furniture) during any operation mode. Each motion mode MUST use the sensors
+available to it for obstacle detection and avoidance:
 
-**Rationale**: Physical safety is non-negotiable. Hardware and humans co-exist in
-the operational environment. A fault that damages hardware or injures a person
-cannot be undone by a software patch.
+- **Random walk / manual drive modes**: MUST use Roomba built-in sensors
+  (bump, cliff, wheel-drop) for collision and drop-off detection. External
+  sensors (LiDAR, RGB, RGBD) are NOT required in these modes.
+- **Autonomous navigation modes** (003-autonomous-cleaning and later): MUST
+  actively fuse LiDAR, RGB camera, and/or RGBD camera data for obstacle
+  detection and avoidance in addition to built-in sensors.
+
+An emergency stop (e-stop) command MUST be available at all times and MUST
+halt all actuators within one control cycle (<=50 ms). The e-stop MUST be
+tested as part of every release. Wall contact during autonomous navigation
+is permissible; all other physical contact is a fault condition and MUST
+trigger an immediate stop and a logged alert.
+
+**Rationale**: Physical safety is non-negotiable. Hardware and humans co-exist
+in the operational environment. Sensor fusion requirements are scoped per mode
+because random walk and manual drive rely on the Roomba's native sensors,
+while autonomous navigation demands richer environmental perception. A fault
+that damages hardware or injures a person cannot be undone by a software patch.
 
 ## Technology Stack & Hardware Constraints
 
@@ -208,4 +221,4 @@ All PRs that introduce new ROS2 nodes or Python modules MUST be reviewed against
 this constitution. Any decision that appears to violate a principle MUST be
 justified in the plan's Complexity Tracking section.
 
-**Version**: 1.0.1 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
+**Version**: 1.1.0 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
