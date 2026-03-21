@@ -89,7 +89,7 @@ Left Joy-Con を使った手動走行・清掃制御で公開/依存する ROS2 
 - Type: `std_srvs/srv/Trigger`
 - Purpose: テスト/運用用の明示的 e-stop
 - Success semantics:
-  - `success=true`: 1制御周期以内に zero command + cleaning off + safety latch active
+  - `success=true`: 50ms以内（1制御周期以内）に zero command + cleaning off + safety latch active
   - `success=false`: 内部 fault により stop request を適用できない
 
 ## Contract Rules

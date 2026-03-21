@@ -17,7 +17,7 @@ Roomba577 のランダム清掃モードで外部公開するトピック/サー
 ### `/random_cleaning/state` (publish)
 
 - Type: `std_msgs/msg/String`（初期リリース。003-autonomous-cleaning 以降でカスタムメッセージ型への移行を検討する）
-- Allowed values: `idle`, `cleaning_forward`, `cleaning_turn`, `safety_stop`, `fault`
+- Allowed values: `idle`, `cleaning_forward`, `cleaning_turn`, `safety_stopped`, `fault`
 - Purpose: オペレータ向け簡易状態通知
 
 ### `/random_cleaning/safety_event` (publish)
@@ -57,7 +57,7 @@ Roomba577 のランダム清掃モードで外部公開するトピック/サー
 
 - Type: `std_srvs/srv/Trigger`
 - Purpose: 緊急停止ラッチ
-- Requirement: 受信後1制御周期以内に停止命令を反映
+- Requirement: 受信後50ms以内（1制御周期以内）に停止命令を反映
 
 ### `/random_cleaning/resume_manual` (service)
 

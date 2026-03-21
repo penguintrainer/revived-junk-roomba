@@ -25,7 +25,7 @@ Roomba 577 を `create_robot` でシリアル制御し、ROS2 Jazzy + Python 3.1
 
 ### Pre-Design Gate Check
 
-- Principle I (ROS2 Package Composition): PASS — `cmd_vel` を正規速度インターフェースとして採用、ノード責務を分割。
+- Principle I (ROS2 Package Composition): CONDITIONAL-PASS — `cmd_vel` を正規速度インターフェースとして採用、ノード責務を分割。ただし、現時点では単一 Python package (`roomba_cleaning_nav`) 内の feature module として実装する。Constitution の "multiple independent ROS2 packages" 要件は、003-autonomous-cleaning 以降のリファクタリングフェーズで正式に分割する計画とする。
 - Principle II (State Awareness & Low Latency): PASS — 状態公開・安全停止・20-30Hz制御ループを採用。
 - Principle III (SOLID): PASS — 制御ロジック/ハードウェアI/O/状態公開を分離した設計。
 - Principle IV (50-Line & Referential Transparency): PASS — 純粋関数中心の遷移判定設計を採用。
@@ -34,7 +34,7 @@ Roomba 577 を `create_robot` でシリアル制御し、ROS2 Jazzy + Python 3.1
 
 ### Post-Design Gate Check
 
-- Principle I: PASS — `contracts/random-cleaning-interfaces.md` で topic/service 契約を固定。
+- Principle I: CONDITIONAL-PASS — `contracts/random-cleaning-interfaces.md` で topic/service 契約を固定。ROS2 topic/service 境界は定義済みだが、物理的 package 分割は単一 `roomba_cleaning_nav` package 内の module 分離に留まる。003-autonomous-cleaning でのパッケージ分割を前提とする。
 - Principle II: PASS — `data-model.md` に watchdog と safety latch を明文化。
 - Principle III: PASS — `quickstart.md` に責務分離されたノード構成を反映。
 - Principle IV: PASS — 設計成果物で pure decision layer + effect adapter を明示。
@@ -87,4 +87,10 @@ tests/
 
 ## Complexity Tracking
 
-No constitution violations identified; complexity exemptions are not required.
+### Constitution Deviation: Principle I (ROS2 Package Composition)
+
+- **Status**: CONDITIONAL-PASS — acknowledged deviation with planned resolution
+- **Deviation**: Constitution requires "multiple independent ROS2 packages" per feature. This feature implements all code within a single `roomba_cleaning_nav` package using module-level separation (`random_cleaning/` subpackage).
+- **Justification**: The repository uses a single Python source tree at this stage. Module boundaries and ROS2 interface contracts are defined and enforced, but physical package separation incurs high setup cost at this stage.
+- **Resolution plan**: Package decomposition (e.g., `random_cleaning_controller`, `roomba_drive_adapter`) is deferred to 003-autonomous-cleaning, where multiple motion modes will require formal package boundaries for safe arbitration.
+- **Risk**: Low — module boundaries mirror future package boundaries; interface contracts are already captured in `contracts/random-cleaning-interfaces.md`.

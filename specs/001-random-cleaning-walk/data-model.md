@@ -9,7 +9,7 @@
   - ended_at (datetime, nullable)
   - start_reason (enum: user_request, manual_resume)
   - end_reason (enum: user_stop, e_stop, low_battery_stop, sensor_dropout, fault)
-  - final_state (enum: idle, cleaning, safety_stop, fault)
+  - final_state (enum: idle, cleaning, safety_stopped, fault)
   - dock_return_attempted (bool)
   - dock_return_elapsed_sec (int)
 - Validation rules:
@@ -21,7 +21,7 @@
 
 - Purpose: 現在の制御状態を運用向けに公開する。
 - Fields:
-  - mode (enum: idle, cleaning_forward, cleaning_turn, safety_stop, fault)
+  - mode (enum: idle, cleaning_forward, cleaning_turn, safety_stopped, fault)
   - latched_safety_stop (bool)
   - safety_reason (enum: none, sensor_dropout, low_battery, e_stop, control_fault)
   - battery_percent (float)
@@ -32,7 +32,7 @@
 - Validation rules:
   - `battery_percent` は 0..100
   - `sensor_freshness_ms` は 0 以上
-  - `latched_safety_stop=true` の間は `mode` は `safety_stop` 固定
+  - `latched_safety_stop=true` の間は `mode` は `safety_stopped` 固定
 
 ## Entity: SafetyEvent
 
@@ -71,8 +71,8 @@
 - idle -> cleaning_forward: 開始要求が有効かつ開始条件（バッテリー閾値など）を満たす。
 - cleaning_forward -> cleaning_turn: 前進区間の継続時間を満了。
 - cleaning_turn -> cleaning_forward: 旋回区間を満了。
-- cleaning_* -> safety_stop: e-stop / センサー断1秒超 / ドック復帰失敗 / 重大異常。
-- safety_stop -> idle: 明示的な手動再開または停止完了。
+- cleaning_* -> safety_stopped: e-stop / センサー断1秒超 / ドック復帰失敗 / 重大異常。
+- safety_stopped -> idle: 明示的な手動再開または停止完了。
 - any -> fault: 制御不能または内部異常。
 
 ## Invariants

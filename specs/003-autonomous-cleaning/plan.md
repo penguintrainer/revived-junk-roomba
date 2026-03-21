@@ -88,7 +88,9 @@ src/
 │       ├── localization_supervisor.py
 │       ├── dock_adapter.py
 │       ├── estop_manager.py
-│       ├── status_publisher.py       ├── result_builder.py│       └── interruption_policy.py
+│       ├── status_publisher.py
+│       ├── result_builder.py
+│       └── interruption_policy.py
 └── roomba_cleaning_nav/
     └── maps/
 
@@ -112,6 +114,24 @@ tests/
 ```
 
 **Structure Decision**: 既存リポジトリへ messages / coverage / orchestration の3パッケージを追加し、閾値判定と安全停止を orchestration に集約する。外部依存（`create_robot`、Nav2、Conduit、YDLIDAR、RealSense）は adapter/perception 層経由で接続し、仕様上の受け入れ条件（FR-023〜025, SC-009〜010）を `tests/{unit,integration,contract}` に分離して検証する。
+
+## Package Migration Plan
+
+### Integration with 001/002 Single-Package Modules
+
+Features 001 (`random_cleaning/`) and 002 (`manual_drive/`) are currently implemented as submodules within the monolithic `roomba_cleaning_nav` package. With 003 introducing a multi-package architecture (`roomba_cleaning_msgs`, `roomba_cleaning_coverage`, `roomba_autonomous_cleaning`), the following migration applies:
+
+1. **Shared `create_robot_adapter`**: 001 and 002 each contain independent `adapters/create_robot_adapter.py`. A shared `roomba_driver_adapter` package will be extracted during 003 implementation to provide a single Roomba serial control abstraction for all motion modes.
+
+2. **Shared safety primitives**: e-stop latch management and sensor freshness monitoring logic duplicated in 001’s and 002’s `safety_watchdog.py` will be consolidated into a shared safety module within `roomba_autonomous_cleaning` or a dedicated `roomba_safety` package.
+
+3. **Message type migration**: 001 and 002 currently use `std_msgs/msg/String` for status topics. Once `roomba_cleaning_msgs` is built for 003, status topics across all features should migrate to structured message types. This is a backward-compatible change (subscribers can be updated incrementally).
+
+4. **State vocabulary alignment**: Session state enums across features (`idle/cleaning_forward/cleaning_turn/safety_stopped/fault` in 001, `idle/manual_active/safety_stopped/fault` in 002, `idle/preparing/cleaning/paused/docking/safety_stopped/completed/incomplete` in 003) will be documented in a cross-feature state mapping within `roomba_cleaning_msgs`.
+
+5. **Coexistence**: Until migration is complete, 001/002 modules remain functional within `roomba_cleaning_nav`. The multi-package architecture does not break existing module boundaries — it formalizes them at the ROS2 package level.
+
+**Migration is not a blocker for 003 implementation** but should be scheduled as a follow-up task after 003 MVP is validated.
 
 ## Complexity Tracking
 

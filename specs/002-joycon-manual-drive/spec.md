@@ -96,6 +96,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - What happens if Joy-Con rumble feedback cannot be delivered? → The ROS2 status topic remains the authoritative feedback channel and operation continues without rumble.
 - What happens if Joy-Con communication is restored after a fail-safe stop? → The robot remains stopped and outside manual drive mode until the operator explicitly re-enters manual mode.
 - What happens if the operator taps the mode button briefly? → A short press shorter than 1 second does not change operating mode.
+- What happens when the Roomba's battery reaches a critically low level during manual drive? → The system publishes a low-battery warning on the status topic. Manual drive continues at the operator's discretion. The Roomba's built-in hardware low-battery protection (automatic shutdown) is honored.
 
 ## Requirements *(mandatory)*
 
@@ -118,6 +119,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **FR-015**: The system MUST continue operating safely if Joy-Con rumble feedback is unavailable; status publication remains authoritative.
 - **FR-016**: The system MUST remain stopped after Joy-Con reconnection following a communication loss and MUST require explicit operator re-entry into manual drive mode before accepting movement or cleaning commands again.
 - **FR-017**: The system MUST ignore mode-button presses shorter than 1 second.
+- **FR-018**: The system MUST accept e-stop requests at all times and MUST stop all movement and cleaning actuators within 50 ms (one control cycle) of receiving the request.
 
 ### Key Entities
 
@@ -155,3 +157,4 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - The Roomba's built-in hardware safety mechanisms (cliff sensors, bumpers) continue to function at the firmware level regardless of software-issued movement commands.
 - Communication loss is defined as no Joy-Con input message received for more than 1 second.
 - After a communication-loss fail-safe, reconnecting the Joy-Con does not automatically restore manual drive mode.
+- Battery management during manual drive is the operator's responsibility. The system provides a low-battery status notification but does not enforce automatic docking or stopping. The Roomba's built-in hardware low-battery shutdown is always active.
