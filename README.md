@@ -12,6 +12,7 @@ ROSの精神に基づいて各種パッケージを開発し、パッケージ�
 |ROS2|Jazzy Jalisco|ros2で開発しておきたい|
 |Python |3.13+|GIL解除されてるやつ|
 |create_robot |[URL](https://github.com/AutonomyLab/create_robot)|ルンバをシリアル通信で制御|
+|joycon-python |[URL](https://github.com/tocoteron/joycon-python)|Nintendo Joy-Conの入力や状態を取得する|
 |YDLidar-SDK ||[URL](https://github.com/YDLIDAR/YDLidar-SDK)|
 |Conduit |[URL](https://github.com/youtalk/conduit-support)|iPhoneをセンサとして活用|
 |realsense-ros |[URL]([realsense-ros](https://github.com/realsenseai/realsense-ros))|ROS2用|
@@ -69,7 +70,7 @@ roombaの操作にはcreate_robotを使用。
 /speckit.implement
 ```
 
-### 通常のルンバのランダムウォーク
+### JpyConによるマニュアル走行
 ```bash
 /speckit.specify
 Joy-Conによるマニュアル走行での掃除をする機能。
