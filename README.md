@@ -116,7 +116,7 @@ roombaの操作にはcreate_robotを使用。
 
 ```bash
 /speckit.implement
-001-random-cleaning-walk, 002-joycon-manual-drive, 003-autonomous-cleaningの各機能を順に実装して動作を検証してください
+001-random-cleaning-walk, 002-joycon-manual-drive, 003-autonomous-cleaningの各機能を順に実装して動作の検証まで完了してください
 ```
 ---
 
