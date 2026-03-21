@@ -21,7 +21,7 @@
 - [ ] T002 [P] Create coverage package manifest and Python packaging config in src/roomba_cleaning_coverage/package.xml and src/roomba_cleaning_coverage/setup.py
 - [ ] T003 [P] Create orchestration package manifest and Python packaging config in src/roomba_autonomous_cleaning/package.xml and src/roomba_autonomous_cleaning/setup.py
 - [ ] T004 Create package-level Python module scaffolding in src/roomba_cleaning_coverage/roomba_cleaning_coverage/__init__.py and src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/__init__.py
-- [ ] T005 Update workspace dependency declarations for new autonomous-cleaning packages in pyproject.toml
+- [ ] T005 Update workspace dependency declarations for autonomous-cleaning packages in pyproject.toml
 
 ---
 
@@ -36,8 +36,8 @@
 - [ ] T008 [P] Define `CoverageProgress` message in src/roomba_cleaning_msgs/msg/CoverageProgress.msg
 - [ ] T009 [P] Define `CleaningEvent` message in src/roomba_cleaning_msgs/msg/CleaningEvent.msg
 - [ ] T010 [P] Define synchronous status query service in src/roomba_cleaning_msgs/srv/GetAutonomousCleaningStatus.srv
-- [ ] T011 Implement shared autonomous-cleaning configuration thresholds in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/config.py
-- [ ] T012 [P] Implement core domain enums and dataclasses for session, coverage, localization, and dock state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/models.py
+- [ ] T011 Implement shared threshold constants (`start>=0.30`, `low<0.20`, `recovery=1x30s`, `estop<=50ms`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/config.py
+- [ ] T012 [P] Implement core domain enums/dataclasses for session, coverage, localization, dock, and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/models.py
 - [ ] T013 Implement ROS2 node bootstrap, publishers, service/action servers, and timer wiring in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: Foundation ready — user-story implementation can now begin.
@@ -58,7 +58,7 @@
 - [ ] T017 [US1] Implement completion policy and terminal-state helper for coverage-finished sessions in src/roomba_cleaning_coverage/roomba_cleaning_coverage/completion_policy.py
 - [ ] T018 [US1] Implement Nav2 action client adapter for per-work-unit navigation execution in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
 - [ ] T019 [US1] Implement session state machine transitions for `idle->preparing->cleaning->completed` in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
-- [ ] T020 [US1] Integrate coverage planning and Nav2 execution loop into the runtime node in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T020 [US1] Integrate coverage planning and Nav2 execution loop into runtime orchestration in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: User Story 1 provides an autonomous-cleaning MVP.
 
@@ -66,37 +66,39 @@
 
 ## Phase 4: User Story 2 - 清掃を一時停止・再開・停止する (Priority: P1)
 
-**Goal**: Provide deterministic operator controls for pause, resume, and stop while preserving progress.
+**Goal**: Provide deterministic operator controls for pause/resume/stop and emergency-stop behavior while preserving progress.
 
-**Independent Test**: During an active session, call pause/resume/stop services and confirm behavior latency, state transitions, and proper end reasons.
+**Independent Test**: During an active session, call pause/resume/stop and estop endpoints and confirm latency bounds, state transitions, and resume constraints.
 
 ### Implementation for User Story 2
 
 - [ ] T021 [P] [US2] Implement interruption policies for pause/resume/stop semantics in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/interruption_policy.py
-- [ ] T022 [P] [US2] Implement operator status payload formatter for session phase and control state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
-- [ ] T023 [US2] Add `pause` service handling and motion-halt behavior in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T024 [US2] Add `resume` service handling with remaining-work queue reconstruction in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T025 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T026 [US2] Extend state machine transitions for `cleaning<->paused` and `cleaning/paused->stopped` in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [ ] T022 [P] [US2] Implement e-stop latch manager with explicit clear semantics in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/estop_manager.py
+- [ ] T023 [P] [US2] Implement operator status payload formatter for control phase and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+- [ ] T024 [US2] Add `pause` service handling and motion-halt behavior in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T025 [US2] Add `resume` service handling with remaining-work queue reconstruction and e-stop-clear prerequisite in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T026 [US2] Add `stop` service and action-cancel normalization to `operator_stop` end reason in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T027 [US2] Add `/autonomous_cleaning/estop` handling with `<=50ms` actuator stop enforcement in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T028 [US2] Extend state machine transitions for `cleaning<->paused`, `any->stopped (estop)`, and guarded resume in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
 
-**Checkpoint**: User Story 2 enables stable operator control over active sessions.
+**Checkpoint**: User Story 2 enables stable operator control and emergency-stop safety.
 
 ---
 
 ## Phase 5: User Story 3 - 中断が起きても残りの掃除を続ける (Priority: P2)
 
-**Goal**: Continue cleaning reachable regions after local failures and safely terminate when recovery is impossible.
+**Goal**: Continue cleaning reachable regions after local failures and safely terminate when bounded recovery is exhausted.
 
-**Independent Test**: Block part of the map and induce localization degradation; verify bounded recovery, skipped/blocked region tracking, and continued cleaning where reachable.
+**Independent Test**: Block part of the map and induce localization degradation; verify one recovery attempt (30s max), skipped/blocked tracking, and continued cleaning where reachable.
 
 ### Implementation for User Story 3
 
-- [ ] T027 [P] [US3] Implement localization-health supervisor with `healthy/degraded/lost` states in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
-- [ ] T028 [P] [US3] Implement work-unit retry and blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-- [ ] T029 [P] [US3] Implement per-unit retry and skip strategy in Nav2 adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
-- [ ] T030 [US3] Integrate degraded-localization bounded recovery and fail-to-incomplete behavior in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T031 [US3] Extend state machine transitions for `cleaning->incomplete` with interruption reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
-- [ ] T032 [US3] Publish blocked/remaining updates and interruption events during partial completion in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+- [ ] T029 [P] [US3] Implement localization-health supervisor with `healthy/degraded/lost` states in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
+- [ ] T030 [P] [US3] Implement work-unit retry and blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
+- [ ] T031 [P] [US3] Implement per-unit retry and skip strategy in Nav2 adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
+- [ ] T032 [US3] Integrate bounded recovery policy (`1 attempt`, `30s timeout`) into runtime orchestration in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T033 [US3] Extend state machine transitions for `cleaning->incomplete` with explicit interruption reasons in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
+- [ ] T034 [US3] Publish blocked/remaining updates and recovery events during partial completion in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
 
 **Checkpoint**: User Story 3 delivers resilient partial-completion behavior.
 
@@ -104,16 +106,16 @@
 
 ## Phase 6: User Story 4 - 清掃結果を確認する (Priority: P3)
 
-**Goal**: Make final and runtime cleaning outcomes observable with clear completion and interruption context.
+**Goal**: Make final and runtime cleaning outcomes observable with clear completion/interruption context, including low-battery and e-stop terminations.
 
-**Independent Test**: Execute sessions ending in completed, stopped, low-battery docked, and incomplete states; verify status, feedback, and result consistency.
+**Independent Test**: Execute sessions ending in completed, stopped, low-battery-docked, incomplete, and estop-stopped states; verify status/feedback/result consistency.
 
 ### Implementation for User Story 4
 
-- [ ] T033 [P] [US4] Implement dock-attempt adapter using `create_robot` battery and charging evidence in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/dock_adapter.py
-- [ ] T034 [P] [US4] Add final-result aggregation helpers for action results and status snapshots in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/result_builder.py
-- [ ] T035 [US4] Integrate low-battery transition to dock attempt and dock success/failure end-state handling in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
-- [ ] T036 [US4] Integrate `get_status` service and final result publication fields in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T035 [P] [US4] Implement dock-attempt adapter using `create_robot` battery and charging evidence in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/dock_adapter.py
+- [ ] T036 [P] [US4] Add final-result aggregation helpers for action results and status snapshots in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/result_builder.py
+- [ ] T037 [US4] Integrate low-battery transition (`<0.20`) to dock attempt and dock success/failure end-state handling in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
+- [ ] T038 [US4] Integrate `get_status` service and terminal result publication fields in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
 
 **Checkpoint**: User Story 4 provides operator-visible completion reporting and end-reason clarity.
 
@@ -121,12 +123,12 @@
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-**Purpose**: Final alignment across docs, launch flow, and acceptance validation.
+**Purpose**: Final alignment across launch flow, docs, and acceptance validation.
 
-- [ ] T037 [P] Add autonomous-cleaning launch composition for Nav2 dependencies and runtime node in src/roomba_autonomous_cleaning/launch/autonomous_cleaning.launch.py
-- [ ] T038 [P] Document package interfaces and operational constraints in src/roomba_autonomous_cleaning/README.md and src/roomba_cleaning_coverage/README.md
-- [ ] T039 Align quickstart execution and verification steps with implemented interfaces in specs/004-autonomous-cleaning/quickstart.md
-- [ ] T040 Align contract and data-model terminology with final implementation states in specs/004-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/004-autonomous-cleaning/data-model.md
+- [ ] T039 [P] Add autonomous-cleaning launch composition for Nav2 dependencies and runtime node in src/roomba_autonomous_cleaning/launch/autonomous_cleaning.launch.py
+- [ ] T040 [P] Document interfaces, thresholds, and safety constraints in src/roomba_autonomous_cleaning/README.md and src/roomba_cleaning_coverage/README.md
+- [ ] T041 Align quickstart verification steps with threshold and e-stop acceptance criteria in specs/004-autonomous-cleaning/quickstart.md
+- [ ] T042 Align contract and data-model terminology with final implementation states in specs/004-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/004-autonomous-cleaning/data-model.md
 
 ---
 
@@ -137,9 +139,9 @@
 - **Phase 1: Setup** — no dependencies
 - **Phase 2: Foundational** — depends on Phase 1; blocks all user stories
 - **Phase 3: US1 (MVP)** — depends on Phase 2
-- **Phase 4: US2** — depends on Phase 3 (operator controls extend active cleaning session loop)
-- **Phase 5: US3** — depends on Phases 3-4 (recovery/partial completion depends on established control and execution loop)
-- **Phase 6: US4** — depends on Phases 3-5 (final reporting depends on runtime outcomes and dock/interruption paths)
+- **Phase 4: US2** — depends on Phase 3 (control and e-stop extend active cleaning loop)
+- **Phase 5: US3** — depends on Phases 3-4 (recovery depends on established control and safety paths)
+- **Phase 6: US4** — depends on Phases 3-5 (final reporting depends on runtime and interruption outcomes)
 - **Phase 7: Polish** — depends on all target user stories being complete
 
 ### User Story Dependency Graph
@@ -158,43 +160,29 @@
 ## Parallel Opportunities
 
 - **Phase 1**: T002 and T003 can run in parallel after T001
-- **Phase 2**: T007, T008, T009, and T010 can run in parallel after T006
+- **Phase 2**: T007, T008, T009, T010, and T012 can run in parallel after T006/T011
 - **US1**: T014, T015, and T016 can run in parallel before T017-T020
-- **US2**: T021 and T022 can run in parallel before T023-T026
-- **US3**: T027, T028, and T029 can run in parallel before T030-T032
-- **US4**: T033 and T034 can run in parallel before T035-T036
-- **Polish**: T037 and T038 can run in parallel before T039-T040
+- **US2**: T021, T022, and T023 can run in parallel before T024-T028
+- **US3**: T029, T030, and T031 can run in parallel before T032-T034
+- **US4**: T035 and T036 can run in parallel before T037-T038
+- **Polish**: T039 and T040 can run in parallel before T041-T042
 
 ---
-
-## Parallel Example: User Story 1
-
-```text
-T014 [US1] Implement reachable-floor target-mask builder in src/roomba_cleaning_coverage/roomba_cleaning_coverage/target_mask.py
-T015 [US1] Implement coverage work-unit decomposition logic in src/roomba_cleaning_coverage/roomba_cleaning_coverage/work_unit_generator.py
-T016 [US1] Implement coverage progress tracker in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-```
 
 ## Parallel Example: User Story 2
 
 ```text
 T021 [US2] Implement interruption policies in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/interruption_policy.py
-T022 [US2] Implement operator status payload formatter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
+T022 [US2] Implement e-stop latch manager in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/estop_manager.py
+T023 [US2] Implement control/e-stop status formatter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/status_publisher.py
 ```
 
 ## Parallel Example: User Story 3
 
 ```text
-T027 [US3] Implement localization-health supervisor in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
-T028 [US3] Implement blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-T029 [US3] Implement retry/skip strategy in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
-```
-
-## Parallel Example: User Story 4
-
-```text
-T033 [US4] Implement dock-attempt adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/dock_adapter.py
-T034 [US4] Add final-result aggregation helpers in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/result_builder.py
+T029 [US3] Implement localization-health supervisor in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
+T030 [US3] Implement blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
+T031 [US3] Implement retry/skip strategy in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
 ```
 
 ---
@@ -212,9 +200,9 @@ T034 [US4] Add final-result aggregation helpers in src/roomba_autonomous_cleanin
 ### Incremental Delivery
 
 1. Deliver autonomous cleaning base loop (US1)
-2. Add pause/resume/stop control (US2)
-3. Add degraded-operation continuation and partial completion (US3)
-4. Add dock and operator-facing final result semantics (US4)
+2. Add pause/resume/stop and e-stop control (US2)
+3. Add bounded recovery and partial completion (US3)
+4. Add dock/final result reporting (US4)
 5. Finish with launch/docs/contract alignment (Polish)
 
 ### Suggested MVP Scope

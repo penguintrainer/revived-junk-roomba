@@ -27,9 +27,9 @@ Python 3.13+, ROS2 Jazzy (rclpy): Follow standard conventions
 
 ## Recent Changes
 - 004-autonomous-cleaning: Added Python 3.13+, ROS2 Jazzy (`rclpy`) + `create_robot`, `create_msgs`, `rclpy`, `nav2_msgs`, `geometry_msgs`, `nav_msgs`, `sensor_msgs`, `diagnostic_msgs`, `std_srvs`, `robot_localization`, `slam_toolbox`, `amcl`, `map_server`, `conduit-support`, `YDLidar-SDK`, `pytest`, `launch_testing`
+- 004-autonomous-cleaning: Added Python 3.13+, ROS2 Jazzy (`rclpy`) + `create_robot`, `create_msgs`, `rclpy`, `nav2_msgs`, `geometry_msgs`, `nav_msgs`, `sensor_msgs`, `diagnostic_msgs`, `std_srvs`, `robot_localization`, `slam_toolbox`, `amcl`, `map_server`, `conduit-support`, `YDLidar-SDK`, `pytest`, `launch_testing`
 - 003-joycon-manual-drive: Added Python 3.13+, ROS2 Jazzy (`rclpy`) + `joycon-python`, `hidapi`, `pyglm`, `create_robot`, `create_msgs`, `rclpy`, `geometry_msgs`, `diagnostic_msgs`, `std_msgs`, `pytest`, `launch_testing`
 
-- 002-random-cleaning-walk: Added Python 3.13+, ROS2 Jazzy (rclpy) + `create_robot`, `rclpy`, `geometry_msgs`, `sensor_msgs`, `std_msgs`, `diagnostic_msgs`, `pytest`, `launch_testing`
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

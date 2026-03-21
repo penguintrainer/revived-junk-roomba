@@ -65,15 +65,9 @@ All source code MUST follow SOLID principles:
 - **D** - Dependency Inversion: depend on abstractions, not concrete implementations.
 
 The primary implementor is a coding agent; human edits are exceptional events.
-<<<<<<< HEAD
-Code MUST be self-documenting (typed, docstrings on all public symbols) so that
-any agent or developer can make a safe, scoped change without requiring deep
-context of the full system.
-=======
 Code MUST be self-documenting (typed, with PEP 257-style docstrings on all
 functions, methods, and public symbols) so that any agent or developer can make
 a safe, scoped change without requiring deep context of the full system.
->>>>>>> 774dc2f078df758b0f04b2130284e278eee5448c
 
 **Rationale**: Agent-generated code that violates SOLID creates cascading breakage.
 Strict SOLID adherence is the primary defense against unintended side effects
@@ -95,17 +89,11 @@ Pure core logic enables fast, deterministic unit tests without a live robot.
 
 ### V. ROS2 & Python Coding Standards
 
-<<<<<<< HEAD
-All Python code MUST comply with PEP 8 (style) and PEP 257 (docstrings). Type
-annotations MUST be present on all function signatures (built-in generics or
-`typing`). Python version MUST be 3.13+ to leverage free-threaded execution.
-=======
 All Python code MUST comply with PEP 8 (style) and PEP 257 (docstrings). Every
 function and method MUST include a docstring in standard Python docstring format,
 including private helpers and boundary adapters. Type annotations MUST be present
 on all function signatures (built-in generics or `typing`). Python version MUST
 be 3.13+ to leverage free-threaded execution.
->>>>>>> 774dc2f078df758b0f04b2130284e278eee5448c
 ROS2 node naming, topic namespacing, parameter declaration, and lifecycle
 management MUST follow official ROS2 Jazzy coding guidelines. Linting via `ruff`
 and type checking via `mypy --strict` MUST pass before any merge. Library choices
@@ -184,10 +172,7 @@ driver internals into business-logic packages.
 - `mypy --strict` passes with zero type errors.
 - `pytest` passes with all unit and integration tests green.
 - No function exceeds 50 lines.
-<<<<<<< HEAD
-=======
 - All functions and methods include PEP 257-compliant docstrings.
->>>>>>> 774dc2f078df758b0f04b2130284e278eee5448c
 - All new ROS2 topics, services, and actions are documented in the owning
   package's `README.md`.
 - The `plan.md` Constitution Check section is explicitly verified against all
@@ -223,8 +208,4 @@ All PRs that introduce new ROS2 nodes or Python modules MUST be reviewed against
 this constitution. Any decision that appears to violate a principle MUST be
 justified in the plan's Complexity Tracking section.
 
-<<<<<<< HEAD
-**Version**: 1.0.0 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
-=======
 **Version**: 1.0.1 | **Ratified**: 2026-03-21 | **Last Amended**: 2026-03-21
->>>>>>> 774dc2f078df758b0f04b2130284e278eee5448c

@@ -49,6 +49,7 @@ Verify before cleaning:
 - laser scans are fresh
 - current pose is stable on the known map
 - `/diagnostics` shows no blocking driver faults
+- battery charge ratio is >= 0.30 (session start threshold)
 
 ## 5) Start the Autonomous Cleaning Node
 
@@ -87,12 +88,20 @@ Expected behavior:
 
 ## 8) Validate Low-Battery and Localization Recovery
 
-- Simulate or trigger low battery and confirm the session transitions to `docking`.
+- Start with battery >= 0.30 and confirm session start is accepted; then test battery < 0.30 and confirm start is rejected.
+- Simulate or trigger low battery (< 0.20) and confirm the session transitions to `docking`.
 - Confirm the dock adapter issues the dock request through the Roomba driver and records success or failure.
 - Simulate localization degradation and confirm the supervisor first attempts bounded recovery.
+- Confirm recovery is at most 1 attempt and completes within 30 seconds before terminal fallback.
 - Confirm `lost` localization ends the session safely as `incomplete` if recovery fails.
 
-## 9) Validation Commands
+## 9) Validate E-Stop Behavior
+
+- Trigger `/autonomous_cleaning/estop` during `cleaning`, `paused`, and `docking` phases.
+- Verify motion and cleaning outputs transition to zero within 50 ms.
+- Verify session does not resume until explicit e-stop clear and readiness checks pass.
+
+## 10) Validation Commands
 
 - `ruff check src tests`
 - `mypy --strict src`

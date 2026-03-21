@@ -26,7 +26,7 @@
 
 ## Decision 5: 低バッテリー時は coverage を中断し、`create_robot` の dock 機能を adapter 越しに試行する
 
-- Decision: battery 信号は `create_robot` が公開する charge ratio / charging state / diagnostics を正とし、閾値未満時は coverage mission を中断して dock adapter に制御を委譲する。dock 成功/失敗は session outcome と `DockAttempt` で表現する。
+- Decision: battery 信号は `create_robot` が公開する charge ratio / charging state / diagnostics を正とし、開始判定は 30%以上、低電力遷移は 20%未満で判定する。閾値到達時は coverage mission を中断して dock adapter に制御を委譲し、dock 成功/失敗は session outcome と `DockAttempt` で表現する。
 - Rationale: Roomba577 の充電接点制御は hardware-specific であり、cleaning session から切り離した adapter へ置く方が SOLID と将来の Nav2 docking 差し替えに適する。低バッテリーは navigation fault ではなく session-level interrupt として扱うべきである。
 - Alternatives considered: Nav2 だけで docking まで完結させる設計（charger 接触 semantics が別問題として残る）、battery 低下後も coverage 継続（仕様違反）、dock 成功を command publish 完了だけでみなす設計（結果観測にならない）。
 
@@ -41,3 +41,9 @@
 - Decision: runtime は `covered_area_m2`、`remaining_area_m2`、`blocked_area_m2`、`covered_ratio` を常に公開し、セッション terminal state は `completed` / `incomplete` / `stopped` / `low_battery_docked` / `failed` で返す。品質判定は success criteria に従い 90%以上処理で受け入れ確認する。
 - Rationale: 現時点では operator-facing 完了判定よりも、まず raw metrics を正確に残す方が将来のしきい値調整に強い。spec の成功基準とも矛盾しない。
 - Alternatives considered: 未実施エリア 1 箇所で常に `incomplete` 扱い（運用が厳しすぎる可能性）、未実施率しきい値を今この段階で内部ロジックに固定する設計（後続 feature の zone semantics と衝突しやすい）。
+
+## Decision 8: e-stop はセッション制御より上位の安全割り込みとして扱い、50ms 以内停止を最優先する
+
+- Decision: e-stop は任意フェーズで受け付ける system-wide safety interrupt とし、受信後 50ms 以内に移動・清掃アクチュエータを停止し、明示解除まで再開不可にする。
+- Rationale: 憲章の Safety-First 原則と spec の FR-020〜FR-022 / SC-008 を満たすには、Nav2 進行状況や pause 状態に依存しない最上位停止パスが必要である。
+- Alternatives considered: stop service への統合（処理遅延が増える）、phase ごと個別停止（漏れが生じやすい）、e-stop 後の自動再開（安全要件違反）。

@@ -102,6 +102,37 @@
   - `resolved=true` implies `ended_at` and `resolution` are present
   - unresolved records may exist only while session is active or paused
 
+## Entity: OperationThresholdPolicy
+
+- Purpose: 自動清掃セッションで使用する固定閾値の定義と検証。
+- Fields:
+  - start_min_battery_ratio (float)
+  - low_battery_ratio (float)
+  - recovery_attempt_limit (int)
+  - recovery_timeout_sec (int)
+  - estop_stop_deadline_ms (int)
+- Validation rules:
+  - `start_min_battery_ratio = 0.30`
+  - `low_battery_ratio = 0.20`
+  - `start_min_battery_ratio > low_battery_ratio`
+  - `recovery_attempt_limit = 1`
+  - `recovery_timeout_sec = 30`
+  - `estop_stop_deadline_ms = 50`
+
+## Entity: EStopState
+
+- Purpose: e-stop 発動状態と解除条件を管理する安全ラッチ。
+- Fields:
+  - active (bool)
+  - triggered_at (datetime, nullable)
+  - trigger_source (enum: operator, system, external_service)
+  - cleared_at (datetime, nullable)
+  - clear_source (enum: explicit_operator_clear, maintenance_clear)
+- Validation rules:
+  - `active=true` implies `triggered_at` is present
+  - `active=false` with prior trigger implies `cleared_at` is present
+  - while `active=true`, cleaning motion and actuator output are disallowed
+
 ## State Transitions
 
 - idle -> preparing: start request accepted and startup checks begin.
@@ -113,6 +144,8 @@
 - cleaning -> cleaning: work unit completion, retry, or region skip occurs while session remains active.
 - cleaning -> incomplete: localization lost, dock failure, or unrecoverable navigation failure ends the session.
 - cleaning -> stopped: operator stop accepted.
+- any active state -> stopped: e-stop accepted and actuators are stopped within 50 ms.
+- stopped -> cleaning: e-stop cleared explicitly and start/resume preconditions are re-validated.
 - docking -> completed: docking succeeds and session is treated as successful low-battery termination.
 - docking -> incomplete: docking fails and robot safe-stops.
 
@@ -123,3 +156,4 @@
 - `LocalizationHealth.state=lost` forbids cleaning motion and forces either retry logic or terminal stop.
 - Work units marked `blocked` or `skipped` remain part of final reporting and are never silently discarded.
 - Pause preserves coverage state; resume rebuilds a fresh execution queue from remaining work units.
+- E-stop active state always overrides pause/resume/stop intent and blocks motion until explicit clear.

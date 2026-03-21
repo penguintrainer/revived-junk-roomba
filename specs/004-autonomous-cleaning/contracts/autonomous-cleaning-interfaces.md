@@ -82,7 +82,8 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 - Type: `std_srvs/srv/Trigger`
 - Purpose: テスト/運用用の明示的 e-stop
 - Requirement:
-  - 受信後 1 制御周期以内に zero `cmd_vel` と cleaning off を反映する
+  - 受信後 50ms 以内（1 制御周期以内）に zero `cmd_vel` と cleaning off を反映する
+  - 明示的な解除 service/操作があるまで再開を受け付けない
 
 ## Published Topics
 
@@ -171,6 +172,9 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 
 - Cleaning scope is always the full reachable floor area of the active map.
 - Partial blockage of one region must not immediately fail the entire session if other reachable work remains.
+- Session start requires battery charge ratio >= 0.30.
 - Low battery must transition the session to dock handling before any additional cleaning work is scheduled.
+- Low-battery transition threshold is battery charge ratio < 0.20.
+- Automatic recovery for localization/navigation continuity is limited to one attempt with a 30-second timeout.
 - Dock success/failure is outcome-based and must be observed, not inferred solely from command publication.
 - All new topics, services, and actions must also be documented in the owning package README.
