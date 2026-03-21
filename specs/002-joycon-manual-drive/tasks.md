@@ -125,6 +125,8 @@
 - [ ] T035 Align final interface semantics, fault behavior, and override notes in specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
 - [ ] T036 Validate dependency/install guidance and executable references in pyproject.toml and specs/002-joycon-manual-drive/quickstart.md
 
+**Note**: 003 Phase 8 (T062-T068) にて本機能のソースおよび契約ファイルが Cross-Feature Migration の対象となる。詳細は specs/003-autonomous-cleaning/tasks.md Phase 8 を参照。
+
 ---
 
 ## Phase 8: Tests
@@ -143,6 +145,7 @@
 ### Integration Tests
 
 - [ ] T041 Implement integration test for manual_drive_node wiring (cmd_vel, status, motor topics, estop service) in tests/integration/test_manual_drive_node.py
+- [ ] T041a Write integration test for create_robot driver bridge serial command sequences in tests/integration/test_driver_bridge.py
 
 ### Contract Tests
 

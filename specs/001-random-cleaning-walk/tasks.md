@@ -105,6 +105,7 @@
 ### Tests for User Story 3
 
 - [ ] T032 [P] [US3] Write contract tests for published topic schemas in tests/contract/test_interfaces_contract.py
+- [ ] T033a [P] [US3] Write unit tests for JSON Lines persistence helpers in tests/unit/test_persistence.py
 
 **Checkpoint**: User Story 3 makes the feature observable and auditable in operation.
 
@@ -116,7 +117,10 @@
 
 - [ ] T024 [P] Document ROS2 interfaces, safety assumptions, and operating limits in src/roomba_cleaning_nav/random_cleaning/README.md
 - [ ] T025 Update operator validation steps and command examples in specs/001-random-cleaning-walk/quickstart.md
+- [ ] T025a Document SC-005 manual verification procedure (coverage ratio grid calculation and turn frequency log analysis) in specs/001-random-cleaning-walk/quickstart.md
 - [ ] T026 Run the documentation alignment pass for interface semantics in specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
+
+**Note**: 003 Phase 8 (T062-T068) にて本機能のソースおよび契約ファイルが Cross-Feature Migration の対象となる。詳細は specs/003-autonomous-cleaning/tasks.md Phase 8 を参照。
 
 ---
 
@@ -152,7 +156,7 @@
 - **US2**: T015, T016, and T017 can run in parallel before T018
 - **US2 Tests**: T030 can run in parallel with T031's prerequisites
 - **US3**: T020 and T021 can run in parallel before T022/T023
-- **US3 Tests**: T032 can run after T020
+- **US3 Tests**: T032 and T033a can run in parallel after T021
 - **Polish**: T024 can run in parallel with T025 once implementation is complete
 
 ---

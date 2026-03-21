@@ -17,8 +17,8 @@ Roomba577 を `create_robot` でシリアル制御し、ROS2 Jazzy + Python 3.13
 **Testing**: `pytest`（coverage/状態遷移/閾値判定） + `launch_testing`（ROS2 統合） + recorded bag replay + hardware-in-the-loop smoke test  
 **Target Platform**: Ubuntu 24.04.4 LTS 上の Nintendo Switch 搭載計算機 + Roomba577 シリアル接続 + YDLIDAR T-mini Plus + iPhone XR (Conduit)  
 **Project Type**: マルチ ROS2 Python package 構成の単一リポジトリ  
-**Performance Goals**: 自動清掃開始10秒以内、pause/stop反映2秒以内、復旧判定30秒以内、低電力遷移60秒以内、e-stop停止50ms以内、`/diagnostics` 必須キー更新1秒以内、部分失敗時も残エリア継続率90%以上  
-**Constraints**: `cmd_vel` を通常移動の正規IFとして維持（`create_robot` driver が `/cmd_vel` を直接 subscribe する前提。autonomous_cleaning パッケージは `/cmd_vel` への publish のみ行い Roomba シリアル制御には直接関与しない。ドック復帰時のみ `dock_adapter` 経由で `create_robot` の dock コマンドを発行する）、known-map運用のみ、`map->odom` 非健全時は開始/再開禁止、低電力時はドック復帰優先、e-stop解除は `clear_estop` の前提条件（停止達成・安全故障なし）を満たす場合のみ許可、main executor threadでblocking I/O禁止、関数50行以内、PEP 257 docstring必須  
+**Performance Goals**: 自動清掃開始10秒以内、pause/stop反映2秒以内、復旧判定30秒以内、低電力遷移60秒以内、e-stop停止50ms以内、`/diagnostics` 必須キー更新1秒以内、部分失敗時も残エリア継続率90%以上、制御ループ周波数 >=20Hz（e-stop 50ms 要件の前提）  
+**Constraints**: `cmd_vel` を通常移動の正規IFとして維持（`create_robot` driver が `/cmd_vel` を直接 subscribe する前提。autonomous_cleaning パッケージは `/cmd_vel` への publish のみ行い Roomba シリアル制御には直接関与しない。ドック復帰時のみ `dock_adapter` 経由で `create_robot` の dock コマンドを発行する）、known-map運用のみ、`map->odom` 非健全時は開始/再開禁止、低電力時はドック復帰優先、e-stop解除は `clear_estop` の前提条件（停止達成・安全故障なし・PerceptionFusionHealth が lost ではない）を満たす場合のみ許可、perception stale タイムアウト（LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s — ROS2パラメータで変更可能）、main executor threadでblocking I/O禁止、関数50行以内、PEP 257 docstring必須  
 **Scale/Scope**: 単一ロボット・単一フロア地図・1セッションずつ。清掃対象は到達可能な全床面（部屋/ゾーン選択は対象外）
 
 ## Constitution Check
@@ -132,6 +132,8 @@ Features 001 (`random_cleaning/`) and 002 (`manual_drive/`) are currently implem
 5. **Coexistence**: Until migration is complete, 001/002 modules remain functional within `roomba_cleaning_nav`. The multi-package architecture does not break existing module boundaries — it formalizes them at the ROS2 package level.
 
 **Migration is not a blocker for 003 MVP validation** but MUST be completed before 003 is merged to main. Migration tasks are tracked as T062-T068 in tasks.md.
+
+6. **Mode Arbitration**: 3モード（random_cleaning / manual_drive / autonomous_cleaning）の排他制御は、Cross-Feature Migration 完了後に `roomba_cleaning_msgs` の `RobotOperationMode.msg` を仲介点とし、各ノードが mode topic を subscribe して自身の非アクティブ時は `cmd_vel` 発行を抑止する設計とする。詳細仕様は 003 統合テスト時に確定する。
 
 ## Complexity Tracking
 

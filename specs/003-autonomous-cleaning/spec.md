@@ -113,7 +113,7 @@
 - **FR-020**: システムは、運用中の任意フェーズでe-stop要求を受け付けなければならない。
 - **FR-021**: システムは、FR-020のe-stop要求受信後、**50ms以内（1制御周期以内）**に移動および清掃アクチュエータを停止しなければならない。
 - **FR-022**: システムは、e-stop発動後、明示的な解除操作があるまで清掃再開を許可してはならない。
-- **FR-023**: システムは、自律走行中の障害物回避判定において、LiDAR・RGBカメラ・RGBDカメラ由来の障害物情報を統合して利用しなければならない。3ソースのうち1ソースが stale の場合は残り2ソースで degraded 運用を許可し清掃を継続する。2ソース以上が同時に stale の場合は PerceptionFusionHealth を lost と判定し、清掃動作を停止して安全停止へ遷移しなければならない。
+- **FR-023**: システムは、自律走行中の障害物回避判定において、LiDAR・RGBカメラ・RGBDカメラ由来の障害物情報を統合して利用しなければならない。各センサーソースの stale 判定タイムアウトは、LiDAR: 1.0 秒、RGB: 2.0 秒、RGBD: 2.0 秒とする。タイムアウト値は ROS2 パラメータ (`perception_fusion.lidar_stale_timeout_s`, `perception_fusion.rgb_stale_timeout_s`, `perception_fusion.rgbd_stale_timeout_s`) で変更可能とする。3ソースのうち1ソースが stale の場合は残り2ソースで degraded 運用を許可し清掃を継続する。2ソース以上が同時に stale の場合は PerceptionFusionHealth を lost と判定し、清掃動作を停止して安全停止へ遷移しなければならない。
 - **FR-024**: システムは、`/autonomous_cleaning/clear_estop` インターフェースを提供し、e-stop解除は「ロボットが停止している」「アクティブな安全故障がない」「センサー鮮度が回復している（PerceptionFusionHealth が lost ではない）」の3条件を満たす場合にのみ成功させなければならない。
 - **FR-025**: システムは、`/diagnostics` に自ノードの状態を公開し、少なくとも `session_state` `localization_health` `battery_charge_ratio` `dock_attempt_state` `estop_latched` を含めなければならない。
 
@@ -141,6 +141,7 @@
 - e-stop解除要求時に「停止未達」または「安全故障あり」の場合は、解除を拒否して安全停止状態を維持する。
 - 閉じたドアや家具移動などで一時的に行けない場所は、そのセッションでは未実施エリアとして扱う。
 - バッテリー開始閾値（30%）と低バッテリー閾値（20%）は、自律走行がセンサーフュージョン・Nav2・SLAM を常時稼働させるため、001-random-cleaning-walk の閾値（20%/10%）より高く設定している。
+- 同時に複数の清掃モード（random_cleaning / manual_drive / autonomous_cleaning）がアクティブになることはない前提とする。モード間の排他制御は Cross-Feature Migration (003 Phase 8) で実装する。
 
 ## Success Criteria *(mandatory)*
 

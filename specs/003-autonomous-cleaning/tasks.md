@@ -56,7 +56,7 @@
 - [ ] T015 [P] [US1] Implement reachable-floor target-mask builder from static map and exclusion layers in src/roomba_cleaning_coverage/roomba_cleaning_coverage/target_mask.py
 - [ ] T016 [P] [US1] Implement coverage work-unit decomposition logic in src/roomba_cleaning_coverage/roomba_cleaning_coverage/work_unit_generator.py
 - [ ] T017 [P] [US1] Implement coverage progress tracker for covered/remaining/blocked area metrics in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
-- [ ] T018 [P] [US1] Implement obstacle evidence fusion from LiDAR/RGB/RGBD for avoidance decisions in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
+- [ ] T018 [P] [US1] Implement obstacle evidence fusion from LiDAR/RGB/RGBD for avoidance decisions with configurable stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s via ROS2 parameters) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
 - [ ] T019 [US1] Implement completion policy and terminal-state helper for coverage-finished sessions in src/roomba_cleaning_coverage/roomba_cleaning_coverage/completion_policy.py
 - [ ] T020 [US1] Implement Nav2 action client adapter for per-work-unit navigation execution in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
 - [ ] T021 [US1] Implement session state machine baseline transitions for `idle->preparing->cleaning->completed` in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_state_machine.py
@@ -97,7 +97,7 @@
 ### Implementation for User Story 3
 
 - [ ] T032 [P] [US3] Implement localization-health supervisor with `healthy/degraded/lost` states in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/localization_supervisor.py
-- [ ] T033 [P] [US3] Implement perception-fusion health supervisor and degraded/lost transitions in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
+- [ ] T033 [P] [US3] Implement perception-fusion health supervisor and degraded/lost transitions using configured stale timeouts (LiDAR: 1.0s, RGB: 2.0s, RGBD: 2.0s) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/perception_fusion.py
 - [ ] T034 [P] [US3] Implement work-unit retry and blocked-region marking rules in src/roomba_cleaning_coverage/roomba_cleaning_coverage/coverage_tracker.py
 - [ ] T035 [P] [US3] Implement per-unit retry and skip strategy in Nav2 adapter in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/nav2_adapter.py
 - [ ] T036 [US3] Integrate bounded recovery policy (`1 attempt`, `30s timeout`) into runtime orchestration in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
@@ -135,6 +135,7 @@
 - [ ] T046 Align quickstart verification steps with SC-009/SC-010 acceptance criteria in specs/003-autonomous-cleaning/quickstart.md
 - [ ] T047 Align contract and data-model terminology with final implementation states in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/003-autonomous-cleaning/data-model.md
 - [ ] T048 [P] Ensure map artifact directory exists at src/roomba_cleaning_nav/maps/ with a placeholder README
+- [ ] T048a [P] Configure pytest-cov minimum branch coverage threshold (>=80%) in pyproject.toml [tool.pytest.ini_options] and verify with pytest --cov --cov-branch
 
 ---
 
@@ -172,6 +173,7 @@
 - [ ] T059 Write integration test for e-stop latency enforcement in tests/integration/test_estop_latency.py
 - [ ] T060 Write integration test for clear-estop precondition checks in tests/integration/test_clear_estop_preconditions.py
 - [ ] T061 Write integration test for /diagnostics publish rate and required keys in tests/integration/test_diagnostics_publish_rate.py
+- [ ] T069a Write integration test for perception fusion degraded/lost transitions with simulated stale-source scenarios in tests/integration/test_perception_fusion_integration.py
 
 **Checkpoint**: All constitution quality gate tests authored and passing.
 
