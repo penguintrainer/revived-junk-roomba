@@ -38,7 +38,7 @@
 
 ## Decision 7: 完了判定は raw area metrics を公開しつつ、受け入れ基準は「到達可能床面の 90%以上処理」で検証する
 
-- Decision: runtime は `covered_area_m2`、`remaining_area_m2`、`blocked_area_m2`、`covered_ratio` を常に公開し、セッション terminal state は `completed` / `incomplete` / `stopped` / `low_battery_docked` / `failed` で返す。品質判定は success criteria に従い 90%以上処理で受け入れ確認する。
+- Decision: runtime は `covered_area_m2`、`remaining_area_m2`、`blocked_area_m2`、`covered_ratio` を常に公開し、セッション terminal state は FR-014 の正規語彙（`completed` / `incomplete` / `safety_stopped`）のみを使い、終了の詳細は `end_reason`（`coverage_complete` / `operator_stop` / `dock_success` / `dock_failure` / `localization_lost` / `startup_rejected` / `internal_fault`）で識別する。品質判定は success criteria に従い 90%以上処理で受け入れ確認する。
 - Rationale: 現時点では operator-facing 完了判定よりも、まず raw metrics を正確に残す方が将来のしきい値調整に強い。spec の成功基準とも矛盾しない。
 - Alternatives considered: 未実施エリア 1 箇所で常に `incomplete` 扱い（運用が厳しすぎる可能性）、未実施率しきい値を今この段階で内部ロジックに固定する設計（後続 feature の zone semantics と衝突しやすい）。
 

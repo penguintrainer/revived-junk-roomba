@@ -15,9 +15,9 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 
 - `map_id` (string)
 - `target_scope` (enum/string: `full_reachable_floor`)
-- `resume_policy` (enum/string: `resume_remaining_work`)
+- `resume_policy` (enum/string: `resume_remaining_work`) *(reserved for future use; always `resume_remaining_work` in this version)*
 - `low_battery_policy` (enum/string: `dock_then_stop`)
-- `keepout_revision` (string)
+- `keepout_revision` (string) *(reserved for future use; empty string or omitted in this version)*
 
 #### Feedback fields
 
@@ -32,7 +32,7 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 
 #### Result fields
 
-- `terminal_state` (`completed|incomplete|stopped|low_battery_docked|failed`)
+- `terminal_state` (`completed|incomplete|safety_stopped`)
 - `covered_ratio` (float)
 - `covered_area_m2` (float)
 - `remaining_area_m2` (float)
@@ -41,6 +41,8 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 - `end_reason` (`coverage_complete|operator_stop|dock_success|dock_failure|localization_lost|startup_rejected|internal_fault`)
 
 #### Rules
+
+- `terminal_state` は FR-014 の正規状態語彙のうち terminal に該当する値のみを取る。セッション終了の詳細は `end_reason` で識別する（例: dock 成功 → `terminal_state=completed`, `end_reason=dock_success`）。
 
 - `target_scope` はこの feature version では常に `full_reachable_floor`。
 - runtime feedback は Nav2 内部値ではなく、cleaning domain の area/work-unit 状態を返す。
@@ -140,11 +142,12 @@ Roomba577 の known-map 自動清掃で公開・依存する action / service / 
 - Purpose: node health, freshness, latency, battery, dock-attempt context
 - Required keys:
   - `session_state`
-  - `covered_ratio`
   - `localization_health`
   - `battery_charge_ratio`
   - `dock_attempt_state`
   - `estop_latched`
+- Additional recommended keys (not required by FR-025):
+  - `covered_ratio`
   - `nav2_goal_active`
 
 ## Subscribed Topics / Actions

@@ -16,13 +16,13 @@ Roomba577 のランダム清掃モードで外部公開するトピック/サー
 
 ### `/random_cleaning/state` (publish)
 
-- Type: `std_msgs/msg/String`（初期）
+- Type: `std_msgs/msg/String`（初期リリース。003-autonomous-cleaning 以降でカスタムメッセージ型への移行を検討する）
 - Allowed values: `idle`, `cleaning_forward`, `cleaning_turn`, `safety_stop`, `fault`
 - Purpose: オペレータ向け簡易状態通知
 
 ### `/random_cleaning/safety_event` (publish)
 
-- Type: `std_msgs/msg/String`（初期）
+- Type: `std_msgs/msg/String`（初期リリース。003-autonomous-cleaning 以降でカスタムメッセージ型への移行を検討する）
 - Payload format: `event_type|severity|timestamp|detail_code`
 - Purpose: 主要安全イベントの通知
 

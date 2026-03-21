@@ -1,7 +1,7 @@
 # Implementation Plan: Autonomous Cleaning
 
-**Branch**: `004-autonomous-cleaning` | **Date**: 2026-03-21 | **Spec**: `specs/004-autonomous-cleaning/spec.md`
-**Input**: Feature specification from `/specs/004-autonomous-cleaning/spec.md`
+**Branch**: `003-autonomous-cleaning` | **Date**: 2026-03-21 | **Spec**: `specs/003-autonomous-cleaning/spec.md`
+**Input**: Feature specification from `/specs/003-autonomous-cleaning/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
@@ -48,7 +48,7 @@ Roomba577 を `create_robot` でシリアル制御し、ROS2 Jazzy + Python 3.13
 ### Documentation (this feature)
 
 ```text
-specs/004-autonomous-cleaning/
+specs/003-autonomous-cleaning/
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -88,8 +88,7 @@ src/
 │       ├── localization_supervisor.py
 │       ├── dock_adapter.py
 │       ├── estop_manager.py
-│       ├── status_publisher.py
-│       └── interruption_policy.py
+│       ├── status_publisher.py       ├── result_builder.py│       └── interruption_policy.py
 └── roomba_cleaning_nav/
     └── maps/
 

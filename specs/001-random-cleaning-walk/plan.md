@@ -1,7 +1,7 @@
 # Implementation Plan: Roomba-like Random Walk Cleaning
 
-**Branch**: `002-random-cleaning-walk` | **Date**: 2026-03-21 | **Spec**: `specs/002-random-cleaning-walk/spec.md`
-**Input**: Feature specification from `/specs/002-random-cleaning-walk/spec.md`
+**Branch**: `001-random-cleaning-walk` | **Date**: 2026-03-21 | **Spec**: `specs/001-random-cleaning-walk/spec.md`
+**Input**: Feature specification from `/specs/001-random-cleaning-walk/spec.md`
 
 ## Summary
 
@@ -46,7 +46,7 @@ Roomba 577 を `create_robot` でシリアル制御し、ROS2 Jazzy + Python 3.1
 ### Documentation (this feature)
 
 ```text
-specs/002-random-cleaning-walk/
+specs/001-random-cleaning-walk/
 ├── plan.md
 ├── research.md
 ├── data-model.md

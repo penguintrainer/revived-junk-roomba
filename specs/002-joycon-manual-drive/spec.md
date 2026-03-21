@@ -1,6 +1,6 @@
 # Feature Specification: Joy-Con Manual Drive Cleaning
 
-**Feature Branch**: `003-joycon-manual-drive`
+**Feature Branch**: `002-joycon-manual-drive`
 **Created**: 2026-03-21
 **Status**: Draft
 **Input**: User description: "Joy-Conによるマニュアル走行での掃除をする機能。前進・後退・その場旋回、清掃の有無をボタン入力で実施。バーチャルウォルールなどの禁止領域についても、マニュアル走行時は無視する。"
@@ -104,13 +104,12 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 - **FR-001**: The system MUST accept directional movement commands (forward, backward, rotate-left, rotate-right) from the **Left Joy-Con** d-pad in real time (↑=forward, ↓=backward, ←=rotate-left, →=rotate-right).
 - **FR-002**: The system MUST translate Left Joy-Con d-pad input into robot velocity commands at a fixed linear speed of **150 mm/s** (forward/backward) and angular speed of **1.0 rad/s** (rotation) while the button is held.
 - **FR-003**: The system MUST stop all robot movement within 0.3 seconds when all directional inputs are released.
-- **FR-004**: The system MUST provide a dedicated Left Joy-Con button (minus or SR/SL) that toggles manual drive mode only after a continuous 1-second long-press.
+- **FR-004**: The system MUST provide a dedicated Left Joy-Con button (**minus**) that toggles manual drive mode only after a continuous 1-second long-press.
 - **FR-005**: The system MUST publish the current operating mode (manual / autonomous / idle) and cleaning state as observable state on a ROS2 status topic.
-- **FR-006**: The system MUST provide a dedicated Left Joy-Con button (ZL or L) to toggle the Roomba's cleaning functions (brush and suction) on and off.
+- **FR-006**: The system MUST provide a dedicated Left Joy-Con button (**ZL**) to toggle the Roomba's cleaning functions (brush and suction) on and off.
 - **FR-007**: The system MUST allow movement and cleaning state to be controlled independently.
 - **FR-008**: The system MUST suppress all virtual wall, keep-out zone, and forbidden area constraints while manual drive mode is active.
 - **FR-009**: The system MUST re-enforce all spatial constraints immediately upon exiting manual drive mode.
-- **FR-010**: The system MUST automatically deactivate cleaning and stop movement if Joy-Con communication is lost for more than 1 second (fail-safe behavior).
 - **FR-010**: The system MUST automatically deactivate cleaning, stop movement, and exit manual drive mode if Joy-Con communication is lost for more than 1 second (fail-safe behavior).
 - **FR-011**: The system MUST honor the Roomba's built-in hardware cliff sensors even during manual drive mode.
 - **FR-012**: The system MUST apply a deterministic priority rule when conflicting directional buttons are pressed simultaneously.
@@ -123,7 +122,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 ### Key Entities
 
 - **ManualDriveMode**: The active/inactive state of manual control; holds the current mode, active movement direction, and cleaning state.
-- **JoyConInput**: The raw button state received from the **Left Joy-Con** controller at each polling cycle; relevant inputs are d-pad (4 directions), ZL/L (cleaning toggle), and minus/SR/SL (mode switch).
+- **JoyConInput**: The raw button state received from the **Left Joy-Con** controller at each polling cycle; relevant inputs are d-pad (4 directions), ZL (cleaning toggle), and minus (mode switch).
 - **VelocityCommand**: The linear and angular velocity values sent to the robot's motion controller, derived from JoyConInput.
 - **CleaningCommand**: The on/off command sent to the Roomba's brush and suction actuators.
 - **OperatorStatus**: The published state containing the current operating mode, cleaning state, and relevant fault notifications for operators and other ROS2 nodes.
@@ -135,7 +134,6 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 
 - **SC-001**: The robot responds to directional Left Joy-Con d-pad input within 300 milliseconds of button press and moves at the configured preset speed (linear 150 mm/s, angular 1.0 rad/s) under normal operating conditions.
 - **SC-002**: The robot comes to a complete stop within 300 milliseconds of all directional inputs being released.
-- **SC-003**: The robot stops all movement and cleaning within 1 second of Joy-Con communication loss (fail-safe).
 - **SC-003**: The robot stops all movement and cleaning, exits manual drive mode, and remains stopped within 1 second of Joy-Con communication loss (fail-safe).
 - **SC-004**: The cleaning toggle reliably activates and deactivates the Roomba's physical cleaning functions 100% of the time under normal conditions.
 - **SC-005**: All configured virtual walls and forbidden zones are fully bypassed in manual drive mode — the robot crosses defined boundaries when commanded.
@@ -149,7 +147,7 @@ When the operator explicitly activates manual drive mode, any virtual walls, kee
 ## Assumptions
 
 - The **Left Joy-Con** controller is connected and paired to the system before manual drive mode is initiated.
-- The Left Joy-Con button mapping is: d-pad ↑/↓/←/→ for movement, ZL or L for cleaning toggle, minus or SR/SL for mode entry/exit.
+- The Left Joy-Con button mapping is: d-pad ↑/↓/←/→ for movement, ZL for cleaning toggle, minus for mode entry/exit.
 - The Left Joy-Con mode button uses a 1-second long-press to toggle entry and exit of manual drive mode; shorter presses are ignored.
 - Movement speed is fixed at **linear 150 mm/s** and **angular 1.0 rad/s**; speed is not variable via Joy-Con input in this feature version.
 - The Roomba 577's serial interface via `create_robot` exposes control over brush and suction independently of movement commands.

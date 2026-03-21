@@ -8,6 +8,7 @@
 - Roomba577 connected over serial and supported by `create_robot`
 - YDLIDAR T-mini Plus publishing 2D LiDAR scans
 - iPhone XR connected through Conduit and publishing IMU data
+- Intel RealSense D435i connected and publishing RGBD data via `realsense2_camera`
 - Nav2, `robot_localization`, `slam_toolbox`, and `map_server` installed
 - A saved 2D occupancy map for the cleaning environment
 
@@ -40,8 +41,9 @@ Expected artifact:
 
 1. Launch the Roomba driver and confirm battery / diagnostics topics are available.
 2. Launch the LiDAR and Conduit bridges.
-3. Start `robot_localization` for fused local odometry.
-4. Start `map_server`, `amcl`, and the Nav2 stack against the saved map.
+3. Launch the RealSense D435i driver (`ros2 launch realsense2_camera rs_launch.py`) and confirm depth + color topics are publishing.
+4. Start `robot_localization` for fused local odometry.
+5. Start `map_server`, `amcl`, and the Nav2 stack against the saved map.
 
 Verify before cleaning:
 

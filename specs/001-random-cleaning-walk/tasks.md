@@ -1,9 +1,9 @@
 # Tasks: Roomba-like Random Walk Cleaning
 
-**Input**: Design documents from `/specs/002-random-cleaning-walk/`
+**Input**: Design documents from `/specs/001-random-cleaning-walk/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/random-cleaning-interfaces.md
 
-**Tests**: No standalone test-writing tasks are listed because the feature spec did not explicitly request TDD/test-first execution. Validation is captured through implementation-ready tasks plus quickstart walkthrough and final validation.
+**Tests**: Constitution の品質ゲート（pytest 100% green）を満たすため、各フェーズにテストタスクを配置。ユニットテストは pytest、統合テストは launch_testing を使用する。
 
 **Organization**: Tasks are grouped by user story so each increment can be implemented and validated in order.
 
@@ -54,6 +54,12 @@
 - [ ] T013 [US1] Publish forward and turn `cmd_vel` commands from the control loop in src/roomba_cleaning_nav/random_cleaning/node.py
 - [ ] T014 [US1] Replace the placeholder executable with the random cleaning entrypoint in main.py
 
+### Tests for User Story 1
+
+- [ ] T027 [P] [US1] Write unit tests for motion decision generation in tests/unit/test_motion_policy.py
+- [ ] T028 [P] [US1] Write unit tests for session lifecycle and state transitions in tests/unit/test_state_machine.py
+- [ ] T029 [US1] Write integration test for node start/stop/estop services using launch_testing in tests/integration/test_random_cleaning_node.py
+
 **Checkpoint**: User Story 1 delivers a usable MVP random cleaning mode.
 
 ---
@@ -66,11 +72,16 @@
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Implement sensor freshness and battery watchdog rules in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
+- [ ] T015 [P] [US2] Implement sensor freshness, battery watchdog, and bump/cliff/wheel-drop event response rules in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
 - [ ] T016 [P] [US2] Extend state transitions for low-battery dock-return timeout and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py
 - [ ] T017 [P] [US2] Add no-progress detection and single 180-degree escape behavior in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
 - [ ] T018 [US2] Integrate safety latch handling and `/random_cleaning/resume_manual` gating in src/roomba_cleaning_nav/random_cleaning/node.py
 - [ ] T019 [US2] Connect immediate hardware stop semantics for safety events in src/roomba_cleaning_nav/random_cleaning/adapters/create_robot_adapter.py
+
+### Tests for User Story 2
+
+- [ ] T030 [P] [US2] Write unit tests for sensor watchdog and bump/cliff/wheel-drop handling in tests/unit/test_safety_watchdog.py
+- [ ] T031 [US2] Write integration test for safety latch, dock-return timeout, and manual resume in tests/integration/test_random_cleaning_node.py
 
 **Checkpoint**: User Story 2 adds operational safety without changing MVP behavior semantics.
 
@@ -89,6 +100,10 @@
 - [ ] T022 [US3] Publish `/diagnostics` health summaries from the runtime node in src/roomba_cleaning_nav/random_cleaning/node.py
 - [ ] T023 [US3] Record structured state-transition logs and telemetry update calls in src/roomba_cleaning_nav/random_cleaning/node.py
 
+### Tests for User Story 3
+
+- [ ] T032 [P] [US3] Write contract tests for published topic schemas in tests/contract/test_interfaces_contract.py
+
 **Checkpoint**: User Story 3 makes the feature observable and auditable in operation.
 
 ---
@@ -98,8 +113,8 @@
 **Purpose**: Final consistency, operator documentation, and end-to-end validation.
 
 - [ ] T024 [P] Document ROS2 interfaces, safety assumptions, and operating limits in src/roomba_cleaning_nav/random_cleaning/README.md
-- [ ] T025 Update operator validation steps and command examples in specs/002-random-cleaning-walk/quickstart.md
-- [ ] T026 Run the documentation alignment pass for interface semantics in specs/002-random-cleaning-walk/contracts/random-cleaning-interfaces.md
+- [ ] T025 Update operator validation steps and command examples in specs/001-random-cleaning-walk/quickstart.md
+- [ ] T026 Run the documentation alignment pass for interface semantics in specs/001-random-cleaning-walk/contracts/random-cleaning-interfaces.md
 
 ---
 
@@ -131,8 +146,11 @@
 
 - **Phase 2**: T005, T006, T007, and T008 can run in parallel after T004
 - **US1**: T010 and T011 can run in parallel before T012/T013
+- **US1 Tests**: T027 and T028 can run in parallel after T010/T011
 - **US2**: T015, T016, and T017 can run in parallel before T018
+- **US2 Tests**: T030 can run in parallel with T031's prerequisites
 - **US3**: T020 and T021 can run in parallel before T022/T023
+- **US3 Tests**: T032 can run after T020
 - **Polish**: T024 can run in parallel with T025 once implementation is complete
 
 ---
@@ -147,7 +165,7 @@ T011 [US1] Implement session lifecycle and idempotent start-stop transitions in 
 ## Parallel Example: User Story 2
 
 ```text
-T015 [US2] Implement sensor freshness and battery watchdog rules in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
+T015 [US2] Implement sensor freshness, battery watchdog, and bump/cliff/wheel-drop event response rules in src/roomba_cleaning_nav/random_cleaning/safety_watchdog.py
 T016 [US2] Extend state transitions for low-battery dock-return timeout and latched safety stop in src/roomba_cleaning_nav/random_cleaning/state_machine.py
 T017 [US2] Add no-progress detection and single 180-degree escape behavior in src/roomba_cleaning_nav/random_cleaning/motion_policy.py
 ```
@@ -180,7 +198,7 @@ T021 [US3] Persist cleaning sessions and safety events to JSON Lines logs in src
 
 ### Suggested MVP Scope
 
-- **MVP**: Phase 1 + Phase 2 + Phase 3 (through T014)
+- **MVP**: Phase 1 + Phase 2 + Phase 3 (through T014, plus T027-T029)
 
 ---
 

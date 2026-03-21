@@ -1,9 +1,9 @@
 # Tasks: Autonomous Cleaning
 
-**Input**: Design documents from `/specs/004-autonomous-cleaning/`
+**Input**: Design documents from `/specs/003-autonomous-cleaning/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/autonomous-cleaning-interfaces.md, quickstart.md
 
-**Tests**: No standalone test-authoring tasks are included (TDD is not explicitly requested by the feature spec).
+**Tests**: Test-authoring tasks are included in Phase 8 to satisfy the constitution’s quality gate requirement that `pytest` must pass before merge.
 
 **Organization**: Tasks are grouped by user story so each story can be implemented and validated independently.
 
@@ -36,7 +36,7 @@
 - [ ] T008 [P] Define `CoverageProgress` message in src/roomba_cleaning_msgs/msg/CoverageProgress.msg
 - [ ] T009 [P] Define `CleaningEvent` message in src/roomba_cleaning_msgs/msg/CleaningEvent.msg
 - [ ] T010 [P] Define synchronous status query service in src/roomba_cleaning_msgs/srv/GetAutonomousCleaningStatus.srv
-- [ ] T011 [P] Define clear-estop Trigger service contract in specs/004-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md
+- [ ] T011 [P] Define clear-estop Trigger service contract in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md
 - [ ] T012 Implement shared threshold constants (`start>=0.30`, `low<0.20`, `recovery=1x30s`, `estop<=50ms`, `diagnostics<=1s`) in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/config.py
 - [ ] T013 [P] Implement core domain enums/dataclasses for session, coverage, localization, perception fusion, dock, diagnostics, and e-stop state in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/models.py
 - [ ] T014 Implement ROS2 node bootstrap, publishers (`/autonomous_cleaning/*`, `/diagnostics`), and service/action server wiring in src/roomba_autonomous_cleaning/roomba_autonomous_cleaning/session_node.py
@@ -112,7 +112,7 @@
 
 **Goal**: Make final and runtime cleaning outcomes observable with clear completion/interruption context, including low-battery and e-stop terminations.
 
-**Independent Test**: Execute sessions ending in completed, safety_stopped, low-battery-docked, incomplete, and operator-stopped states; verify status/feedback/result consistency.
+**Independent Test**: Execute sessions ending in completed, safety_stopped, incomplete (low-battery dock failure, localization lost), and operator-stopped states; verify status/feedback/result consistency with FR-014 vocabulary and `end_reason` disambiguation.
 
 ### Implementation for User Story 4
 
@@ -132,8 +132,31 @@
 
 - [ ] T044 [P] Add autonomous-cleaning launch composition for Nav2 dependencies, perception fusion, and runtime node in src/roomba_autonomous_cleaning/launch/autonomous_cleaning.launch.py
 - [ ] T045 [P] Document interfaces, thresholds, diagnostics keys, and safety constraints in src/roomba_autonomous_cleaning/README.md and src/roomba_cleaning_coverage/README.md
-- [ ] T046 Align quickstart verification steps with SC-009/SC-010 acceptance criteria in specs/004-autonomous-cleaning/quickstart.md
-- [ ] T047 Align contract and data-model terminology with final implementation states in specs/004-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/004-autonomous-cleaning/data-model.md
+- [ ] T046 Align quickstart verification steps with SC-009/SC-010 acceptance criteria in specs/003-autonomous-cleaning/quickstart.md
+- [ ] T047 Align contract and data-model terminology with final implementation states in specs/003-autonomous-cleaning/contracts/autonomous-cleaning-interfaces.md and specs/003-autonomous-cleaning/data-model.md
+- [ ] T048 [P] Ensure map artifact directory exists at src/roomba_cleaning_nav/maps/ with a placeholder README
+
+---
+
+## Phase 8: Test Authoring
+
+**Purpose**: Author unit, integration, and contract tests to satisfy constitution quality gates (`pytest` must pass before merge).
+
+- [ ] T049 [P] Write unit tests for session state machine transitions in tests/unit/test_session_state_machine.py
+- [ ] T050 [P] Write unit tests for coverage tracker metrics and work-unit state changes in tests/unit/test_coverage_tracker.py
+- [ ] T051 [P] Write unit tests for completion policy terminal-state decisions in tests/unit/test_completion_policy.py
+- [ ] T052 [P] Write unit tests for interruption policy pause/resume/stop semantics in tests/unit/test_interruption_policy.py
+- [ ] T053 [P] Write unit tests for threshold policy start/low-battery/recovery constants in tests/unit/test_threshold_policy.py
+- [ ] T054 [P] Write contract tests for RunAutonomousCleaning action goal/feedback/result schema in tests/contract/test_autonomous_cleaning_action_contract.py
+- [ ] T055 [P] Write contract tests for status topic and diagnostics required keys in tests/contract/test_status_contract.py
+- [ ] T056 Write integration test for full session lifecycle (start→clean→complete) in tests/integration/test_autonomous_cleaning_session.py
+- [ ] T057 Write integration test for localization supervisor degraded/lost transitions in tests/integration/test_localization_supervisor.py
+- [ ] T058 Write integration test for low-battery dock transition and outcome in tests/integration/test_low_battery_docking.py
+- [ ] T059 Write integration test for e-stop latency enforcement in tests/integration/test_estop_latency.py
+- [ ] T060 Write integration test for clear-estop precondition checks in tests/integration/test_clear_estop_preconditions.py
+- [ ] T061 Write integration test for /diagnostics publish rate and required keys in tests/integration/test_diagnostics_publish_rate.py
+
+**Checkpoint**: All constitution quality gate tests authored and passing.
 
 ---
 
@@ -148,6 +171,7 @@
 - **Phase 5: US3** — depends on Phases 3-4 (recovery depends on established control and safety paths)
 - **Phase 6: US4** — depends on Phases 3-5 (final reporting depends on runtime and interruption outcomes)
 - **Phase 7: Polish** — depends on all user stories
+- **Phase 8: Test Authoring** — depends on Phases 3-6 (tests exercise implemented modules)
 
 ### User Story Dependency Graph
 
@@ -169,7 +193,9 @@
 - **US2**: T023, T024, and T025 can run in parallel before T026-T031
 - **US3**: T032, T033, T034, and T035 can run in parallel before T036-T038
 - **US4**: T039 and T040 can run in parallel before T041-T043
-- **Polish**: T044 and T045 can run in parallel before T046-T047
+- **Polish**: T044, T045, and T048 can run in parallel before T046-T047
+
+- **Test Authoring**: T049-T055 can run in parallel before T056-T061
 
 ---
 
@@ -220,5 +246,5 @@ T025 [US2] Implement control/e-stop status formatter in src/roomba_autonomous_cl
 
 - All tasks follow the required checklist format (`- [ ] Txxx ...`).
 - `[P]` is assigned only to tasks that can run without file-level conflicts.
-- No standalone test-authoring tasks were included because test-first development was not explicitly requested in the feature specification.
+- Test-authoring tasks (Phase 8) are included to satisfy the constitution’s quality gate requirement that `pytest` must pass before merge.
 - Tasks are immediately executable by an LLM with the current design artifacts.

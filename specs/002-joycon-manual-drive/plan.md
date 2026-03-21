@@ -1,7 +1,7 @@
 # Implementation Plan: Joy-Con Manual Drive Cleaning
 
-**Branch**: `003-joycon-manual-drive` | **Date**: 2026-03-21 | **Spec**: `specs/003-joycon-manual-drive/spec.md`
-**Input**: Feature specification from `/specs/003-joycon-manual-drive/spec.md`
+**Branch**: `002-joycon-manual-drive` | **Date**: 2026-03-21 | **Spec**: `specs/002-joycon-manual-drive/spec.md`
+**Input**: Feature specification from `/specs/002-joycon-manual-drive/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
@@ -27,7 +27,7 @@ Roomba577 を `create_robot` でシリアル制御し、Left Joy-Con を `joycon
 
 ### Pre-Design Gate Check
 
-- Principle I (ROS2 Package Composition): PASS — Joy-Con input, command resolution, create-driver output, and status publicationを責務分離し、外部契約は topic/service 経由で定義する。`cmd_vel` を正規速度IFとして維持する。
+- Principle I (ROS2 Package Composition): CONDITIONAL-PASS — Joy-Con input, command resolution, create-driver output, and status publicationを責務分離し、外部契約は topic/service 経由で定義する。`cmd_vel` を正規速度IFとして維持する。ただし、現時点では単一 Python package (`roomba_cleaning_nav`) 内の feature module として実装する。Constitution の "multiple independent ROS2 packages" 要件は、003-autonomous-cleaning 以降のリファクタリングフェーズで正式に分割する計画とする（Research Decision 6 参照）。
 - Principle II (State Awareness & Low Latency): PASS — `/manual_drive/status` と `/diagnostics` で状態可視化し、20-30Hz制御ループと fail-safe zero command を前提に設計する。
 - Principle III (SOLID): PASS — HID入力、純粋判定ロジック、安全監視、Roomba出力アダプタを分離し、依存を境界に閉じ込める。
 - Principle IV (50-Line & Referential Transparency): PASS — button mapping / conflict resolution / watchdog 判定は純粋関数群に分割し、副作用は ROS2 adapter に限定する。
@@ -36,7 +36,7 @@ Roomba577 を `create_robot` でシリアル制御し、Left Joy-Con を `joycon
 
 ### Post-Design Gate Check
 
-- Principle I: PASS — `contracts/manual-drive-interfaces.md` で `cmd_vel` / motor topics / status topic / estop service 契約を固定。
+- Principle I: CONDITIONAL-PASS — `contracts/manual-drive-interfaces.md` で `cmd_vel` / motor topics / status topic / estop service 契約を固定。ROS2 topic/service 境界は定義済みだが、物理的 package 分割は単一 `roomba_cleaning_nav` package 内の module 分離に留まる。003-autonomous-cleaning でのパッケージ分割を前提とする。
 - Principle II: PASS — `data-model.md` に `OperatorStatus` と `SafetyLatch` を定義し、状態遷移と link-health を明文化。
 - Principle III: PASS — `quickstart.md` と source structure で adapter 分離と責務境界を保持。
 - Principle IV: PASS — design artifacts で pure decision layer (`command_mapper`, `long_press_tracker`, `watchdog`) と effect adapters を分離。
@@ -48,7 +48,7 @@ Roomba577 を `create_robot` でシリアル制御し、Left Joy-Con を `joycon
 ### Documentation (this feature)
 
 ```text
-specs/003-joycon-manual-drive/
+specs/002-joycon-manual-drive/
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -92,4 +92,10 @@ tests/
 
 ## Complexity Tracking
 
-No constitution violations identified; complexity exemptions are not required.
+### Constitution Deviation: Principle I (ROS2 Package Composition)
+
+- **Status**: CONDITIONAL-PASS — acknowledged deviation with planned resolution
+- **Deviation**: Constitution requires "multiple independent ROS2 packages" per feature. This feature implements all code within a single `roomba_cleaning_nav` package using module-level separation (`manual_drive/` subpackage).
+- **Justification**: The existing repository uses a single Python source tree. Module boundaries and ROS2 interface contracts are defined and enforced, but physical package separation incurs high setup cost at this stage. See Research Decision 6.
+- **Resolution plan**: Package decomposition (e.g., `joycon_input`, `manual_drive_controller`, `roomba_drive_adapter`) is deferred to 003-autonomous-cleaning, where multiple motion modes will require formal package boundaries for safe arbitration.
+- **Risk**: Low — module boundaries mirror future package boundaries; interface contracts are already captured in `contracts/manual-drive-interfaces.md`.

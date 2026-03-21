@@ -169,7 +169,7 @@
 
 - idle -> preparing: start request accepted and startup checks begin.
 - preparing -> cleaning: map, localization, battery, driver health checks pass and first work unit is issued.
-- preparing -> failed: startup checks fail and no session start is allowed.
+- preparing -> idle (rejected): startup checks fail (map unavailable, localization not ready, battery < 0.30, driver fault); session is not started and `end_reason=startup_rejected` is recorded.
 - cleaning -> paused: operator pause accepted.
 - paused -> cleaning: operator resume accepted and localization readiness is restored.
 - cleaning -> docking: low battery detected and dock adapter takes ownership.
@@ -178,7 +178,7 @@
 - cleaning -> incomplete: operator stop accepted.
 - any active state -> safety_stopped: e-stop accepted and actuators are stopped within 50 ms.
 - safety_stopped -> paused: e-stop cleared explicitly via `clear_estop` and readiness is re-validated.
-- docking -> completed: docking succeeds and session is treated as successful low-battery termination.
+- docking -> completed: docking succeeds and session is treated as successful low-battery termination (`end_reason=dock_success`).
 - docking -> incomplete: docking fails and robot safe-stops.
 
 ## Invariants
