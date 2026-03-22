@@ -17,9 +17,9 @@
 
 **Purpose**: Prepare package structure and project-level configuration for the manual-drive feature.
 
-- [ ] T001 Create manual-drive package scaffolding in src/roomba_cleaning_nav/manual_drive/__init__.py and src/roomba_cleaning_nav/manual_drive/adapters/__init__.py
-- [ ] T002 Update runtime and developer dependencies plus the manual-drive entrypoint in pyproject.toml
-- [ ] T003 Create operator-facing feature notes in src/roomba_cleaning_nav/manual_drive/README.md
+- [X] T001 Create manual-drive package scaffolding in src/roomba_cleaning_nav/manual_drive/__init__.py and src/roomba_cleaning_nav/manual_drive/adapters/__init__.py
+- [X] T002 Update runtime and developer dependencies plus the manual-drive entrypoint in pyproject.toml
+- [X] T003 Create operator-facing feature notes in src/roomba_cleaning_nav/manual_drive/README.md
 
 ---
 
@@ -29,14 +29,14 @@
 
 **⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T004 Create shared configuration constants and safety thresholds in src/roomba_cleaning_nav/manual_drive/config.py
-- [ ] T005 [P] Create domain entities, enums, and state containers in src/roomba_cleaning_nav/manual_drive/models.py
-- [ ] T006 [P] Implement the Left Joy-Con HID bridge skeleton in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
-- [ ] T007 [P] Implement the `create_robot` output bridge skeleton in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
-- [ ] T008 [P] Implement operator feedback and ROS2 status publication scaffolding in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
-- [ ] T009 [P] Implement status serialization helpers in src/roomba_cleaning_nav/manual_drive/status_formatter.py
-- [ ] T010 [P] Implement pure safety decision logic (link-loss watchdog, cliff-stop evaluation, e-stop latch management) in src/roomba_cleaning_nav/manual_drive/safety_watchdog.py
-- [ ] T011 Create the shared ROS2 node lifecycle, publishers, subscribers, and timer wiring in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T004 Create shared configuration constants and safety thresholds in src/roomba_cleaning_nav/manual_drive/config.py
+- [X] T005 [P] Create domain entities, enums, and state containers in src/roomba_cleaning_nav/manual_drive/models.py
+- [X] T006 [P] Implement the Left Joy-Con HID bridge skeleton in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
+- [X] T007 [P] Implement the `create_robot` output bridge skeleton in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
+- [X] T008 [P] Implement operator feedback and ROS2 status publication scaffolding in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
+- [X] T009 [P] Implement status serialization helpers in src/roomba_cleaning_nav/manual_drive/status_formatter.py
+- [X] T010 [P] Implement pure safety decision logic (link-loss watchdog, cliff-stop evaluation, e-stop latch management) in src/roomba_cleaning_nav/manual_drive/safety_watchdog.py
+- [X] T011 Create the shared ROS2 node lifecycle, publishers, subscribers, and timer wiring in src/roomba_cleaning_nav/manual_drive/node.py
 
 **Checkpoint**: Foundation ready — manual-drive stories can now be implemented.
 
@@ -50,10 +50,10 @@
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement directional mapping and conflicting-input resolution in src/roomba_cleaning_nav/manual_drive/command_mapper.py
-- [ ] T013 [P] [US1] Implement held-button motion state capture for the Left Joy-Con d-pad in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
-- [ ] T014 [US1] Integrate motion-command generation and 300 ms stop-on-release behavior in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T015 [US1] Publish clamped `cmd_vel` commands through the create-driver bridge in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
+- [X] T012 [P] [US1] Implement directional mapping and conflicting-input resolution in src/roomba_cleaning_nav/manual_drive/command_mapper.py
+- [X] T013 [P] [US1] Implement held-button motion state capture for the Left Joy-Con d-pad in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
+- [X] T014 [US1] Integrate motion-command generation and 300 ms stop-on-release behavior in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T015 [US1] Publish clamped `cmd_vel` commands through the create-driver bridge in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
 
 **Checkpoint**: User Story 1 provides a usable manual locomotion MVP.
 
@@ -67,16 +67,16 @@
 
 ### Implementation for User Story 2
 
-- [ ] T016 [P] [US2] Implement 1-second mode-button hold tracking in src/roomba_cleaning_nav/manual_drive/long_press_tracker.py
-- [ ] T017 [P] [US2] Extend Left Joy-Con event handling for mode-button long-press and link-health tracking in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
-- [ ] T018 [P] [US2] Implement status and diagnostics payload generation for mode, link, fault state, and low-battery warning indication in src/roomba_cleaning_nav/manual_drive/status_formatter.py
-- [ ] T019 [P] [US2] Implement rumble-or-no-op feedback and `/manual_drive/status` publication in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
-- [ ] T020 [US2] Integrate mode transitions, link-loss latching, reconnection hold state, and explicit re-entry rules in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T021 [US2] Subscribe to `/cliff` topic and wire cliff-triggered safety-stop through safety_watchdog in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T022 [US2] Implement `/manual_drive/estop` service handler (`std_srvs/srv/Trigger`) using safety_watchdog latch in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T022a [US2] Implement `/manual_drive/clear_estop` service handler (`std_srvs/srv/Trigger`) with precondition checks (zero velocity, no active safety fault) in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T023 [US2] Subscribe to `create_robot` `/diagnostics` topic for serial fault detection and fail-safe handling in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T024 [US2] Wire `/diagnostics` DiagnosticArray publication with required keys (joycon_link_age_ms, manual_mode_active, cleaning_enabled, last_fault, rumble_available) in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
+- [X] T016 [P] [US2] Implement 1-second mode-button hold tracking in src/roomba_cleaning_nav/manual_drive/long_press_tracker.py
+- [X] T017 [P] [US2] Extend Left Joy-Con event handling for mode-button long-press and link-health tracking in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
+- [X] T018 [P] [US2] Implement status and diagnostics payload generation for mode, link, fault state, and low-battery warning indication in src/roomba_cleaning_nav/manual_drive/status_formatter.py
+- [X] T019 [P] [US2] Implement rumble-or-no-op feedback and `/manual_drive/status` publication in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
+- [X] T020 [US2] Integrate mode transitions, link-loss latching, reconnection hold state, and explicit re-entry rules in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T021 [US2] Subscribe to `/cliff` topic and wire cliff-triggered safety-stop through safety_watchdog in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T022 [US2] Implement `/manual_drive/estop` service handler (`std_srvs/srv/Trigger`) using safety_watchdog latch in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T022a [US2] Implement `/manual_drive/clear_estop` service handler (`std_srvs/srv/Trigger`) with precondition checks (zero velocity, no active safety fault) in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T023 [US2] Subscribe to `create_robot` `/diagnostics` topic for serial fault detection and fail-safe handling in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T024 [US2] Wire `/diagnostics` DiagnosticArray publication with required keys (joycon_link_age_ms, manual_mode_active, cleaning_enabled, last_fault, rumble_available) in src/roomba_cleaning_nav/manual_drive/adapters/feedback_adapter.py
 
 **Checkpoint**: User Story 2 makes manual-drive activation safe and operator-visible.
 
@@ -90,10 +90,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T025 [P] [US3] Define safe cleaning duty-cycle presets and cleaning-state transitions in src/roomba_cleaning_nav/manual_drive/config.py and src/roomba_cleaning_nav/manual_drive/models.py
-- [ ] T026 [P] [US3] Implement side-brush, main-brush, and vacuum motor command publication in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
-- [ ] T027 [P] [US3] Implement Left Joy-Con cleaning-toggle edge detection in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
-- [ ] T028 [US3] Integrate cleaning toggle, auto-disable-on-exit, and status updates in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T025 [P] [US3] Define safe cleaning duty-cycle presets and cleaning-state transitions in src/roomba_cleaning_nav/manual_drive/config.py and src/roomba_cleaning_nav/manual_drive/models.py
+- [X] T026 [P] [US3] Implement side-brush, main-brush, and vacuum motor command publication in src/roomba_cleaning_nav/manual_drive/adapters/create_robot_adapter.py
+- [X] T027 [P] [US3] Implement Left Joy-Con cleaning-toggle edge detection in src/roomba_cleaning_nav/manual_drive/adapters/joycon_adapter.py
+- [X] T028 [US3] Integrate cleaning toggle, auto-disable-on-exit, and status updates in src/roomba_cleaning_nav/manual_drive/node.py
 
 **Checkpoint**: User Story 3 adds manual cleaning control without breaking manual movement or mode safety.
 
@@ -107,10 +107,10 @@
 
 ### Implementation for User Story 4
 
-- [ ] T029 [P] [US4] Add forbidden-zone override state and restore semantics to src/roomba_cleaning_nav/manual_drive/models.py
-- [ ] T030 [P] [US4] Extend operator status formatting with manual override and restore indicators in src/roomba_cleaning_nav/manual_drive/status_formatter.py
-- [ ] T031 [US4] Integrate keep-out bypass activation and re-enforcement hooks in src/roomba_cleaning_nav/manual_drive/node.py
-- [ ] T032 [US4] Document virtual-wall bypass expectations and downstream integration notes in src/roomba_cleaning_nav/manual_drive/README.md and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [X] T029 [P] [US4] Add forbidden-zone override state and restore semantics to src/roomba_cleaning_nav/manual_drive/models.py
+- [X] T030 [P] [US4] Extend operator status formatting with manual override and restore indicators in src/roomba_cleaning_nav/manual_drive/status_formatter.py
+- [X] T031 [US4] Integrate keep-out bypass activation and re-enforcement hooks in src/roomba_cleaning_nav/manual_drive/node.py
+- [X] T032 [US4] Document virtual-wall bypass expectations and downstream integration notes in src/roomba_cleaning_nav/manual_drive/README.md and specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
 
 **Checkpoint**: User Story 4 completes the manual override behavior for autonomous map restrictions.
 
@@ -120,10 +120,10 @@
 
 **Purpose**: Final consistency, packaging, and operator validation updates across all stories.
 
-- [ ] T033 [P] Document final button mapping, safety assumptions, and operating limits in src/roomba_cleaning_nav/manual_drive/README.md
-- [ ] T034 Update operator walkthrough and validation commands in specs/002-joycon-manual-drive/quickstart.md
-- [ ] T035 Align final interface semantics, fault behavior, and override notes in specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
-- [ ] T036 Validate dependency/install guidance and executable references in pyproject.toml and specs/002-joycon-manual-drive/quickstart.md
+- [X] T033 [P] Document final button mapping, safety assumptions, and operating limits in src/roomba_cleaning_nav/manual_drive/README.md
+- [X] T034 Update operator walkthrough and validation commands in specs/002-joycon-manual-drive/quickstart.md
+- [X] T035 Align final interface semantics, fault behavior, and override notes in specs/002-joycon-manual-drive/contracts/manual-drive-interfaces.md
+- [X] T036 Validate dependency/install guidance and executable references in pyproject.toml and specs/002-joycon-manual-drive/quickstart.md
 
 **Note**: 003 Phase 8 (T062-T068) にて本機能のソースおよび契約ファイルが Cross-Feature Migration の対象となる。詳細は specs/003-autonomous-cleaning/tasks.md Phase 8 を参照。
 
@@ -137,23 +137,23 @@
 
 ### Unit Tests
 
-- [ ] T037 [P] Implement unit tests for directional mapping and conflict resolution in tests/unit/test_command_mapper.py
-- [ ] T038 [P] Implement unit tests for 1-second long-press timing logic in tests/unit/test_long_press_tracker.py
-- [ ] T039 [P] Implement unit tests for link-loss watchdog, cliff-stop, and e-stop latch logic in tests/unit/test_safety_watchdog.py
-- [ ] T040 [P] Implement unit tests for status and diagnostics payload serialization in tests/unit/test_status_formatter.py
+- [X] T037 [P] Implement unit tests for directional mapping and conflict resolution in tests/unit/test_command_mapper.py
+- [X] T038 [P] Implement unit tests for 1-second long-press timing logic in tests/unit/test_long_press_tracker.py
+- [X] T039 [P] Implement unit tests for link-loss watchdog, cliff-stop, and e-stop latch logic in tests/unit/test_safety_watchdog.py
+- [X] T040 [P] Implement unit tests for status and diagnostics payload serialization in tests/unit/test_status_formatter.py
 
 ### Integration Tests
 
-- [ ] T041 Implement integration test for manual_drive_node wiring (cmd_vel, status, motor topics, estop service) in tests/integration/test_manual_drive_node.py
-- [ ] T041a Write integration test for create_robot driver bridge serial command sequences in tests/integration/test_driver_bridge.py
+- [X] T041 Implement integration test for manual_drive_node wiring (cmd_vel, status, motor topics, estop service) in tests/integration/test_manual_drive_node.py
+- [X] T041a Write integration test for create_robot driver bridge serial command sequences in tests/integration/test_driver_bridge.py
 
 ### Contract Tests
 
-- [ ] T042 Implement contract test verifying published topic types, field ranges, and service semantics against contracts/manual-drive-interfaces.md in tests/contract/test_manual_drive_interfaces.py
+- [X] T042 Implement contract test verifying published topic types, field ranges, and service semantics against contracts/manual-drive-interfaces.md in tests/contract/test_manual_drive_interfaces.py
 
 ### Forbidden Zone Tests
 
-- [ ] T043 [P] [US4] Implement integration test for forbidden zone bypass activation on manual mode entry and re-enforcement on exit in tests/integration/test_forbidden_zone_override.py
+- [X] T043 [P] [US4] Implement integration test for forbidden zone bypass activation on manual mode entry and re-enforcement on exit in tests/integration/test_forbidden_zone_override.py
 
 ---
 

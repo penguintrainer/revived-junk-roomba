@@ -1,7 +1,36 @@
 [project]
 name = "revived-junk-roomba"
 version = "0.1.0"
-description = "Add your description here"
+description = "ROS2 Jazzy Roomba cleaning navigation — random walk, Joy-Con manual drive, autonomous cleaning"
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = []
+requires-python = ">=3.12"
+dependencies = [
+  "pytest>=9.0",
+  "pytest-cov>=7.0",
+]
+
+[project.optional-dependencies]
+docs = [
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "pymdown-extensions>=10.0",
+]
+
+[project.scripts]
+random_cleaning_node = "roomba_cleaning_nav.random_cleaning.node:main"
+manual_drive_node = "roomba_cleaning_nav.manual_drive.node:main"
+autonomous_cleaning_node = "roomba_autonomous_cleaning.roomba_autonomous_cleaning.session_node:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = ["--tb=short", "-v"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 80
